@@ -7,7 +7,7 @@
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
-var kWASDDelta = 0.3;
+var kWASDDelta = 1.3;
 
 function WASDObj() {
 }
