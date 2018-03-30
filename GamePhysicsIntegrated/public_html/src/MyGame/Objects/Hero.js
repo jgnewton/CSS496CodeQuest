@@ -24,8 +24,10 @@ function Hero(spriteTexture) {
     
     var r = new RigidRectangle(this.getXform(), 13, 14);
     this.setRigidBody(r);
-    this.toggleDrawRenderable();
+    
+    //this.toggleDrawRenderable();
     this.toggleDrawRigidShape();
+    
     this.mRigidBody.mInvMass=0;
 }
 gEngine.Core.inheritPrototype(Hero, WASDObj);
