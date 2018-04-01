@@ -33,6 +33,16 @@ function AsteroidScene() {
     
     this.mCurrentObj = 0;
     this.mTarget = null;
+    
+    
+    // Setting up ray selection logic
+    this.minselect=0;
+    this.maxselect=10;
+    
+    this.selection=0;
+     
+    
+    
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -89,10 +99,10 @@ AsteroidScene.prototype.initialize = function () {
     this.mMsg.getXform().setPosition(5, 7);
     this.mMsg.setTextHeight(3);
     
-    this.mShapeMsg = new FontRenderable("Shape");
+    this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
     this.mShapeMsg.setColor([0, 0, 0, 1]);
     this.mShapeMsg.getXform().setPosition(5, 73);
-    this.mShapeMsg.setTextHeight(2.5);
+    this.mShapeMsg.setTextHeight(7.5);
     
     this.mBackground = new TextureRenderable(this.kMW);
     this.mBackground.setColor.call(this, [1, 0, 0, 1]);
@@ -149,5 +159,26 @@ AsteroidScene.prototype.update = function () {
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
     }
+    
+    
+    //selecting Ray type:
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) {
+        this.selection--;
+        
+        if(this.selection<this.minselect){
+            this.selection = this.maxselect;
+        }
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right)) {
+        this.selection++;
+        
+        if(this.selection>this.maxselect){
+            this.selection= this.minselect;
+        }
+    }    
+    
+ 
+    this.mShapeMsg.setText("Current Selection : "+this.selection);
 
 };

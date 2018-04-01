@@ -46,6 +46,25 @@ function Asteroid(spriteTexture, atX, atY, createCircle) {
     this.setRigidBody(r);
     //this.toggleDrawRenderable();
     this.toggleDrawRigidShape();
+    
+    
+    this.dataType=1;
+    /*
+     *  1. boolean	true or false	false	1 bit	true, false
+        2. byte	twos complement integer	0	8 bits	(none)
+        3. char	Unicode character	\u0000	16 bits	'a', '\u0041', '\101', '\\', '\'', '\n', 'ß'
+        4. short	twos complement integer	0	16 bits	(none)
+        5. int	twos complement integer	0	32 bits	-2, -1, 0, 1, 2
+        6. long	twos complement integer	0	64 bits	-2L, -1L, 0L, 1L, 2L
+        7. float	IEEE 754 floating point	0.0	32 bits	1.23e100f, -1.23e-100f, .3f, 3.14F
+        8. double	IEEE 754 floating point	0.0	64 bits	1.23456e300d, -1.23456e-300d, 1e1d
+    */
+    
+    this.text = new FontRenderable("Data Type Filler MSG");
+    this.text.setColor([0, 0, 0, 1]);
+    this.text.getXform().setPosition(5, 73);
+    this.text.setTextHeight(2.5);
+    
 }
 gEngine.Core.inheritPrototype(Asteroid, GameObject);
 
@@ -53,4 +72,19 @@ Asteroid.prototype.update = function (aCamera) {
     GameObject.prototype.update.call(this);
     // remember to update this.mMinion's animation
     this.mMinion.updateAnimation();
+    var x = this.mMinion.getXform().getXPos();
+    var y = this.mMinion.getXform().getYPos();
+    this.text.getXform().setPosition(x, y);
+    
+};
+
+
+Asteroid.prototype.draw = function (aCamera) {
+    if (this.isVisible()) {
+        if (this.mDrawRenderable)
+            this.mRenderComponent.draw(aCamera);
+        if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
+            this.mRigidBody.draw(aCamera);
+    }
+    this.text.draw(aCamera);
 };
