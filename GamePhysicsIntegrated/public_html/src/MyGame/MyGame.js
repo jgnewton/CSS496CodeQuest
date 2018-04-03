@@ -136,6 +136,17 @@ MyGame.prototype.update = function () {
     this.updateCamera();
 
 
+
+// this is gonna make a conflict
+// 
+// 
+// 
+// conflict hehehehehe
+// // ye conflictttt whatchu goooot
+// 
+// 
+// 
+// CONfliCCT!!!
     //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
