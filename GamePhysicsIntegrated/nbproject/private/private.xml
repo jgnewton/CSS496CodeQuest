@@ -11,10 +11,10 @@
         <group>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/MyGame/AsteroidScene.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/index.html</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/MyGame/Objects/WASDObj.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/Engine/Core/Engine_Input.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/Engine/Renderables/FontRenderable.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/MyGame/Objects/Hero.js</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/assets/MW.jpg</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/MyGame/Objects/Minion.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/Engine/GameObjects/GameObject.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/MyGame/Objects/Asteroid.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/MyGame/MyGame.js</file>
         </group>

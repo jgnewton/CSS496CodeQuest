@@ -87,11 +87,19 @@ AsteroidScene.prototype.initialize = function () {
     
     //create hero and add to set
     this.mHero = new Hero(this.kMinionSprite);
+    this.mHero.mDye.getXform().setPosition(50, -60);
+    
+    
+    
     this.mAllObjs.addToSet(this.mHero);
     
     //create minion 
     this.mAsteroid1 = new Asteroid(this.kMinionSprite, 50, 40);
     this.mAllObjs.addToSet(this.mAsteroid1);
+    
+    this.mtestProj = new Projectile(this.kPlatformTexture, 55,45);
+    this.mtestProj.mRigidBody.setVelocity(1,1);
+    this.mAllObjs.addToSet(this.mtestProj);
 
 
     this.mMsg = new FontRenderable("Asteroid Scene");
@@ -150,7 +158,9 @@ AsteroidScene.kBoundDelta = 0.1;
 AsteroidScene.prototype.update = function () {
     var msg = "";   
     this.mHero.update();
-    this.mHero.keyControl();
+    
+    //this.mHero.keyControl();
+    this.mHero.AsteroidControl();
     
     this.mAllObjs.update(this.mCamera);
     //this.updateCamera();
@@ -179,6 +189,25 @@ AsteroidScene.prototype.update = function () {
     }    
     
  
-    this.mShapeMsg.setText("Current Selection : "+this.selection);
-
+    this.mShapeMsg.setText("Rotation: "+ Math.floor(this.mHero.getXform().getRotationInDegree())+"Current Selection : "+this.selection);
+    
+    
+    //checking for Hero Firing
+    if(this.mHero.firing){
+        var xp = this.mHero.mDye.getXform().getXPos();
+        var yp = this.mHero.mDye.getXform().getYPos();
+        var p = new Projectile(this.kPlatformTexture, xp, yp);
+        
+        this.maxV=5;
+        
+        var yv = this.maxV; 
+       
+        p.xv=2;
+        p.yv=2;
+        
+        this.mAllObjs.addToSet(p);
+        
+        this.mHero.firing=false;
+    }
+    
 };

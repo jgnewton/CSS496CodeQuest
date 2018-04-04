@@ -29,9 +29,34 @@ function Hero(spriteTexture) {
     this.toggleDrawRigidShape();
     
     this.mRigidBody.mInvMass=0;
+    this.firing=false;
 }
 gEngine.Core.inheritPrototype(Hero, WASDObj);
 
 Hero.prototype.update = function () {
     GameObject.prototype.update.call(this);
+    
+}
+    
+Hero.prototype.AsteroidControl = function () {
+    var xform = this.getXform();
+    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
+        xform.incRotationByDegree(1);       
+    }
+    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
+        xform.incRotationByDegree(-1);    
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
+        this.shoot();    
+    }
+    
+    
+};
+
+
+Hero.prototype.shoot = function () {
+    this.firing=true;
 };
