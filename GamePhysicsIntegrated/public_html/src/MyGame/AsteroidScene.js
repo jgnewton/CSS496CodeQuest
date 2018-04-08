@@ -41,8 +41,15 @@ function AsteroidScene() {
     
     this.selection=0;
      
+    this.genTimer=0;
     
+    //width of world within camera view
+    this.WCWidth=300;
     
+    //center x coordinate of camera
+    this.WCCenterX=0;
+    //y coord
+    this.WCCenterY=0;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -73,8 +80,8 @@ AsteroidScene.prototype.unloadScene = function () {
 AsteroidScene.prototype.initialize = function () {
     // Step A: set up the cameras
     this.mCamera = new Camera(
-        vec2.fromValues(50, 40), // position of the camera
-        300,                     // width of camera
+        vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera
+        this.WCWidth,                     // width of camera
         [0, 0, 800, 600]         // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
@@ -188,26 +195,63 @@ AsteroidScene.prototype.update = function () {
         }
     }    
     
- 
+    //debuggin messages
     this.mShapeMsg.setText("Rotation: "+ Math.floor(this.mHero.getXform().getRotationInDegree())+"Current Selection : "+this.selection);
     
     
     //checking for Hero Firing
     if(this.mHero.firing){
-        var xp = this.mHero.mDye.getXform().getXPos();
-        var yp = this.mHero.mDye.getXform().getYPos();
+        
+        //get hero state info
+        var hxf = this.mHero.getXform();
+        var xp = hxf.getXPos();
+        var yp = hxf.getYPos();
+        
+        //get in radians for Math javascript func
+        var rot = hxf.getRotationInRad();
+        
+        //create new projectile
         var p = new Projectile(this.kPlatformTexture, xp, yp);
         
-        this.maxV=5;
+        //setting projectile velocity
+        this.maxV=50;
         
-        var yv = this.maxV; 
+        var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
+        var yv = this.maxV*Math.cos(rot);
        
-        p.xv=2;
-        p.yv=2;
+        p.xv=xv;
+        p.yv=yv;
         
+        //adding projectile to set
         this.mAllObjs.addToSet(p);
         
+        // allow hero to fire again
         this.mHero.firing=false;
     }
     
+    //updating projectiles (object) set
+    
+    //updating the generating of asteroids
+    this.genTimer++;
+    if(this.genTimer>=120){
+        this.generate();
+        this.genTimer=0;
+    }
+    
+};
+
+
+//random asteroid generation
+AsteroidScene.prototype.generate = function () {
+    
+    
+    var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*this.WCWidth;
+    var yl = 60;
+    
+    var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl);
+    
+    //drop speed
+    Asteroid1.yv=-10;
+    
+    this.mAllObjs.addToSet(Asteroid1);    
 };

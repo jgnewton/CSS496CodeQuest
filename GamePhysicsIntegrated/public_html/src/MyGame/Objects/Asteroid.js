@@ -47,6 +47,10 @@ function Asteroid(spriteTexture, atX, atY, createCircle) {
     //this.toggleDrawRenderable();
     this.toggleDrawRigidShape();
     
+    //not using physics
+    // do not set mass to 0.
+    //this.mRigidBody.mInvMass=0;
+    
     
     this.dataType=1;
     /*
@@ -65,6 +69,9 @@ function Asteroid(spriteTexture, atX, atY, createCircle) {
     this.text.getXform().setPosition(5, 73);
     this.text.setTextHeight(2.5);
     
+    this.xv=0;
+    this.yv=0;
+    
 }
 gEngine.Core.inheritPrototype(Asteroid, GameObject);
 
@@ -72,9 +79,17 @@ Asteroid.prototype.update = function (aCamera) {
     GameObject.prototype.update.call(this);
     // remember to update this.mMinion's animation
     this.mMinion.updateAnimation();
+
+    //his.getXform().incXPosBy(this.xv);
+    //this.getXform().incYPosBy(this.yv);
+    
+    this.mRigidBody.setVelocity(this.xv,this.yv);
+    
+    
     var x = this.mMinion.getXform().getXPos();
     var y = this.mMinion.getXform().getYPos();
     this.text.getXform().setPosition(x, y);
+
     
 };
 

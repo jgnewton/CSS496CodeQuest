@@ -58,15 +58,22 @@ function Projectile(spriteTexture, atX, atY, createCircle) {
     
     //projectiles do not interact with physics... or gravity.
     // for now
+    
+    // do not set projectile to mass 0....
     //this.mRigidBody.mInvMass=0;
     
+    //will manually set veklocity, x and y components
     this.xv=0;
     this.yv=0;
+    
+    //when to remove from set to reduce lag (or just not draw)
+    this.terminated=false;
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
 Projectile.prototype.update = function (aCamera) {
     
+    // using rigid body for velocities...
     this.mRigidBody.setVelocity(this.xv,this.yv);
     
     GameObject.prototype.update.call(this);
@@ -92,5 +99,9 @@ Projectile.prototype.draw = function (aCamera) {
         if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
             this.mRigidBody.draw(aCamera);
     }
-    this.text.draw(aCamera);
+    //this.text.draw(aCamera);
 };
+
+Projectile.prototype.terminate = function (aCamera) {
+    this.terminated=true;
+}
