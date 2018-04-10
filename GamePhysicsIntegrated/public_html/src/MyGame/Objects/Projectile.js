@@ -67,11 +67,11 @@ function Projectile(spriteTexture, atX, atY, createCircle) {
     this.yv=0;
     
     //when to remove from set to reduce lag (or just not draw)
-    this.terminated=false;
+    this.terminated=true;
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
-Projectile.prototype.update = function (aCamera) {
+Projectile.prototype.update = function () {
     
     // using rigid body for velocities...
     this.mRigidBody.setVelocity(this.xv,this.yv);
@@ -89,6 +89,8 @@ Projectile.prototype.update = function (aCamera) {
     
     this.text.getXform().setPosition(x, y);
     
+    //check for being outside camera bounds
+    
 };
 
 
@@ -102,6 +104,20 @@ Projectile.prototype.draw = function (aCamera) {
     //this.text.draw(aCamera);
 };
 
-Projectile.prototype.terminate = function (aCamera) {
+Projectile.prototype.terminate = function () {
     this.terminated=true;
+}
+
+Projectile.prototype.testTerminated = function (WB) {
+   var xc = WB[0];
+   var yc = WB[1]; 
+   var w = WB[2]; 
+   var h = WB[3];
+   
+   var xf = this.getXform();
+   
+   if(xf.getXPos()>xc+w/2 || xf.getXPos()<xc-w/2 || 
+           xf.getYPos()>yc+h/2 || xf.getYPos()<yc-h/2 ){
+       this.terminate();
+   }
 }

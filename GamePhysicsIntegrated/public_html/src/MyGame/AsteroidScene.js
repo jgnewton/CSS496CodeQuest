@@ -46,6 +46,12 @@ function AsteroidScene() {
     //width of world within camera view
     this.WCWidth=300;
     
+    this.VPWidth=800;
+    this.VPHeight=600;
+    
+    //height derived from width
+    this.WCHeight=this.VPHeight/this.VPWidth*this.WCWidth;
+    
     //center x coordinate of camera
     this.WCCenterX=0;
     //y coord
@@ -82,7 +88,7 @@ AsteroidScene.prototype.initialize = function () {
     this.mCamera = new Camera(
         vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera
         this.WCWidth,                     // width of camera
-        [0, 0, 800, 600]         // viewport (orgX, orgY, width, height)
+        [0, 0, this.VPWidth, this.VPHeight]         // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
@@ -94,7 +100,7 @@ AsteroidScene.prototype.initialize = function () {
     
     //create hero and add to set
     this.mHero = new Hero(this.kMinionSprite);
-    this.mHero.mDye.getXform().setPosition(50, -60);
+    this.mHero.mDye.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
     
     
     
@@ -116,7 +122,7 @@ AsteroidScene.prototype.initialize = function () {
     
     this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
     this.mShapeMsg.setColor([0, 0, 0, 1]);
-    this.mShapeMsg.getXform().setPosition(5, 73);
+    this.mShapeMsg.getXform().setPosition(this.WCCenterX-this.WCWidth/2, this.WCCenterY-80);
     this.mShapeMsg.setTextHeight(7.5);
     
     this.mBackground = new TextureRenderable(this.kMW);
@@ -139,7 +145,7 @@ AsteroidScene.prototype.draw = function () {
 
     this.mCamera.setupViewProjection();
     
-    this.mBackground.draw(this.mCamera);
+    //this.mBackground.draw(this.mCamera);
     
     
     this.mAllObjs.draw(this.mCamera);
@@ -162,6 +168,8 @@ AsteroidScene.prototype.increasShapeSize = function(obj, delta) {
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 AsteroidScene.kBoundDelta = 0.1;
+
+
 AsteroidScene.prototype.update = function () {
     var msg = "";   
     this.mHero.update();
@@ -237,6 +245,30 @@ AsteroidScene.prototype.update = function () {
         this.generate();
         this.genTimer=0;
     }
+    
+    
+    
+    
+    
+    //test for terminated objects
+    var WB = [this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight];
+    //var i =0;
+    //console.log(this.mAllObjs.length);
+    for (var i = 0; i < this.mAllObjs.size(); i++) {
+        var obj = this.mAllObjs[i];
+        
+        if(obj instanceof Projectile){
+
+            obj.testTerminated(WB);
+
+            if (obj.terminated){
+                this.mAllObjs.removeFromSet(obj);
+                console.log("removed object");
+            }
+        }
+    
+    }
+    
     
 };
 
