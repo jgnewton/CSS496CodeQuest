@@ -32,6 +32,9 @@ function MyGame() {
     
     this.mCurrentObj = 0;
     this.mTarget = null;
+    
+    this.zones=[];
+    this.nextScene=0;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -53,8 +56,22 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kForest);
     gEngine.Textures.unloadTexture(this.kEarth); 
     
-    var AS = new AsteroidScene();
-    gEngine.Core.startScene(AS);  
+    var SceneObject = new AsteroidScene();
+    
+    if(this.nextScene==0){
+        var SceneObject = new MyGame();
+    }
+    
+    else if(this.nextScene==1){
+        var SceneObject = new AsteroidScene();
+    }
+    
+    else if(this.nextScene==2){
+        var SceneObject = new MyGame();
+    }
+    
+    
+    gEngine.Core.startScene(SceneObject);  
         
 };
 
@@ -73,6 +90,9 @@ MyGame.prototype.initialize = function () {
     this.mAllObjs = new GameObjectSet();   
     this.mAllObjs.addToSet(this.mHero);
 
+    this.sz1 = new SceneZone(this.kMinionSprite,0,0);
+    this.sz1.scene
+    this.mAllObjs.addToSet(this.sz1);
 
     this.mMsg = new FontRenderable("MyGame Scene1 (World View)");
     this.mMsg.setColor([0, 0, 0, 1]);
@@ -94,6 +114,9 @@ MyGame.prototype.initialize = function () {
     bxf.setHeight(500);
     
     this.setCameraFollowTarget(this.mHero);
+    
+    this.zones=[];
+    this.zones.push(this.sz1);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -140,5 +163,18 @@ MyGame.prototype.update = function () {
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
     }
-
+    
+    this.checkZones();
 };
+
+
+//go through all zones and check to see if the hero is currently colliding with their
+//bounding boxes
+MyGame.prototype.checkZones = function () {
+    for(var i =0; i< this.zones.length;i++){
+        if(this.zones[i].checkCollision(this.mHero)){
+            this.nextScene=this.zones[i].sceneNumber;
+            gEngine.GameLoop.stop();
+        }
+    }
+}

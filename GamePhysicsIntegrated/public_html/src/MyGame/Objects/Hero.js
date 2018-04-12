@@ -19,6 +19,7 @@ function Hero(spriteTexture) {
     this.mDye.getXform().setPosition(50, 40);
     this.mDye.getXform().setSize(16, 18);
     this.mDye.setElementPixelPositions(0, 120, 0, 180);
+    
     GameObject.call(this, this.mDye);
     
     
