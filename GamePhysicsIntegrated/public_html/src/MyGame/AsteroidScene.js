@@ -59,8 +59,13 @@ function AsteroidScene() {
     
     this.maxType=4;
     
-    this.nextMarkX=-140;
-    this.nextMarkY=109.5;
+    //this.WCCenterX - (this.WCWidth / 2) + 5
+    // this.WCCenterY - (this.WCHeight / 2) + 5
+    //this.nextMarkX=-140;
+    //this.nextMarkY=109.5;
+    
+    this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 5;
+    this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 5;
     
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
@@ -288,6 +293,12 @@ AsteroidScene.prototype.update = function () {
             }
         }  
     }
+    
+    //console.log(this.nextMarkX);
+    if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + 5 + 50){
+        this.nextMarkY -= 5;
+        this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 5;
+    }
        
 };
 
@@ -325,7 +336,7 @@ AsteroidScene.prototype.generateProjectile = function () {
         var rot = hxf.getRotationInRad();
         
         //create new projectile
-        console.log("selection"+this.selection);
+        //console.log("selection"+this.selection);
         var p = new Projectile(this.kPlatformTexture, xp, yp, false, this.selection);
         
         //setting projectile velocity

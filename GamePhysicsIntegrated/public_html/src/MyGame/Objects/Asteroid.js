@@ -85,7 +85,7 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     
     rn=rn.toFixed(2);
     
-    console.log(this.dataType);
+    //console.log(this.dataType);
     
     if(this.dataType == 0){
         rn = Math.floor(rn);
