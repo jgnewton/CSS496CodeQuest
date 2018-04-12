@@ -43,11 +43,11 @@ Hero.prototype.aimShoot = function () {
     var xform = this.getXform();
     
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
-        xform.incRotationByDegree(1);       
+        xform.incRotationByDegree(1.5);       
     }
     
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
-        xform.incRotationByDegree(-1);    
+        xform.incRotationByDegree(-1.5);    
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {

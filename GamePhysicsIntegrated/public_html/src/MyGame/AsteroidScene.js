@@ -19,7 +19,7 @@ function AsteroidScene() {
     this.kForest = "assets/Forest2.png";
     this.kEarth = "assets/Earth.png";
     this.kMW = "assets/MW2.jpg";
-    
+    this.scoreMarks = "assets/scoreMarks.png"
     // The camera to view the scene
     this.mCamera = null;
 
@@ -59,6 +59,9 @@ function AsteroidScene() {
     
     this.maxType=4;
     
+    this.nextMarkX=-140;
+    this.nextMarkY=109.5;
+    
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -71,6 +74,7 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kForest);
     gEngine.Textures.loadTexture(this.kEarth);
     gEngine.Textures.loadTexture(this.kMW); 
+    gEngine.Textures.loadTexture(this.scoreMarks); 
 };
 
 AsteroidScene.prototype.unloadScene = function () {
@@ -81,6 +85,7 @@ AsteroidScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kForest);
     gEngine.Textures.unloadTexture(this.kEarth);
     gEngine.Textures.unloadTexture(this.kMW); 
+    gEngine.Textures.unloadTexture(this.scoreMarks); 
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -137,6 +142,8 @@ AsteroidScene.prototype.initialize = function () {
     bxf.setWidth(500);
     bxf.setHeight(500);
     
+    //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, -140, 109.5, true)); 
+    //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, -135, 109.5, false));
     //this.setCameraFollowTarget(this.mHero);
 };
 
@@ -174,7 +181,7 @@ AsteroidScene.kBoundDelta = 0.1;
 
 
 AsteroidScene.prototype.update = function () {
-    
+    var WB = [this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight];
 
     //this.mHero.aimShoot();
     
@@ -183,7 +190,22 @@ AsteroidScene.prototype.update = function () {
         var obj = this.mAllObjs.getObjectAt(i);
         if(obj instanceof Asteroid ){
             //give asteroids list of all objects
-            obj.update(this.mAllObjs);
+            var hit = obj.update(this.mAllObjs);
+        
+        
+            if(hit ==1){
+                //, this.nextMarkX, this.nextMarkY
+                this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, true));
+                this.nextMarkX += 5;
+                this.mAllObjs.removeFromSet(obj);
+            }
+            
+            else if(hit==2){
+                this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
+                this.nextMarkX += 5;
+                this.mAllObjs.removeFromSet(obj);
+            }
+        
         }
         else{
             obj.update();
@@ -239,14 +261,14 @@ AsteroidScene.prototype.update = function () {
     
     //updating the generating of asteroids
     this.genTimer++;
-    if(this.genTimer>=100){
+    if(this.genTimer>=350){
         this.generateAsteroid();
         this.genTimer=0;
     }
     
     
     //test for terminated objects
-    var WB = [this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight];
+    
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
        // console.log(obj);
@@ -254,6 +276,12 @@ AsteroidScene.prototype.update = function () {
         if(obj.mortal){
             //console.log("Projectile Found");
             obj.testTerminated(WB);
+            
+            if(obj instanceof Asteroid && obj.terminated){
+                this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
+                this.nextMarkX += 5;
+                this.mAllObjs.removeFromSet(obj);
+            }
 
             if (obj.terminated){
                 this.mAllObjs.removeFromSet(obj);
@@ -267,7 +295,7 @@ AsteroidScene.prototype.update = function () {
 //random asteroid generation
 AsteroidScene.prototype.generateAsteroid = function () {
        
-    var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*this.WCWidth;
+    var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
     var yl = 60;
     
     var type=0;
@@ -277,7 +305,7 @@ AsteroidScene.prototype.generateAsteroid = function () {
     var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl, false, type);
     
     //drop speed
-    Asteroid1.yv=-10;
+    Asteroid1.yv=-7;
     
     this.mAllObjs.addToSet(Asteroid1);    
 };
