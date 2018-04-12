@@ -85,7 +85,7 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     
     rn=rn.toFixed(2);
     
-    console.log(this.dataType);
+    //console.log(this.dataType);
     
     if(this.dataType == 0){
         rn = Math.floor(rn);
@@ -135,6 +135,10 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
 gEngine.Core.inheritPrototype(Asteroid, GameObject);
 
 Asteroid.prototype.update = function (projectileList) {
+    var status = 0;
+    // 0 = no hit
+    // 1 = good hit
+    // 2 = bad hit
     GameObject.prototype.update.call(this);
     // remember to update this.mMinion's animation
     this.mMinion.updateAnimation();
@@ -162,18 +166,25 @@ Asteroid.prototype.update = function (projectileList) {
 
                 if(this.dataType==obj.dataType){
                     this.hit(obj);
+                    status=1;
                 }
                 else{
-                    this.falseHit();
+                    this.falseHit(obj);
+                    status=2;
                 }
-                    obj.terminate();
+                
+                
+                obj.terminate();
              }
         }
-    
-    
     }
     
-    
+    /*
+    if(this.testTerminated(WB)){
+        status = 2;
+    } 
+    */
+    return status;
 };
 
 
@@ -197,8 +208,11 @@ Asteroid.prototype.testTerminated = function (WB) {
    
    if(xf.getXPos()>xc+w/2 || xf.getXPos()<xc-w/2 || 
            xf.getYPos()>yc+h/2 || xf.getYPos()<yc-h/2 ){
+       
        this.terminate();
+       //return true;
    }
+   //return false;
 }
 
 Asteroid.prototype.terminate = function () {
@@ -206,14 +220,17 @@ Asteroid.prototype.terminate = function () {
 }
 
 Asteroid.prototype.hit = function (projectile) {
-    console.log("Hit!");
+    //console.log("Hit!");
     this.mMinion.setColor([1, 0, 0, 1]);
+    //scoreMark
+   // scoreMark.draw(aCamera)
     this.terminate();
 }
 
 Asteroid.prototype.falseHit = function (projectile) {
-    console.log("False Hit");
+    //console.log("False Hit");
     this.mMinion.setColor([1, 1, 1, 1]);
+    this.terminate();
 }
 
 
