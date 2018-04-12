@@ -37,7 +37,7 @@ function AsteroidScene() {
     
     // Setting up ray selection logic
     this.minselect=0;
-    this.maxselect=10;
+    this.maxselect=4;
     
     this.selection=0;
      
@@ -56,6 +56,9 @@ function AsteroidScene() {
     this.WCCenterX=0;
     //y coord
     this.WCCenterY=0;
+    
+    this.maxType=4;
+    
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -110,9 +113,9 @@ AsteroidScene.prototype.initialize = function () {
     this.mAsteroid1 = new Asteroid(this.kMinionSprite, 50, 40);
     this.mAllObjs.addToSet(this.mAsteroid1);
     
-    this.mtestProj = new Projectile(this.kPlatformTexture, 55,45);
-    this.mtestProj.mRigidBody.setVelocity(1,1);
-    this.mAllObjs.addToSet(this.mtestProj);
+    //this.mtestProj = new Projectile(this.kPlatformTexture, 55,45);
+    //this.mtestProj.mRigidBody.setVelocity(1,1);
+    //this.mAllObjs.addToSet(this.mtestProj);
 
 
     this.mMsg = new FontRenderable("Asteroid Scene");
@@ -171,20 +174,28 @@ AsteroidScene.kBoundDelta = 0.1;
 
 
 AsteroidScene.prototype.update = function () {
-    var msg = "";   
-    this.mHero.update();
     
-    //this.mHero.keyControl();
-    this.mHero.AsteroidControl();
+
+    //this.mHero.aimShoot();
     
-    this.mAllObjs.update(this.mCamera);
+    //manually update all objects in the set
+    for (var i = 0; i < this.mAllObjs.size(); i++) {
+        var obj = this.mAllObjs.getObjectAt(i);
+        if(obj instanceof Asteroid ){
+            //give asteroids list of all objects
+            obj.update(this.mAllObjs);
+        }
+        else{
+            obj.update();
+        }
+            
+    }
     //this.updateCamera();
     
     //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
     }
-    
     
     //selecting Ray type:
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) {
@@ -204,10 +215,77 @@ AsteroidScene.prototype.update = function () {
     }    
     
     //debuggin messages
-    this.mShapeMsg.setText("Rotation: "+ Math.floor(this.mHero.getXform().getRotationInDegree())+"Current Selection : "+this.selection);
+    var selection = "";
+    if(this.selection==0){
+        selection = "Integer";
+    }
+        if(this.selection==1){
+        selection = "Double";
+    }
+        if(this.selection==2){
+        selection = "Boolean";
+    }
+        if(this.selection==3){
+        selection = "Char";
+    }
+        if(this.selection==4){
+        selection = "String";
+    }
+    this.mShapeMsg.setText("Current Selection : "+selection);  
+    
+    this.generateProjectile();
+    
+    //updating projectiles (object) set
+    
+    //updating the generating of asteroids
+    this.genTimer++;
+    if(this.genTimer>=100){
+        this.generateAsteroid();
+        this.genTimer=0;
+    }
     
     
-    //checking for Hero Firing
+    //test for terminated objects
+    var WB = [this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight];
+    for (var i = 0; i < this.mAllObjs.size(); i++) {
+        var obj = this.mAllObjs.getObjectAt(i);
+       // console.log(obj);
+        
+        if(obj.mortal){
+            //console.log("Projectile Found");
+            obj.testTerminated(WB);
+
+            if (obj.terminated){
+                this.mAllObjs.removeFromSet(obj);
+            }
+        }  
+    }
+       
+};
+
+
+//random asteroid generation
+AsteroidScene.prototype.generateAsteroid = function () {
+       
+    var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*this.WCWidth;
+    var yl = 60;
+    
+    var type=0;
+    
+    type = Math.round(Math.random()*this.maxType);  
+    
+    var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl, false, type);
+    
+    //drop speed
+    Asteroid1.yv=-10;
+    
+    this.mAllObjs.addToSet(Asteroid1);    
+};
+
+
+//generating projectiles
+AsteroidScene.prototype.generateProjectile = function () {
+//checking for Hero Firing to see if a Projectile should be created
     if(this.mHero.firing){
         
         //get hero state info
@@ -219,10 +297,11 @@ AsteroidScene.prototype.update = function () {
         var rot = hxf.getRotationInRad();
         
         //create new projectile
-        var p = new Projectile(this.kPlatformTexture, xp, yp);
+        console.log("selection"+this.selection);
+        var p = new Projectile(this.kPlatformTexture, xp, yp, false, this.selection);
         
         //setting projectile velocity
-        this.maxV=50;
+        this.maxV=100;
         
         var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
         var yv = this.maxV*Math.cos(rot);
@@ -235,55 +314,5 @@ AsteroidScene.prototype.update = function () {
         
         // allow hero to fire again
         this.mHero.firing=false;
-    }
-    
-    //updating projectiles (object) set
-    
-    //updating the generating of asteroids
-    this.genTimer++;
-    if(this.genTimer>=120){
-        this.generate();
-        this.genTimer=0;
-    }
-    
-    
-    
-    
-    
-    //test for terminated objects
-    var WB = [this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight];
-    //var i =0;
-    //console.log(this.mAllObjs.length);
-    for (var i = 0; i < this.mAllObjs.size(); i++) {
-        var obj = this.mAllObjs[i];
-        
-        if(obj instanceof Projectile){
-
-            obj.testTerminated(WB);
-
-            if (obj.terminated){
-                this.mAllObjs.removeFromSet(obj);
-                console.log("removed object");
-            }
-        }
-    
-    }
-    
-    
-};
-
-
-//random asteroid generation
-AsteroidScene.prototype.generate = function () {
-    
-    
-    var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*this.WCWidth;
-    var yl = 60;
-    
-    var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl);
-    
-    //drop speed
-    Asteroid1.yv=-10;
-    
-    this.mAllObjs.addToSet(Asteroid1);    
-};
+    }    
+}

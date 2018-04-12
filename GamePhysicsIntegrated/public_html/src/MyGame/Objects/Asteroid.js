@@ -15,7 +15,7 @@ var kMinionWidth = 6*0.5;
 var kMinionHeight = 4.8*0.5;
 var kMinionRandomSize = 5;
 
-function Asteroid(spriteTexture, atX, atY, createCircle) {
+function Asteroid(spriteTexture, atX, atY, createCircle, type) {
         
     var w = kMinionWidth + Math.random() * kMinionRandomSize;
     var h = kMinionHeight + Math.random() * kMinionRandomSize;
@@ -52,8 +52,22 @@ function Asteroid(spriteTexture, atX, atY, createCircle) {
     //this.mRigidBody.mInvMass=0;
     
     
-    this.dataType=1;
+    this.dataType=type;
     /*
+     * 
+     * int=0
+     * double=1
+     * boolean=2
+     * Char=3
+     * string=4
+     * 
+     * 
+     * void=5
+     * 
+     * 
+     * 
+     * 
+     * 
      *  1. boolean	true or false	false	1 bit	true, false
         2. byte	twos complement integer	0	8 bits	(none)
         3. char	Unicode character	\u0000	16 bits	'a', '\u0041', '\101', '\\', '\'', '\n', 'ß'
@@ -64,18 +78,63 @@ function Asteroid(spriteTexture, atX, atY, createCircle) {
         8. double	IEEE 754 floating point	0.0	64 bits	1.23456e300d, -1.23456e-300d, 1e1d
     */
     
-    this.text = new FontRenderable("Data Type Filler MSG");
+    //this will contain the random message to represent the data type;
+    var msg="";
+    
+    var rn = Math.random()*200 -100;
+    
+    rn=rn.toFixed(2);
+    
+    console.log(this.dataType);
+    
+    if(this.dataType == 0){
+        rn = Math.floor(rn);
+    }
+    
+    if(this.dataType == 2){
+        
+        var rn2 = Math.random();
+        
+        var bool="False"; 
+        if(rn2>.5){
+            bool="True";
+        }
+        rn = bool;
+    }
+    
+    if(this.dataType ==3 ){
+        
+        var arm = 33 + Math.round(93*Math.random());
+        
+        rn = "\'"+String.fromCharCode(arm)+"\'";
+    }
+    
+    
+    
+    if(this.dataType == 4){
+      rn = this.randString();  
+    }
+
+    
+    
+    msg = rn.toString();
+    
+    
+    this.text = new FontRenderable(msg);
     this.text.setColor([0, 0, 0, 1]);
     this.text.getXform().setPosition(5, 73);
-    this.text.setTextHeight(2.5);
+    this.text.setTextHeight(7.5);
     
     this.xv=0;
     this.yv=0;
     
+    this.mortal=true;
+    
+    this.bound = this.getBBox();
 }
 gEngine.Core.inheritPrototype(Asteroid, GameObject);
 
-Asteroid.prototype.update = function (aCamera) {
+Asteroid.prototype.update = function (projectileList) {
     GameObject.prototype.update.call(this);
     // remember to update this.mMinion's animation
     this.mMinion.updateAnimation();
@@ -89,7 +148,31 @@ Asteroid.prototype.update = function (aCamera) {
     var x = this.mMinion.getXform().getXPos();
     var y = this.mMinion.getXform().getYPos();
     this.text.getXform().setPosition(x, y);
+    
+    
+    this.bound=this.getBBox();
+    
+    for (var i = 0; i < projectileList.size(); i++) {
+        var obj = projectileList.getObjectAt(i);
+                
+        if(obj instanceof Projectile){
+             var projectileBound=obj.getBBox();
+             
+             if(this.bound.intersectsBound(projectileBound)!=0){
 
+                if(this.dataType==obj.dataType){
+                    this.hit(obj);
+                }
+                else{
+                    this.falseHit();
+                }
+                    obj.terminate();
+             }
+        }
+    
+    
+    }
+    
     
 };
 
@@ -103,3 +186,53 @@ Asteroid.prototype.draw = function (aCamera) {
     }
     this.text.draw(aCamera);
 };
+
+Asteroid.prototype.testTerminated = function (WB) {
+   var xc = WB[0];
+   var yc = WB[1]; 
+   var w = WB[2]; 
+   var h = WB[3];
+   
+   var xf = this.getXform();
+   
+   if(xf.getXPos()>xc+w/2 || xf.getXPos()<xc-w/2 || 
+           xf.getYPos()>yc+h/2 || xf.getYPos()<yc-h/2 ){
+       this.terminate();
+   }
+}
+
+Asteroid.prototype.terminate = function () {
+    this.terminated=true;
+}
+
+Asteroid.prototype.hit = function (projectile) {
+    console.log("Hit!");
+    this.mMinion.setColor([1, 0, 0, 1]);
+    this.terminate();
+}
+
+Asteroid.prototype.falseHit = function (projectile) {
+    console.log("False Hit");
+    this.mMinion.setColor([1, 1, 1, 1]);
+}
+
+
+Asteroid.prototype.randString =function () {
+    
+    var lib =[ "\"one\"", "\"two\"","\"three\"","\"four\"","\"five\"","\"six\"",
+        "\"seven\"","\"eight\"","\"nine\"","\"zero\"",
+        "\"True\"","\"False\"","\"I am not a string\"", "\"this is an int\"", 
+        "\"I am a double\"", "\"I am a Boolean\"", "\"This is an array of chars\"", 
+        "\"This is a double: 9.99\"", "\"HI!\"", "\"I'm friendly\"",];
+    
+    
+    
+    var length = lib.length;
+    
+    var index = Math.round(Math.random()*length);
+    
+    return lib[index];
+        
+}
+
+

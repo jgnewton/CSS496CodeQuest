@@ -15,7 +15,7 @@ var kMinionWidth = 6*0.5;
 var kMinionHeight = 4.8*0.5;
 var kMinionRandomSize = 5;
 
-function Projectile(spriteTexture, atX, atY, createCircle) {
+function Projectile(spriteTexture, atX, atY, createCircle, type) {
         
     var w = kMinionWidth + Math.random() * kMinionRandomSize;
     var h = kMinionHeight + Math.random() * kMinionRandomSize;
@@ -48,13 +48,24 @@ function Projectile(spriteTexture, atX, atY, createCircle) {
     this.toggleDrawRigidShape();
     
     
-    this.dataType=1;
+    this.dataType=type;
 
+    if(type==0){
+        this.mMinion.setColor([1, 0, 0, 1]);   
+    }
+        if(type==1){
+        this.mMinion.setColor([1, 1, 0, 1]);   
+    }
+        if(type==2){
+        this.mMinion.setColor([0, 0, 1, 1]);   
+    }
+        if(type==3){
+        this.mMinion.setColor([1, 0, 1, 1]);   
+    }
+        if(type==4){
+        this.mMinion.setColor([0, 1, 1, 1]);   
+    }
     
-    this.text = new FontRenderable("Projectile Type Msg");
-    this.text.setColor([0, 0, 0, 1]);
-    this.text.getXform().setPosition(5, 73);
-    this.text.setTextHeight(2.5);
     
     //projectiles do not interact with physics... or gravity.
     // for now
@@ -67,7 +78,8 @@ function Projectile(spriteTexture, atX, atY, createCircle) {
     this.yv=0;
     
     //when to remove from set to reduce lag (or just not draw)
-    this.terminated=true;
+    this.terminated=false;
+    this.mortal=true;
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
@@ -86,9 +98,7 @@ Projectile.prototype.update = function () {
     this.mMinion.updateAnimation();
     var x = mxf.getXPos();
     var y = mxf.getYPos();
-    
-    this.text.getXform().setPosition(x, y);
-    
+        
     //check for being outside camera bounds
     
 };
@@ -115,6 +125,8 @@ Projectile.prototype.testTerminated = function (WB) {
    var h = WB[3];
    
    var xf = this.getXform();
+   
+   //console.log("testing");
    
    if(xf.getXPos()>xc+w/2 || xf.getXPos()<xc-w/2 || 
            xf.getYPos()>yc+h/2 || xf.getYPos()<yc-h/2 ){

@@ -35,10 +35,11 @@ gEngine.Core.inheritPrototype(Hero, WASDObj);
 
 Hero.prototype.update = function () {
     GameObject.prototype.update.call(this);
+    this.aimShoot();
     
 }
     
-Hero.prototype.AsteroidControl = function () {
+Hero.prototype.aimShoot = function () {
     var xform = this.getXform();
     
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
