@@ -23,7 +23,7 @@ function AsteroidScene() {
     // The camera to view the scene
     this.mCamera = null;
 
-    this.mMsg = null;
+    //this.mMsg = null;
     this.mShapeMsg = null;
 
     this.mAllObjs = null;
@@ -64,8 +64,8 @@ function AsteroidScene() {
     //this.nextMarkX=-140;
     //this.nextMarkY=109.5;
     
-    this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 5;
-    this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 5;
+    this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 10;
+    this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 10;
     
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
@@ -120,19 +120,21 @@ AsteroidScene.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.mHero);
     
     //create minion 
-    this.mAsteroid1 = new Asteroid(this.kMinionSprite, 50, 40);
-    this.mAllObjs.addToSet(this.mAsteroid1);
+    //this.mAsteroid1 = new Asteroid(this.kMinionSprite, 50, 40);
+    //this.mAllObjs.addToSet(this.mAsteroid1);
     
     //this.mtestProj = new Projectile(this.kPlatformTexture, 55,45);
     //this.mtestProj.mRigidBody.setVelocity(1,1);
     //this.mAllObjs.addToSet(this.mtestProj);
 
 
+/*
     this.mMsg = new FontRenderable("Asteroid Scene");
     this.mMsg.setColor([0, 0, 0, 1]);
     this.mMsg.getXform().setPosition(5, 7);
     this.mMsg.setTextHeight(3);
-    
+    */
+   
     this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
     this.mShapeMsg.setColor([0, 0, 0, 1]);
     this.mShapeMsg.getXform().setPosition(this.WCCenterX-this.WCWidth/2, this.WCCenterY-80);
@@ -170,7 +172,7 @@ AsteroidScene.prototype.draw = function () {
         this.mCollisionInfos[i].draw(this.mCamera); */
     this.mCollisionInfos = []; 
     
-    this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+    //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     this.mShapeMsg.draw(this.mCamera);
 
 };
@@ -201,13 +203,13 @@ AsteroidScene.prototype.update = function () {
             if(hit ==1){
                 //, this.nextMarkX, this.nextMarkY
                 this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, true));
-                this.nextMarkX += 5;
+                this.nextMarkX += 10;
                 this.mAllObjs.removeFromSet(obj);
             }
             
             else if(hit==2){
                 this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
-                this.nextMarkX += 5;
+                this.nextMarkX += 10;
                 this.mAllObjs.removeFromSet(obj);
             }
         
@@ -284,7 +286,7 @@ AsteroidScene.prototype.update = function () {
             
             if(obj instanceof Asteroid && obj.terminated){
                 this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
-                this.nextMarkX += 5;
+                this.nextMarkX += 10;
                 this.mAllObjs.removeFromSet(obj);
             }
 
@@ -295,9 +297,9 @@ AsteroidScene.prototype.update = function () {
     }
     
     //console.log(this.nextMarkX);
-    if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + 5 + 50){
-        this.nextMarkY -= 5;
-        this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 5;
+    if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + 10 + 100){
+        this.nextMarkY -= 10;
+        this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 10;
     }
        
 };

@@ -16,7 +16,7 @@ function ScoreMark(spriteTexture, atX, atY, correct) {
     this.mMinion = new SpriteRenderable(spriteTexture);
     //this.mMinion.setColor([1, 1, 1, 0]);
     this.mMinion.getXform().setPosition(atX, atY); 
-    this.mMinion.getXform().setSize(4,4);
+    this.mMinion.getXform().setSize(8,8);
     
     if(correct){
         //left, right, top, bottom
