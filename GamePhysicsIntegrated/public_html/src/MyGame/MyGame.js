@@ -91,8 +91,12 @@ MyGame.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.mHero);
 
     this.sz1 = new SceneZone(this.kMinionSprite,0,0);
-    this.sz1.scene
+    this.sz1.scene=1;
     this.mAllObjs.addToSet(this.sz1);
+    
+    this.mHelper = new Helper(this.kMinionSprite);
+    this.mAllObjs.addToSet(this.mHelper);
+    
 
     this.mMsg = new FontRenderable("MyGame Scene1 (World View)");
     this.mMsg.setColor([0, 0, 0, 1]);
@@ -153,6 +157,10 @@ MyGame.kBoundDelta = 0.1;
 MyGame.prototype.update = function () {
     var msg = "";   
     this.mHero.update();
+    
+    this.mHelper.follow(this.mHero);
+    
+    
     this.mHero.keyControl();
     
     this.mAllObjs.update(this.mCamera);

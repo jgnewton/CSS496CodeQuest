@@ -28,6 +28,7 @@ function SceneZone(spriteTexture, atX, atY) {
     
     GameObject.call(this, this.mDye);
     
+    this.scene=0; //which scene to go to
     
 }
 gEngine.Core.inheritPrototype(SceneZone, GameObject);
