@@ -15,10 +15,10 @@ var kMinionWidth = 6*0.5;
 var kMinionHeight = 4.8*0.5;
 var kMinionRandomSize = 5;
 
-function Projectile(spriteTexture, atX, atY, createCircle, type) {
+function Projectile(spriteTexture, atX, atY, width, height, createCircle, type) {
         
-    var w = kMinionWidth + Math.random() * kMinionRandomSize;
-    var h = kMinionHeight + Math.random() * kMinionRandomSize;
+    var w = width;
+    var h = height;
     
     this.mMinion = new SpriteAnimateRenderable(spriteTexture);
     this.mMinion.setColor([1, 1, 1, 0]);
@@ -80,6 +80,7 @@ function Projectile(spriteTexture, atX, atY, createCircle, type) {
     //when to remove from set to reduce lag (or just not draw)
     this.terminated=false;
     this.mortal=true;
+    this.lifeTime=999999;
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
@@ -100,23 +101,27 @@ Projectile.prototype.update = function () {
     var y = mxf.getYPos();
         
     //check for being outside camera bounds
-    
+    this.lifeTime--;
 };
 
 
 Projectile.prototype.draw = function (aCamera) {
     if (this.isVisible()) {
-        if (this.mDrawRenderable)
+        
+        if (this.mDrawRenderable){
             this.mRenderComponent.draw(aCamera);
-        if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
-            this.mRigidBody.draw(aCamera);
+        }
+        
+        if ((this.mRigidBody !== null) && (this.mDrawRigidShape)){
+            //this.mRigidBody.draw(aCamera);
+        }
     }
     //this.text.draw(aCamera);
 };
 
 Projectile.prototype.terminate = function () {
     this.terminated=true;
-}
+};
 
 Projectile.prototype.testTerminated = function (WB) {
    var xc = WB[0];
@@ -132,4 +137,8 @@ Projectile.prototype.testTerminated = function (WB) {
            xf.getYPos()>yc+h/2 || xf.getYPos()<yc-h/2 ){
        this.terminate();
    }
-}
+   
+   if(this.lifeTime<=0){
+       this.terminate();
+   }
+};

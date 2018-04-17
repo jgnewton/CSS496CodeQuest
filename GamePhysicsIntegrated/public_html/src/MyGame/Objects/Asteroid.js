@@ -11,14 +11,14 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-var kMinionWidth = 6*0.5;
-var kMinionHeight = 4.8*0.5;
-var kMinionRandomSize = 5;
+var kMinionWidth = 10;
+var kMinionHeight = 10;
+var kMinionRandomSize = 0;
 
 function Asteroid(spriteTexture, atX, atY, createCircle, type) {
         
-    var w = kMinionWidth + Math.random() * kMinionRandomSize;
-    var h = kMinionHeight + Math.random() * kMinionRandomSize;
+    var w = 25;
+    var h = 25;
     
     this.mMinion = new SpriteAnimateRenderable(spriteTexture);
     this.mMinion.setColor([1, 1, 1, 0]);

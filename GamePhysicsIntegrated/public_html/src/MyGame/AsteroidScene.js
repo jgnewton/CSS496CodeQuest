@@ -67,6 +67,7 @@ function AsteroidScene() {
     this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 10;
     this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 10;
     
+    this.raycast=true;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -301,7 +302,8 @@ AsteroidScene.prototype.update = function () {
         this.nextMarkY -= 10;
         this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 10;
     }
-       
+    
+    this.rayCast();
 };
 
 
@@ -337,15 +339,35 @@ AsteroidScene.prototype.generateProjectile = function () {
         //get in radians for Math javascript func
         var rot = hxf.getRotationInRad();
         
+        var w = 200;
+        var h = 200;
         //create new projectile
         //console.log("selection"+this.selection);
-        var p = new Projectile(this.kPlatformTexture, xp, yp, false, this.selection);
+        var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selection);
         
         //setting projectile velocity
         this.maxV=100;
         
+        if(this.raycast){
+            this.maxV=0;
+            p.getXform().setRotationInRad(rot);
+            
+            p.getXform().setSize(10,2000);
+            
+            this.rayDataType=this.selection;
+            
+            //p.mMinion.getXform().setSize(2, 100);
+            
+           // p.mRigidBody.mWidth=2;
+            //p.mRigidBody.mHeight=100;
+            
+            p.lifeTime=130;
+        }
+        
         var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
         var yv = this.maxV*Math.cos(rot);
+        
+        this.raym = Math.tan(rot);
        
         p.xv=xv;
         p.yv=yv;
@@ -356,4 +378,29 @@ AsteroidScene.prototype.generateProjectile = function () {
         // allow hero to fire again
         this.mHero.firing=false;
     }    
+}
+
+AsteroidScene.prototype.rayCast = function () {
+  
+  
+    for (var i = 0; i < this.mAllObjs.size(); i++) {
+      
+        var ast= this.mAllObjs.getObjectAt(i);
+        
+        var axf = ast.getXform();
+        
+        var x = axf.getXPos();
+        var y = axf.getYPos();
+        
+        if(y == this.raym*x ){
+            
+            if(ast.dataType== this.rayDataType){
+                ast.hit();
+            }
+            else{
+                ast.falseHit();
+            }
+        }
+  }
+    
 }

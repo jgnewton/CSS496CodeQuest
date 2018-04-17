@@ -32,7 +32,8 @@ function Helper(spriteTexture) {
     this.mRigidBody.mInvMass=0;
     this.firing=false;
     
-    this.mInterpolate = new Interpolate();
+    this.mInterpolate = new Interpolate(0,60,.1);
+    this.mInterpolatey = new Interpolate(0,60,.1);
 }
 gEngine.Core.inheritPrototype(Helper, WASDObj);
 
@@ -49,9 +50,19 @@ Helper.prototype.setTarget = function (obj) {
 Helper.prototype.follow = function (obj) {
     var xform = obj.getXform();
     var x = xform.getXPos();
-    this.mInterpolate.setFinalValue(x);
+    var y = xform.getYPos();
     
-    this.getXform().setXPos(x+10);
+    this.mInterpolate.setFinalValue(x);
+    this.mInterpolatey.setFinalValue(y);
+    
+    this.mInterpolate.updateInterpolation();
+    this.mInterpolatey.updateInterpolation();
+    
+    var nx = this.mInterpolate.getValue();
+    var ny = this.mInterpolatey.getValue();
+    
+    this.getXform().setXPos(nx-10);
+    this.getXform().setYPos(ny);
             
 };
 
