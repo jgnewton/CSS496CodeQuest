@@ -198,3 +198,7 @@ LessonScene.prototype.update = function () {
     
 };
 
+LessonScene.prototype.initLessonOne = function() {
+    
+    
+}
