@@ -198,16 +198,22 @@ AsteroidScene.prototype.update = function () {
                 //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
                 //this.nextMarkX += this.markOffset;
                 
-                this.incrementScore(true);
+                this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
             }
             
-            //var WB = 
+            // assteroids check collision with the ground instead of the world view
             obj.testTerminated(this.ground);
+            if (obj.terminated){
+                this.mAllObjs.removeFromSet(obj);
+            }
         
         }
         else if(obj instanceof Projectile){
             obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
+            if (obj.terminated){
+                this.mAllObjs.removeFromSet(obj);
+            }
         }
         else{
             obj.update();
@@ -216,17 +222,11 @@ AsteroidScene.prototype.update = function () {
 
 
 
-
+/*
 
         // test if the object should be terminated
         if(obj.mortal){
-            //console.log("Projectile Found");
-            //obj.testTerminated(WB);
-            
             if(obj instanceof Asteroid && obj.terminated){
-                //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
-                //this.nextMarkX += this.markOffset;
-                
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
             }
@@ -237,6 +237,7 @@ AsteroidScene.prototype.update = function () {
         }  
             
     }
+    */
     //this.updateCamera();
     
 
@@ -280,14 +281,14 @@ AsteroidScene.prototype.update = function () {
 
 AsteroidScene.prototype.incrementScore = function(hit){
     
-    this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, true));
+    this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
     this.nextMarkX += this.markOffset;
     
     if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
         this.nextMarkY -= this.markOffset;
         this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
     }
-}
+};
 
 AsteroidScene.prototype.processInput = function(){
         //debug Scene Change
@@ -325,7 +326,7 @@ AsteroidScene.prototype.processInput = function(){
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.generateProjectile 
     }
-}
+};
 
 
 //random asteroid generation
