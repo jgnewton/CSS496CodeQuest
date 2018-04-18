@@ -342,7 +342,7 @@ AsteroidScene.prototype.processInput = function(){
 AsteroidScene.prototype.generateAsteroid = function () {
        
     var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
-    var yl = 60;
+    var yl = 120;
     
     var type=0;
     
