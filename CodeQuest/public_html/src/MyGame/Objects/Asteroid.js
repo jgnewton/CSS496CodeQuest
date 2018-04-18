@@ -124,7 +124,7 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     
     this.text = new FontRenderable(msg);
     this.text.setColor([0, 0, 0, 1]);
-    this.text.getXform().setPosition(5, 73);
+    this.text.getXform().setPosition(200, 200);
     this.text.setTextHeight(7.5);
     
     this.xv=0;

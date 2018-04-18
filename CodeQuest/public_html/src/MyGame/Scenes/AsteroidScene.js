@@ -20,6 +20,7 @@ function AsteroidScene() {
     this.kEarth = "assets/Earth.png";
     this.kMW = "assets/MW2.jpg";
     this.scoreMarks = "assets/scoreMarks.png"
+    this.kArrow = "assets/MenuSelectArrow.png";
     // The camera to view the scene
     this.mCamera = null;
 
@@ -39,7 +40,7 @@ function AsteroidScene() {
     this.minselect=0;
     this.maxselect=4;
     
-    this.selection=0;
+    //this.selection=0;
      
     this.genTimer=0;
     
@@ -71,6 +72,12 @@ function AsteroidScene() {
     this.raycast = false;
     
     this.ground = null;
+    
+    // elements is an array that holds all the text elements for the data ttype
+    // that the player can select from
+    this.elements = [];
+    this.selectedElement = null;
+    this.selectIndex = 0;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -84,6 +91,7 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kEarth);
     gEngine.Textures.loadTexture(this.kMW); 
     gEngine.Textures.loadTexture(this.scoreMarks); 
+    gEngine.Textures.loadTexture(this.kArrow); 
 };
 
 AsteroidScene.prototype.unloadScene = function () {
@@ -95,6 +103,7 @@ AsteroidScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kEarth);
     gEngine.Textures.unloadTexture(this.kMW); 
     gEngine.Textures.unloadTexture(this.scoreMarks); 
+    gEngine.Textures.unloadTexture(this.kArrow); 
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -126,19 +135,19 @@ AsteroidScene.prototype.initialize = function () {
     this.ground = new Renderable(gEngine.DefaultResources.getConstColorShader());
     this.ground.setColor([0, 1, 0, 1]);
     // bottom of the viewport = -WCHeight / 2
-    var groundHeight = this.WCHeight / 4.5;
-    this.ground.getXform().setPosition(0, -this.WCHeight / 2 + groundHeight / 2);
+    this.groundHeight = this.WCHeight / 4.5;
+    this.ground.getXform().setPosition(0, -this.WCHeight / 2 + this.groundHeight / 2);
     this.ground.getXform().setRotationInDegree(0); // In Degree
-    this.ground.getXform().setSize(this.WCWidth, groundHeight);
+    this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
     this.mAllObjs.addToSet(this.ground);
     
-   
+   /*
    // Selection message
     this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
     this.mShapeMsg.setColor([0, 0, 0, 1]);
     this.mShapeMsg.getXform().setPosition(this.WCCenterX-this.WCWidth/2, this.WCCenterY-80);
     this.mShapeMsg.setTextHeight(7.5);
-    
+    */
     
     // background init
     this.mBackground = new TextureRenderable(this.kMW);
@@ -147,6 +156,48 @@ AsteroidScene.prototype.initialize = function () {
     bxf.setPosition(50,40);
     bxf.setWidth(500);
     bxf.setHeight(500);
+    
+    /*
+     *     if(this.selection==0){
+        selection = "Integer";
+    }
+        if(this.selection==1){
+        selection = "Double";
+    }
+        if(this.selection==2){
+        selection = "Boolean";
+    }
+        if(this.selection==3){
+        selection = "Char";
+    }
+        if(this.selection==4){
+        selection = "String";
+    }
+     */
+    // initialize the text that represents data types
+    
+    var textSize = 5;
+    var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
+    var textXPos = 110;
+    var textOffset = 10;
+    this.intText = new MenuElement("Int", textXPos, textYpos + textOffset * 4, textSize);
+    this.doubleText = new MenuElement("Double", textXPos, textYpos + textOffset * 3, textSize);
+    this.boolText = new MenuElement("Boolean", textXPos, textYpos + textOffset * 2, textSize);
+    this.charText = new MenuElement("Char", textXPos, textYpos + textOffset, textSize);
+    this.stringText = new MenuElement("String", textXPos, textYpos, textSize);
+    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
+    
+    this.elements = [
+        this.intText,
+        this.doubleText,
+        this.boolText,
+        this.charText,
+        this.stringText
+    ];
+    
+    this.selectedElement = this.intText;
+    this.selectionArrow = new TextureRenderable(this.kArrow);
+    this.selectionArrow.getXform().setSize(3, 3);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -160,7 +211,15 @@ AsteroidScene.prototype.draw = function () {
     //this.mBackground.draw(this.mCamera);
     
     
+    
     this.mAllObjs.draw(this.mCamera);
+    
+    for(var i = 0; i < this.elements.length; i++){
+        //console.log(this.elements[i]);
+        this.elements[i].draw(this.mCamera);
+    }
+    
+    this.selectionArrow.draw(this.mCamera);
     
     // for now draw these ...
     /*for (var i = 0; i<this.mCollisionInfos.length; i++) 
@@ -168,7 +227,7 @@ AsteroidScene.prototype.draw = function () {
     this.mCollisionInfos = []; 
     
     //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
-    this.mShapeMsg.draw(this.mCamera);
+    //this.mShapeMsg.draw(this.mCamera);
 
 };
 
@@ -176,9 +235,11 @@ AsteroidScene.prototype.update = function () {
     this.processInput();
     this.updateObjects();
     
-    
+    //update selection arrow position
+    var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
+    this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
 
-    
+    /*
     //debuggin messages
     var selection = "";
     if(this.selection==0){
@@ -197,7 +258,7 @@ AsteroidScene.prototype.update = function () {
         selection = "String";
     }
     this.mShapeMsg.setText("Current Selection : "+selection);  
-    
+    */
     //this.generateProjectile();
     
     //updating projectiles (object) set
@@ -229,8 +290,11 @@ AsteroidScene.prototype.updateObjects = function(){
             
             // for some reason the Asteroid never collides with the ground... But
             // the intersectsBound call does happen and returns false
-            console.log(obj.bound.intersectsBound(this.ground.getBBox()));
-            if(obj.bound.intersectsBound(this.ground.getBBox())!= 0){
+            //console.log(obj.bound.intersectsBound(this.ground.getBBox()));
+            //if(obj.bound.intersectsBound(this.ground.getBBox())!= 0){
+            //var groundHeight = this.WCHeight / 4.5;
+            //this.ground.getXform().setPosition(0, -this.WCHeight / 2 + groundHeight / 2);
+            if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
                 console.log("asteroid collision with ground");
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
@@ -305,21 +369,22 @@ AsteroidScene.prototype.processInput = function(){
          gEngine.GameLoop.stop();  
     }
     
+  
+    
     //selecting Ray type:
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) {
-        this.selection--;
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
+            gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
         
-        if(this.selection<this.minselect){
-            this.selection = this.maxselect;
-        }
+        this.selectIndex--;
+        this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+        this.selectedElement = this.elements[this.selectIndex];
     }
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right)) {
-        this.selection++;
-        
-        if(this.selection>this.maxselect){
-            this.selection= this.minselect;
-        }
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
+            gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+        this.selectIndex++;
+        this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+        this.selectedElement = this.elements[this.selectIndex];
     }    
     
     var heroXF = this.mHero.getXform();
@@ -374,7 +439,7 @@ AsteroidScene.prototype.generateProjectile = function () {
         var h = 200;
         //create new projectile
         //console.log("selection"+this.selection);
-        var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selection);
+        var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
         
         //setting projectile velocity
         this.maxV=100;
@@ -385,7 +450,7 @@ AsteroidScene.prototype.generateProjectile = function () {
             
             p.getXform().setSize(10,2000);
             
-            this.rayDataType=this.selection;
+            this.rayDataType=this.selectIndex;
             
             //p.mMinion.getXform().setSize(2, 100);
             
