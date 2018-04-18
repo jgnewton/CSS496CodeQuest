@@ -67,7 +67,7 @@ function AsteroidScene() {
     this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 10;
     this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 10;
     
-    this.raycast=true;
+    this.raycast = false;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
