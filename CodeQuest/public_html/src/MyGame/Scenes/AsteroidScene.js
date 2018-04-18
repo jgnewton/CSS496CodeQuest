@@ -21,6 +21,7 @@ function AsteroidScene() {
     this.kMW = "assets/MW2.jpg";
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
+    this.helpTable = "assets/AsteroidHelp.PNG";
     // The camera to view the scene
     this.mCamera = null;
 
@@ -78,6 +79,8 @@ function AsteroidScene() {
     this.elements = [];
     this.selectedElement = null;
     this.selectIndex = 0;
+    this.helpTableObject = null;
+    this.helpTableVisible = false;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -92,6 +95,7 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMW); 
     gEngine.Textures.loadTexture(this.scoreMarks); 
     gEngine.Textures.loadTexture(this.kArrow); 
+    gEngine.Textures.loadTexture(this.helpTable); 
 };
 
 AsteroidScene.prototype.unloadScene = function () {
@@ -104,6 +108,7 @@ AsteroidScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMW); 
     gEngine.Textures.unloadTexture(this.scoreMarks); 
     gEngine.Textures.unloadTexture(this.kArrow); 
+    gEngine.Textures.unloadTexture(this.helpTable); 
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -198,6 +203,9 @@ AsteroidScene.prototype.initialize = function () {
     this.selectedElement = this.intText;
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
+    this.helpTableObject = new TextureRenderable(this.helpTable);
+    this.helpTableObject.getXform().setSize(180, 80);
+    
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -220,6 +228,11 @@ AsteroidScene.prototype.draw = function () {
     }
     
     this.selectionArrow.draw(this.mCamera);
+    
+    if (this.helpTableVisible)
+    {
+       this.helpTableObject.draw(this.mCamera);
+    }
     
     // for now draw these ...
     /*for (var i = 0; i<this.mCollisionInfos.length; i++) 
@@ -367,6 +380,14 @@ AsteroidScene.prototype.processInput = function(){
         //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
+    }
+    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.H)) {
+        this.helpTableVisible = true;
+    }
+    else
+    {
+        this.helpTableVisible = false;
     }
     
   
