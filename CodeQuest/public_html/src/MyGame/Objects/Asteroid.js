@@ -155,6 +155,7 @@ Asteroid.prototype.update = function () {
     var x = this.mMinion.getXform().getXPos();
     var y = this.mMinion.getXform().getYPos();
     this.text.getXform().setPosition(x, y);
+    this.bound = this.getBBox();
 };
 
 

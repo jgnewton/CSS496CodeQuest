@@ -44,7 +44,8 @@ function Projectile(spriteTexture, atX, atY, width, height, createCircle, type) 
     var speed = 20 + Math.random() * 10;
     r.setVelocity(vx * speed, vy * speed);
     this.setRigidBody(r);
-    //this.toggleDrawRenderable();
+    
+    this.toggleDrawRenderable();
     this.toggleDrawRigidShape();
     
     
@@ -106,14 +107,19 @@ Projectile.prototype.update = function () {
 
 
 Projectile.prototype.draw = function (aCamera) {
+    
+    
+            this.mRenderComponent.draw(aCamera);
+            this.mMinion.draw(aCamera);
     if (this.isVisible()) {
         
         if (this.mDrawRenderable){
             this.mRenderComponent.draw(aCamera);
+            this.mMinion.draw(aCamera);
         }
         
         if ((this.mRigidBody !== null) && (this.mDrawRigidShape)){
-            //this.mRigidBody.draw(aCamera);
+            this.mRigidBody.draw(aCamera);
         }
     }
     //this.text.draw(aCamera);

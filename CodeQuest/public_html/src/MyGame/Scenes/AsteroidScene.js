@@ -69,8 +69,6 @@ function AsteroidScene() {
     this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
     this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - this.markOffset;
     
-    this.raycast = false;
-    
     this.ground = null;
     
     // elements is an array that holds all the text elements for the data ttype
@@ -224,7 +222,7 @@ AsteroidScene.prototype.draw = function () {
     // for now draw these ...
     /*for (var i = 0; i<this.mCollisionInfos.length; i++) 
         this.mCollisionInfos[i].draw(this.mCamera); */
-    this.mCollisionInfos = []; 
+    //this.mCollisionInfos = []; 
     
     //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     //this.mShapeMsg.draw(this.mCamera);
@@ -272,6 +270,7 @@ AsteroidScene.prototype.update = function () {
 
     // don't call rayCast 60 times per second, should be called when pressing fire right?
     //this.rayCast();
+    
 };
 
 AsteroidScene.prototype.updateObjects = function(){
@@ -305,19 +304,20 @@ AsteroidScene.prototype.updateObjects = function(){
                 
                 var proj = this.mAllObjs.getObjectAt(j);
                 if(proj instanceof Projectile){
-                    
-                    
+                                       
                     var projectileBound = proj.getBBox();
-                    
-                    
+                                       
                     if(obj.bound.intersectsBound(projectileBound)!= 0){
                         if(obj.dataType == proj.dataType){
                             this.incrementScore(true);
                             this.mAllObjs.removeFromSet(obj);
+                            this.mAllObjs.removeFromSet(proj);
+                            
                         }
                         else{
                             this.incrementScore(false);
                             this.mAllObjs.removeFromSet(obj);
+                            this.mAllObjs.removeFromSet(proj);
                         }
                     }
                     
@@ -333,8 +333,7 @@ AsteroidScene.prototype.updateObjects = function(){
                 this.mAllObjs.removeFromSet(obj);
             }
             */
-           
-            
+                      
         
         }
         else if(obj instanceof Projectile){
@@ -352,7 +351,7 @@ AsteroidScene.prototype.updateObjects = function(){
 };
 
 AsteroidScene.prototype.incrementScore = function(hit){
-    console.log("score incremented");
+    //console.log("score incremented");
     this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
     this.nextMarkX += this.markOffset;
     
@@ -435,8 +434,8 @@ AsteroidScene.prototype.generateProjectile = function () {
         //get in radians for Math javascript func
         var rot = hxf.getRotationInRad();
         
-        var w = 200;
-        var h = 200;
+        var w = 10;
+        var h = 10;
         //create new projectile
         //console.log("selection"+this.selection);
         var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
@@ -444,26 +443,26 @@ AsteroidScene.prototype.generateProjectile = function () {
         //setting projectile velocity
         this.maxV=100;
         
-        if(this.raycast){
+        // if raycast
+        if(this.selectIndex==2){
             this.maxV=0;
             p.getXform().setRotationInRad(rot);
             
             p.getXform().setSize(10,2000);
-            
-            this.rayDataType=this.selectIndex;
-            
+                        
             //p.mMinion.getXform().setSize(2, 100);
             
            // p.mRigidBody.mWidth=2;
             //p.mRigidBody.mHeight=100;
             
             p.lifeTime=130;
+            
+            this.rayCast();
         }
         
         var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
         var yv = this.maxV*Math.cos(rot);
         
-        this.raym = Math.tan(rot);
        
         p.xv=xv;
         p.yv=yv;
@@ -476,6 +475,8 @@ AsteroidScene.prototype.generateProjectile = function () {
     //}    
 }
 
+
+//checking for raycast collisions
 AsteroidScene.prototype.rayCast = function () {
   
   
@@ -485,16 +486,31 @@ AsteroidScene.prototype.rayCast = function () {
         
         var axf = ast.getXform();
         
-        var x = axf.getXPos();
-        var y = axf.getYPos();
+        var astx = axf.getXPos();
+        var asty = axf.getYPos();
         
-        if(y == this.raym*x ){
+        //given asteroid x position, calculate where ray would intersect
+        var theta = this.mHero.getXform().getRotationInRad();
+        var y = astx/Math.tan(theta);
+        
+        console.log("asty "+asty+"  intersect y:" +y);
+        
+        var yhi= y +axf.getHeight()*.5;
+        var ylow = y-axf.getHeight()*.5;
+        
+        //check if intersection
+        if(asty>= ylow && asty <= yhi ){
             
-            if(ast.dataType== this.rayDataType){
-                ast.hit();
+            console.log("Ray Hit!");
+            //check if correct data types
+            if(ast.dataType == this.selectionIndex){
+                this.incrementScore(true);
+                this.mAllObjs.removeFromSet(ast);
+
             }
             else{
-                ast.falseHit();
+                this.incrementScore(false);
+                this.mAllObjs.removeFromSet(ast);
             }
         }
   }
