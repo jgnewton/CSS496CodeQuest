@@ -11,9 +11,11 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+/*
 var kMinionWidth = 10;
 var kMinionHeight = 10;
 var kMinionRandomSize = 0;
+*/
 
 function Asteroid(spriteTexture, atX, atY, createCircle, type) {
         
@@ -102,7 +104,7 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
         rn = bool;
     }
     
-    if(this.dataType ==3 ){
+    if(this.dataType == 3 ){
         
         var arm = 33 + Math.round(93*Math.random());
         
@@ -131,19 +133,20 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     this.mortal=true;
     
     this.bound = this.getBBox();
+    
 }
 gEngine.Core.inheritPrototype(Asteroid, GameObject);
 
-Asteroid.prototype.update = function (projectileList) {
-    var status = 0;
+Asteroid.prototype.update = function () {
+    //var status = 0;
     // 0 = no hit
     // 1 = good hit
     // 2 = bad hit
     GameObject.prototype.update.call(this);
-    // remember to update this.mMinion's animation
+    // remember to update this.mMinion' s animation
     this.mMinion.updateAnimation();
 
-    //his.getXform().incXPosBy(this.xv);
+    //this.getXform().incXPosBy(this.xv);
     //this.getXform().incYPosBy(this.yv);
     
     this.mRigidBody.setVelocity(this.xv,this.yv);
@@ -152,39 +155,6 @@ Asteroid.prototype.update = function (projectileList) {
     var x = this.mMinion.getXform().getXPos();
     var y = this.mMinion.getXform().getYPos();
     this.text.getXform().setPosition(x, y);
-    
-    
-    this.bound=this.getBBox();
-    
-    for (var i = 0; i < projectileList.size(); i++) {
-        var obj = projectileList.getObjectAt(i);
-                
-        if(obj instanceof Projectile){
-             var projectileBound=obj.getBBox();
-             
-             if(this.bound.intersectsBound(projectileBound)!=0){
-
-                if(this.dataType==obj.dataType){
-                    this.hit(obj);
-                    status=1;
-                }
-                else{
-                    this.falseHit(obj);
-                    status=2;
-                }
-                
-                
-                obj.terminate();
-             }
-        }
-    }
-    
-    /*
-    if(this.testTerminated(WB)){
-        status = 2;
-    } 
-    */
-    return status;
 };
 
 
@@ -198,37 +168,22 @@ Asteroid.prototype.draw = function (aCamera) {
     this.text.draw(aCamera);
 };
 
+/*
 Asteroid.prototype.testTerminated = function (ground) {
     // sick rhyme
     //console.log(ground);
     var groundBound = ground.getBBox();
     if(this.bound.intersectsBound(groundBound)!= 0){
-        this.terminate();
+        this.terminated = true;
     }
-    
-    
-    /*
-   var xc = WB[0];
-   var yc = WB[1]; 
-   var w = WB[2]; 
-   var h = WB[3];
-   
-   var xf = this.getXform();
-   
-   if(xf.getXPos()>xc+w/2 || xf.getXPos()<xc-w/2 || 
-           xf.getYPos()>yc+h/2 || xf.getYPos()<yc-h/2 ){
-       
-       this.terminate();
-       //return true;
-   }
-   
-   */
-   //return false;
 }
 
 Asteroid.prototype.terminate = function () {
     this.terminated=true;
 }
+*/
+
+/*
 
 Asteroid.prototype.hit = function (projectile) {
     //console.log("Hit!");
@@ -244,6 +199,7 @@ Asteroid.prototype.falseHit = function (projectile) {
     this.terminate();
 }
 
+*/
 
 Asteroid.prototype.randString =function () {
     

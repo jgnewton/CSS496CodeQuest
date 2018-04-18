@@ -174,71 +174,8 @@ AsteroidScene.prototype.draw = function () {
 
 AsteroidScene.prototype.update = function () {
     this.processInput();
+    this.updateObjects();
     
-    //manually update all objects in the set
-    for (var i = 0; i < this.mAllObjs.size(); i++) {
-        var obj = this.mAllObjs.getObjectAt(i);
-        
-        
-        if(obj instanceof Asteroid ){
-            //give asteroids list of all objects
-            var hit = obj.update(this.mAllObjs);
-        
-        
-            if(hit ==1){
-                //, this.nextMarkX, this.nextMarkY
-                //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, true));
-                //this.nextMarkX += this.markOffset;
-                
-                this.incrementScore(true);
-                this.mAllObjs.removeFromSet(obj);
-            }
-            
-            else if(hit==2){
-                //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
-                //this.nextMarkX += this.markOffset;
-                
-                this.incrementScore(false);
-                this.mAllObjs.removeFromSet(obj);
-            }
-            
-            // assteroids check collision with the ground instead of the world view
-            obj.testTerminated(this.ground);
-            if (obj.terminated){
-                this.mAllObjs.removeFromSet(obj);
-            }
-        
-        }
-        else if(obj instanceof Projectile){
-            obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
-            if (obj.terminated){
-                this.mAllObjs.removeFromSet(obj);
-            }
-        }
-        else{
-            obj.update();
-        }
-
-
-
-
-/*
-
-        // test if the object should be terminated
-        if(obj.mortal){
-            if(obj instanceof Asteroid && obj.terminated){
-                this.incrementScore(false);
-                this.mAllObjs.removeFromSet(obj);
-            }
-
-            if (obj.terminated){
-                this.mAllObjs.removeFromSet(obj);
-            }
-        }  
-            
-    }
-    */
-    //this.updateCamera();
     
 
     
@@ -271,19 +208,91 @@ AsteroidScene.prototype.update = function () {
         this.generateAsteroid();
         this.genTimer=0;
     }
-    
-    //console.log(this.nextMarkX);
-    
-    
+
     // don't call rayCast 60 times per second, should be called when pressing fire right?
     //this.rayCast();
 };
 
+AsteroidScene.prototype.updateObjects = function(){
+    //manually update all objects in the set
+    for (var i = 0; i < this.mAllObjs.size(); i++) {
+        var obj = this.mAllObjs.getObjectAt(i);
+        obj.update();
+        
+        
+        if(obj instanceof Asteroid ){
+            
+            //console.log(this.ground.getBBox());
+            //console.log(obj.bound);
+           
+            //var groundBound = ;
+            
+            // for some reason the Asteroid never collides with the ground... But
+            // the intersectsBound call does happen and returns false
+            console.log(obj.bound.intersectsBound(this.ground.getBBox()));
+            if(obj.bound.intersectsBound(this.ground.getBBox())!= 0){
+                console.log("asteroid collision with ground");
+                this.incrementScore(false);
+                this.mAllObjs.removeFromSet(obj);
+            }
+            
+            // check collision of this asteroid with all projectiles
+            for (var j = 0; j < this.mAllObjs.size(); j++) {
+                
+                var proj = this.mAllObjs.getObjectAt(j);
+                if(proj instanceof Projectile){
+                    
+                    
+                    var projectileBound = proj.getBBox();
+                    
+                    
+                    if(obj.bound.intersectsBound(projectileBound)!= 0){
+                        if(obj.dataType == proj.dataType){
+                            this.incrementScore(true);
+                            this.mAllObjs.removeFromSet(obj);
+                        }
+                        else{
+                            this.incrementScore(false);
+                            this.mAllObjs.removeFromSet(obj);
+                        }
+                    }
+                    
+                }
+            }
+            
+            /*
+            // assteroids check collision with the ground instead of the world view
+            obj.testTerminated(this.ground);
+            if (obj.terminated){
+                console.log(obj.terminated);
+                this.incrementScore(false);
+                this.mAllObjs.removeFromSet(obj);
+            }
+            */
+           
+            
+        
+        }
+        else if(obj instanceof Projectile){
+            obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
+            if (obj.terminated){
+                this.mAllObjs.removeFromSet(obj);
+            }
+        }
+        /*
+        else{
+            obj.update();
+        }
+        */
+    }
+};
+
 AsteroidScene.prototype.incrementScore = function(hit){
-    
+    console.log("score incremented");
     this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
     this.nextMarkX += this.markOffset;
     
+    // check if y needs to be incremented and x reset
     if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
         this.nextMarkY -= this.markOffset;
         this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
@@ -324,7 +333,7 @@ AsteroidScene.prototype.processInput = function(){
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-        this.generateProjectile 
+        this.generateProjectile();
     }
 };
 

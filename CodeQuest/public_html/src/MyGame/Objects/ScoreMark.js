@@ -30,7 +30,7 @@ function ScoreMark(spriteTexture, atX, atY, correct) {
 }
 gEngine.Core.inheritPrototype(ScoreMark, GameObject);
 
-ScoreMark.prototype.update = function (aCamera) {
+ScoreMark.prototype.update = function () {
     GameObject.prototype.update.call(this);
 };
 
