@@ -200,7 +200,7 @@ Asteroid.prototype.draw = function (aCamera) {
 
 Asteroid.prototype.testTerminated = function (ground) {
     // sick rhyme
-    console.log(ground);
+    //console.log(ground);
     var groundBound = ground.getBBox();
     if(this.bound.intersectsBound(groundBound)!= 0){
         this.terminate();
