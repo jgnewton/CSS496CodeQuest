@@ -186,6 +186,7 @@ LessonScene.prototype.update = function () {
          gEngine.GameLoop.stop();  
     }
     
+    // left and right should scroll the text of the lesson??
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) {
 
     }

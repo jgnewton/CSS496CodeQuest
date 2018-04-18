@@ -64,10 +64,13 @@ function AsteroidScene() {
     //this.nextMarkX=-140;
     //this.nextMarkY=109.5;
     
-    this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 10;
-    this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 10;
+    this.markOffset = 10;
+    this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
+    this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - this.markOffset;
     
     this.raycast = false;
+    
+    this.ground = null;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -115,44 +118,35 @@ AsteroidScene.prototype.initialize = function () {
     //create hero and add to set
     this.mHero = new Hero(this.kMinionSprite);
     this.mHero.mDye.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
-    
-    
-    
     this.mAllObjs.addToSet(this.mHero);
     
-    //create minion 
-    //this.mAsteroid1 = new Asteroid(this.kMinionSprite, 50, 40);
-    //this.mAllObjs.addToSet(this.mAsteroid1);
     
-    //this.mtestProj = new Projectile(this.kPlatformTexture, 55,45);
-    //this.mtestProj.mRigidBody.setVelocity(1,1);
-    //this.mAllObjs.addToSet(this.mtestProj);
-
-
-/*
-    this.mMsg = new FontRenderable("Asteroid Scene");
-    this.mMsg.setColor([0, 0, 0, 1]);
-    this.mMsg.getXform().setPosition(5, 7);
-    this.mMsg.setTextHeight(3);
-    */
+    //configure ground (currently a solid color green)
+    // in the future it should be a texture renderable
+    this.ground = new Renderable(gEngine.DefaultResources.getConstColorShader());
+    this.ground.setColor([0, 1, 0, 1]);
+    // bottom of the viewport = -WCHeight / 2
+    var groundHeight = this.WCHeight / 4.5;
+    this.ground.getXform().setPosition(0, -this.WCHeight / 2 + groundHeight / 2);
+    this.ground.getXform().setRotationInDegree(0); // In Degree
+    this.ground.getXform().setSize(this.WCWidth, groundHeight);
+    this.mAllObjs.addToSet(this.ground);
+    
    
+   // Selection message
     this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
     this.mShapeMsg.setColor([0, 0, 0, 1]);
     this.mShapeMsg.getXform().setPosition(this.WCCenterX-this.WCWidth/2, this.WCCenterY-80);
     this.mShapeMsg.setTextHeight(7.5);
     
+    
+    // background init
     this.mBackground = new TextureRenderable(this.kMW);
     this.mBackground.setColor.call(this, [1, 0, 0, 1]);
-    
     var bxf=this.mBackground.getXform();
-    
     bxf.setPosition(50,40);
     bxf.setWidth(500);
     bxf.setHeight(500);
-    
-    //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, -140, 109.5, true)); 
-    //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, -135, 109.5, false));
-    //this.setCameraFollowTarget(this.mHero);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -189,13 +183,19 @@ AsteroidScene.kBoundDelta = 0.1;
 
 
 AsteroidScene.prototype.update = function () {
-    var WB = [this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight];
+    this.processInput();
+    
+    
+    
+    
 
     //this.mHero.aimShoot();
     
     //manually update all objects in the set
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
+        
+        
         if(obj instanceof Asteroid ){
             //give asteroids list of all objects
             var hit = obj.update(this.mAllObjs);
@@ -204,25 +204,95 @@ AsteroidScene.prototype.update = function () {
             if(hit ==1){
                 //, this.nextMarkX, this.nextMarkY
                 this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, true));
-                this.nextMarkX += 10;
+                this.nextMarkX += this.markOffset;
                 this.mAllObjs.removeFromSet(obj);
             }
             
             else if(hit==2){
                 this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
-                this.nextMarkX += 10;
+                this.nextMarkX += this.markOffset;
                 this.mAllObjs.removeFromSet(obj);
             }
+            
+            //var WB = 
+            obj.testTerminated(this.ground);
         
+        }
+        else if(obj instanceof Projectile){
+            obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
         }
         else{
             obj.update();
         }
+
+
+
+
+
+
+        // test if the object should be terminated
+        if(obj.mortal){
+            //console.log("Projectile Found");
+            //obj.testTerminated(WB);
+            
+            if(obj instanceof Asteroid && obj.terminated){
+                this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
+                this.nextMarkX += this.markOffset;
+                this.mAllObjs.removeFromSet(obj);
+            }
+
+            if (obj.terminated){
+                this.mAllObjs.removeFromSet(obj);
+            }
+        }  
             
     }
     //this.updateCamera();
     
-    //debug Scene Change
+
+    
+    //debuggin messages
+    var selection = "";
+    if(this.selection==0){
+        selection = "Integer";
+    }
+        if(this.selection==1){
+        selection = "Double";
+    }
+        if(this.selection==2){
+        selection = "Boolean";
+    }
+        if(this.selection==3){
+        selection = "Char";
+    }
+        if(this.selection==4){
+        selection = "String";
+    }
+    this.mShapeMsg.setText("Current Selection : "+selection);  
+    
+    //this.generateProjectile();
+    
+    //updating projectiles (object) set
+    
+    //updating the generating of asteroids
+    this.genTimer++;
+    if(this.genTimer>=350){
+        this.generateAsteroid();
+        this.genTimer=0;
+    }
+    
+    //console.log(this.nextMarkX);
+    if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
+        this.nextMarkY -= this.markOffset;
+        this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
+    }
+    
+    // don't call rayCast 60 times per second, should be called when pressing fire right?
+    //this.rayCast();
+};
+
+AsteroidScene.prototype.processInput = function(){
+        //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
     }
@@ -244,67 +314,20 @@ AsteroidScene.prototype.update = function () {
         }
     }    
     
-    //debuggin messages
-    var selection = "";
-    if(this.selection==0){
-        selection = "Integer";
-    }
-        if(this.selection==1){
-        selection = "Double";
-    }
-        if(this.selection==2){
-        selection = "Boolean";
-    }
-        if(this.selection==3){
-        selection = "Char";
-    }
-        if(this.selection==4){
-        selection = "String";
-    }
-    this.mShapeMsg.setText("Current Selection : "+selection);  
+    var heroXF = this.mHero.getXform();
     
-    this.generateProjectile();
-    
-    //updating projectiles (object) set
-    
-    //updating the generating of asteroids
-    this.genTimer++;
-    if(this.genTimer>=350){
-        this.generateAsteroid();
-        this.genTimer=0;
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
+        heroXF.incRotationByDegree(1.5);       
     }
     
-    
-    //test for terminated objects
-    
-    for (var i = 0; i < this.mAllObjs.size(); i++) {
-        var obj = this.mAllObjs.getObjectAt(i);
-       // console.log(obj);
-        
-        if(obj.mortal){
-            //console.log("Projectile Found");
-            obj.testTerminated(WB);
-            
-            if(obj instanceof Asteroid && obj.terminated){
-                this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, false));
-                this.nextMarkX += 10;
-                this.mAllObjs.removeFromSet(obj);
-            }
-
-            if (obj.terminated){
-                this.mAllObjs.removeFromSet(obj);
-            }
-        }  
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
+        heroXF.incRotationByDegree(-1.5);    
     }
     
-    //console.log(this.nextMarkX);
-    if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + 10 + 100){
-        this.nextMarkY -= 10;
-        this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + 10;
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
+        this.generateProjectile 
     }
-    
-    this.rayCast();
-};
+}
 
 
 //random asteroid generation
@@ -329,7 +352,7 @@ AsteroidScene.prototype.generateAsteroid = function () {
 //generating projectiles
 AsteroidScene.prototype.generateProjectile = function () {
 //checking for Hero Firing to see if a Projectile should be created
-    if(this.mHero.firing){
+    //if(this.mHero.firing){
         
         //get hero state info
         var hxf = this.mHero.getXform();
@@ -376,8 +399,8 @@ AsteroidScene.prototype.generateProjectile = function () {
         this.mAllObjs.addToSet(p);
         
         // allow hero to fire again
-        this.mHero.firing=false;
-    }    
+        //this.mHero.firing=false;
+    //}    
 }
 
 AsteroidScene.prototype.rayCast = function () {

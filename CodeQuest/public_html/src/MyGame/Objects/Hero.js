@@ -36,7 +36,7 @@ gEngine.Core.inheritPrototype(Hero, WASDObj);
 
 Hero.prototype.update = function () {
     GameObject.prototype.update.call(this);
-    this.aimShoot();
+    //this.aimShoot();
     
 }
     

@@ -25,6 +25,8 @@ function Renderable() {
     this.mColor = [1, 1, 1, 1];    // color of pixel
 }
 
+
+
 //<editor-fold desc="Public Methods">
 //**-----------------------------------------
 // Public methods
@@ -56,6 +58,12 @@ Renderable.prototype.update = function () {};
  * @returns {Transform} the Transform of the Renderable.
  */
 Renderable.prototype.getXform = function () { return this.mXform; };
+
+Renderable.prototype.getBBox = function () {
+    var xform = this.getXform();
+    var b = new BoundingBox(xform.getPosition(), xform.getWidth(), xform.getHeight());
+    return b;
+};
 
 /**
  * Sets the Color of the Renderable.

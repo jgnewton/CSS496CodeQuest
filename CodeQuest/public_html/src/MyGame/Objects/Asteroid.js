@@ -198,7 +198,16 @@ Asteroid.prototype.draw = function (aCamera) {
     this.text.draw(aCamera);
 };
 
-Asteroid.prototype.testTerminated = function (WB) {
+Asteroid.prototype.testTerminated = function (ground) {
+    // sick rhyme
+    console.log(ground);
+    var groundBound = ground.getBBox();
+    if(this.bound.intersectsBound(groundBound)!= 0){
+        this.terminate();
+    }
+    
+    
+    /*
    var xc = WB[0];
    var yc = WB[1]; 
    var w = WB[2]; 
@@ -212,6 +221,8 @@ Asteroid.prototype.testTerminated = function (WB) {
        this.terminate();
        //return true;
    }
+   
+   */
    //return false;
 }
 
