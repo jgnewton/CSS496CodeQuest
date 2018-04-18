@@ -34,6 +34,11 @@ function MyGame() {
     this.mTarget = null;
     
     this.zones=[];
+    
+    //this.nextScene indicates which scene to load next
+    // 0 - overworld
+    // 1 - asteroid scene
+    // 2 - lesson scene
     this.nextScene=0;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -49,6 +54,7 @@ MyGame.prototype.loadScene = function () {
 };
 
 MyGame.prototype.unloadScene = function () {
+    // unload textures
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kPlatformTexture);
     gEngine.Textures.unloadTexture(this.kWallTexture);
@@ -56,22 +62,27 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kForest);
     gEngine.Textures.unloadTexture(this.kEarth); 
     
+    
+    // start the next scene
     var SceneObject = new AsteroidScene();
     
     if(this.nextScene==0){
-        var SceneObject = new MyGame();
+        SceneObject = new MyGame();
     }
     
+    //this.nextScene indicates which scene to load next
     else if(this.nextScene==1){
-        var SceneObject = new AsteroidScene();
+        //SceneObject = new AsteroidScene();
+        
+        gEngine.Core.startScene(new AsteroidScene());
     }
     
     else if(this.nextScene==2){
-        var SceneObject = new MyGame();
+        gEngine.Core.startScene(new LessonScene());
     }
     
     
-    gEngine.Core.startScene(SceneObject);  
+    //gEngine.Core.startScene(SceneObject);  
         
 };
 
@@ -154,6 +165,8 @@ MyGame.prototype.increasShapeSize = function(obj, delta) {
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.kBoundDelta = 0.1;
+
+
 MyGame.prototype.update = function () {
     var msg = "";   
     this.mHero.update();
@@ -181,7 +194,11 @@ MyGame.prototype.update = function () {
 MyGame.prototype.checkZones = function () {
     for(var i =0; i< this.zones.length;i++){
         if(this.zones[i].checkCollision(this.mHero)){
-            this.nextScene=this.zones[i].sceneNumber;
+            
+            // hard coding this to be the lesson scene for now
+            //this.nextScene=this.zones[i].sceneNumber;
+            this.nextScene = 2;
+            
             gEngine.GameLoop.stop();
         }
     }
