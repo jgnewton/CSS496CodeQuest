@@ -23,6 +23,15 @@ function LessonScene() {
     // The camera to view the scene
     
     this.speechBouble = "assets/speechBouble.PNG";
+    this.LessonOne1 = "assets/LessonOne/LessonOne1.PNG";
+    this.LessonOne2 = "assets/LessonOne/LessonOne2.PNG";
+    this.LessonOne3 = "assets/LessonOne/LessonOne3.PNG";
+    this.LessonOne4 = "assets/LessonOne/LessonOne4.PNG";
+    this.LessonOne5 = "assets/LessonOne/LessonOne5.PNG";
+    this.LessonOne6 = "assets/LessonOne/LessonOne6.PNG";
+    this.LessonOne7 = "assets/LessonOne/LessonOne7.PNG";
+    this.LessonOne8 = "assets/LessonOne/LessonOne8.PNG";
+    this.LessonOne9 = "assets/LessonOne/LessonOne9.PNG";
     
     this.mCamera = null;
 
@@ -71,7 +80,8 @@ function LessonScene() {
     //this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 10;
     
     //this.raycast = false;
-    this.lessonOneObject = null;
+    this.lessonOne = null;
+    this.current = 0;
 }
 gEngine.Core.inheritPrototype(LessonScene, Scene);
 
@@ -90,6 +100,16 @@ LessonScene.prototype.loadScene = function () {
    
    gEngine.Textures.loadTexture(this.speechBouble); 
    //gEngine.Textures.loadTexture(this.lessonOne); 
+//   
+   //gEngine.Textures.loadTexture(this.LessoneOne1); 
+//   gEngine.Textures.loadTexture(this.LessoneOne2); 
+//   gEngine.Textures.loadTexture(this.LessoneOne3); 
+//   gEngine.Textures.loadTexture(this.LessoneOne4); 
+//   gEngine.Textures.loadTexture(this.LessoneOne5); 
+//   gEngine.Textures.loadTexture(this.LessoneOne6); 
+//   gEngine.Textures.loadTexture(this.LessoneOne7); 
+//   gEngine.Textures.loadTexture(this.LessoneOne8); 
+//   gEngine.Textures.loadTexture(this.LessoneOne9); 
    
 };
 
@@ -105,8 +125,18 @@ LessonScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.scoreMarks); 
     */
    
-   gEngine.Textures.unloadTexture(this.speechBouble); 
+   //gEngine.Textures.unloadTexture(this.speechBouble); 
    //gEngine.Textures.unloadTexture(this.lessonOne);
+   
+   gEngine.Textures.unloadTexture(this.LessoneOne1); 
+   gEngine.Textures.unloadTexture(this.LessoneOne2); 
+   gEngine.Textures.unloadTexture(this.LessoneOne3); 
+   gEngine.Textures.unloadTexture(this.LessoneOne4); 
+   gEngine.Textures.unloadTexture(this.LessoneOne5); 
+   gEngine.Textures.unloadTexture(this.LessoneOne6); 
+   gEngine.Textures.unloadTexture(this.LessoneOne7); 
+   gEngine.Textures.unloadTexture(this.LessoneOne8); 
+   gEngine.Textures.unloadTexture(this.LessoneOne9);
    
     //var MG = new MyGame();
     gEngine.Core.startScene(new AsteroidScene); 
@@ -190,8 +220,10 @@ LessonScene.prototype.draw = function () {
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     //this.mShapeMsg.draw(this.mCamera);
     
-    this.speechBoubleObject.draw(this.mCamera);
-    this.lessonOneObject.draw(this.mCamera);
+//    this.speechBoubleObject.draw(this.mCamera);
+//    this.lessonOneObject.draw(this.mCamera);
+
+      this.LessonOne[this.current].draw(this.mCamera);
 
 };
 
@@ -217,7 +249,7 @@ LessonScene.prototype.update = function () {
 
 LessonScene.prototype.initLessonOne = function() {
     
-     this.speechBoubleObject = new TextureRenderable(this.speechBouble);
+    /* this.speechBoubleObject = new TextureRenderable(this.speechBouble);
     //this.speechBoubleObject.getXform().setSize(350, 160);
     var sbo = this.speechBoubleObject.getXform();
     sbo.setPosition(30,0);
@@ -236,6 +268,29 @@ LessonScene.prototype.initLessonOne = function() {
     this.lessonOneObject.setColor([0, 0, 0, 1]);
     this.lessonOneObject.setTextHeight(7.5);
     
-     this.mAllObjs.addToSet(this.lessonOneObject);
+     this.mAllObjs.addToSet(this.lessonOneObject);*/
 
+    this.LessonOneTextures = []; 
+    this.LessonOneTextures.push(this.LessonOne1);
+    this.LessonOneTextures.push(this.LessonOne2);
+    this.LessonOneTextures.push(this.LessonOne3);
+    this.LessonOneTextures.push(this.LessonOne4);
+    this.LessonOneTextures.push(this.LessonOne5);
+    this.LessonOneTextures.push(this.LessonOne6);
+    this.LessonOneTextures.push(this.LessonOne7);
+    this.LessonOneTextures.push(this.LessonOne8);
+    this.LessonOneTextures.push(this.LessonOne9);
+    
+    this.LessonOne = [];
+    for(var i=0; i < LessonOneTextures.length; i++){
+        var texture = new TextureRenderable(this.LessonOneTextures[i]);
+        var txf = texture.getXform();
+        txf.setPosition(30,0);
+        txf.setWidth(350);
+        txf.setHeight(160);
+        
+        this.lessonOne.push(texture);
+    }
+     
+     
 }
