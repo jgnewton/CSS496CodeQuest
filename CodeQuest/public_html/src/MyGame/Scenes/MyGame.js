@@ -157,15 +157,6 @@ MyGame.prototype.draw = function () {
 
 };
 
-MyGame.prototype.increasShapeSize = function(obj, delta) {
-    var s = obj.getRigidBody();
-    var r = s.incShapeSizeBy(delta);
-};
-
-// The Update function, updates the application state. Make sure to _NOT_ draw
-// anything from this function!
-MyGame.kBoundDelta = 0.1;
-
 
 MyGame.prototype.update = function () {
     var msg = "";   
@@ -181,9 +172,12 @@ MyGame.prototype.update = function () {
 
     //to make a conflict
     //debug Scene Change
+    
+    /*
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
     }
+    */
     
     this.checkZones();
 };

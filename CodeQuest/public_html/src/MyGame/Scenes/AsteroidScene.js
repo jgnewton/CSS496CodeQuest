@@ -79,6 +79,8 @@ function AsteroidScene() {
     this.selectIndex = 0;
     this.helpTableObject = null;
     this.helpTableVisible = false;
+    
+    this.helpTableText = null;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -202,8 +204,9 @@ AsteroidScene.prototype.initialize = function () {
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
-    this.helpTableObject.getXform().setSize(180, 80);
+    this.helpTableObject.getXform().setSize(220, 80);
     
+    this.helpTableText = new MenuElement("Press H for a hint!", 0, -90, 5);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -224,6 +227,7 @@ AsteroidScene.prototype.draw = function () {
         //console.log(this.elements[i]);
         this.elements[i].draw(this.mCamera);
     }
+    this.helpTableText.draw(this.mCamera);
     
     this.selectionArrow.draw(this.mCamera);
     
