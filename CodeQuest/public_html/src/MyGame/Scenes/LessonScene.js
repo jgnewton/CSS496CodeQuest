@@ -71,7 +71,7 @@ function LessonScene() {
     //this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 10;
     
     //this.raycast = false;
-    this.lessonOnObject = 0;
+    this.lessonOneObject = null;
 }
 gEngine.Core.inheritPrototype(LessonScene, Scene);
 
@@ -191,7 +191,7 @@ LessonScene.prototype.draw = function () {
     //this.mShapeMsg.draw(this.mCamera);
     
     this.speechBoubleObject.draw(this.mCamera);
-    //this.lessonOneObject.draw(this.mCamera);
+    this.lessonOneObject.draw(this.mCamera);
 
 };
 
@@ -225,10 +225,17 @@ LessonScene.prototype.initLessonOne = function() {
     sbo.setHeight(160);
     
     this.lessonOne = [];
-    var secOne = "Asteroids are falling to destroy the village! \n\
-                    You are the one who can stop them and protect the village.";
+    var secOne = "Asteroids are falling to destroy the village!";// +
+                   // "You are the one who can stop them and protect the village.";
     this.lessonOne.push(secOne);
     
-    this.lessonOnObject = new TextureRenderable(this.lessonOne[0]);
-    var loo = this.lessonOneObject;
+    var msg ="msgtest";
+    this.lessonOneObject = new FontRenderable(secOne);
+    this.lessonOneObject.getXform().setXPos(40);
+    this.lessonOneObject.getXform().setYPos(50);
+    this.lessonOneObject.setColor([0, 0, 0, 1]);
+    this.lessonOneObject.setTextHeight(7.5);
+    
+     this.mAllObjs.addToSet(this.lessonOneObject);
+
 }
