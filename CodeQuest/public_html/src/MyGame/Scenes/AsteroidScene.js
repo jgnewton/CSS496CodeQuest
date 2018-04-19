@@ -79,6 +79,7 @@ function AsteroidScene() {
     this.selectIndex = 0;
     this.helpTableObject = null;
     this.helpTableVisible = false;
+    this.GenerateOn=true;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -307,7 +308,7 @@ AsteroidScene.prototype.updateObjects = function(){
             //var groundHeight = this.WCHeight / 4.5;
             //this.ground.getXform().setPosition(0, -this.WCHeight / 2 + groundHeight / 2);
             if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
-                console.log("asteroid collision with ground");
+                //console.log("asteroid collision with ground");
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
             }
@@ -420,25 +421,62 @@ AsteroidScene.prototype.processInput = function(){
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.generateProjectile();
     }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Y)) {
+        for (var i = 0; i < this.mAllObjs.size(); i++) {
+            var obj = this.mAllObjs.getObjectAt(i);
+            
+            
+            //written like this because displayCoord is not defined in all objects
+            if(obj.displayCoord){
+                obj.displayCoord=false;
+            }else{
+               obj.displayCoord=true;   
+            }
+
+        }
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
+        this.GenerateOn=!this.GenerateOn; 
+        console.log("generating Asteroids: " + this.GenerateOn);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) {
+        
+        for (var i = 0; i < this.mAllObjs.size(); i++) {
+            var obj = this.mAllObjs.getObjectAt(i);
+            
+            if(obj.yv==0){
+                obj.yv=-7;
+            }
+            else{
+                obj.yv=0;
+            }
+        }
+    }
+    
 };
 
 
 //random asteroid generation
 AsteroidScene.prototype.generateAsteroid = function () {
-       
-    var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
-    var yl = 120;
-    
-    var type=0;
-    
-    type = Math.round(Math.random()*this.maxType);  
-    
-    var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl, false, type);
-    
-    //drop speed
-    Asteroid1.yv=-7;
-    
-    this.mAllObjs.addToSet(Asteroid1);    
+     
+    if(this.GenerateOn){
+        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
+        var yl = 120;
+
+        var type=0;
+
+        type = Math.round(Math.random()*this.maxType);  
+
+        var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl, false, type);
+
+        //drop speed
+        Asteroid1.yv=-7;
+
+        this.mAllObjs.addToSet(Asteroid1); 
+    }
 };
 
 
@@ -505,35 +543,52 @@ AsteroidScene.prototype.rayCast = function () {
       
         var ast= this.mAllObjs.getObjectAt(i);
         
-        var axf = ast.getXform();
-        
-        var astx = axf.getXPos();
-        var asty = axf.getYPos();
-        
-        //given asteroid x position, calculate where ray would intersect
-        var theta = this.mHero.getXform().getRotationInRad();
-        var y = astx/Math.tan(theta);
-        
-        console.log("asty "+asty+"  intersect y:" +y);
-        
-        var yhi= y +axf.getHeight()*.5;
-        var ylow = y-axf.getHeight()*.5;
-        
-        //check if intersection
-        if(asty>= ylow && asty <= yhi ){
-            
-            console.log("Ray Hit!");
-            //check if correct data types
-            if(ast.dataType == this.selectionIndex){
-                this.incrementScore(true);
-                this.mAllObjs.removeFromSet(ast);
+        if(ast instanceof Asteroid){
 
-            }
-            else{
-                this.incrementScore(false);
-                this.mAllObjs.removeFromSet(ast);
-            }
-        }
-  }
-    
+                var axf = ast.getXform();
+
+                var astx = axf.getXPos();
+                var asty = axf.getYPos();
+                            
+                
+                //given asteroid x position, calculate where ray would intersect
+                var theta = this.mHero.getXform().getRotationInRad();
+                
+                // find out which direction the laser is firing and compare to if asteroid is left or right of laser source
+                var mirror=false;
+                if (theta >0 && astx<=0){
+                    mirror=true;
+                }
+                else if(theta<0 && astx>=0){
+                    mirror=true;
+                }
+                
+                
+                var y = Math.abs(astx-this.mHero.getXform().getXPos())/Math.tan(Math.abs(theta)-this.mHero.getXform().getYPos());
+                
+                
+
+                console.log("asty "+asty+"  intersect y:" +y +" theta: "+theta*180/Math.PI);
+
+                var yhi= y +axf.getHeight()*.5;
+                var ylow = y-axf.getHeight()*.5;
+
+                //check if intersection
+                if(asty>= ylow && asty <= yhi && mirror){
+
+                    console.log("Ray Hit!");
+                    //check if correct data types
+                    if(ast.dataType == this.selectionIndex){
+                        this.incrementScore(true);
+                        this.mAllObjs.removeFromSet(ast);
+
+                    }
+                    else{
+                        this.incrementScore(false);
+                        this.mAllObjs.removeFromSet(ast);
+                    }
+                    
+                }
+          }
+    }  
 }

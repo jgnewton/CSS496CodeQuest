@@ -97,9 +97,9 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
         
         var rn2 = Math.random();
         
-        var bool="False"; 
+        var bool="false"; 
         if(rn2>.5){
-            bool="True";
+            bool="true";
         }
         rn = bool;
     }
@@ -134,6 +134,8 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     
     this.bound = this.getBBox();
     
+    this.displayCoord=false;
+    
 }
 gEngine.Core.inheritPrototype(Asteroid, GameObject);
 
@@ -152,10 +154,20 @@ Asteroid.prototype.update = function () {
     this.mRigidBody.setVelocity(this.xv,this.yv);
     
     
+    this.bound = this.getBBox();
+    
     var x = this.mMinion.getXform().getXPos();
     var y = this.mMinion.getXform().getYPos();
+    
+    if(this.displayCoord){
+        this.text = new FontRenderable("x:"+x.toPrecision(2)+" y:"+y.toPrecision(2));
+        this.text.setColor([0, 0, 0, 1]);
+        this.text.getXform().setPosition(x, y);
+        this.text.setTextHeight(7.5);
+    }
+    
+
     this.text.getXform().setPosition(x, y);
-    this.bound = this.getBBox();
 };
 
 
