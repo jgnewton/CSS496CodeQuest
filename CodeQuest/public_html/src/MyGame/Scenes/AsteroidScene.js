@@ -88,7 +88,7 @@ function AsteroidScene() {
     this.numIncorrect = 0;
     this.numCorrect = 0;
     // the number of Xs required to lose the game
-    this.gameOverNumber = 1;
+    this.gameOverNumber = 10;
     
     // when gameOver is true, we display the player's score and prompt them
     // to play again or return to main menu
@@ -543,14 +543,14 @@ AsteroidScene.prototype.generateProjectile = function () {
             this.maxV=0;
             p.getXform().setRotationInRad(rot);
             
-            p.getXform().setSize(10,2000);
+            p.getXform().setSize(2,2000);
                         
             //p.mMinion.getXform().setSize(2, 100);
             
            // p.mRigidBody.mWidth=2;
             //p.mRigidBody.mHeight=100;
             
-            p.lifeTime=130;
+            p.lifeTime=1030;
             
             this.rayCast();
         }
@@ -584,10 +584,12 @@ AsteroidScene.prototype.rayCast = function () {
                 var axf = ast.getXform();
 
                 var astx = axf.getXPos();
+                    
+                
                 var asty = axf.getYPos();
                             
                 
-                //given asteroid x position, calculate where ray would intersect
+                //the Actual Rotation of the Hero.
                 var theta = this.mHero.getXform().getRotationInRad();
                 
                 // find out which direction the laser is firing and compare to if asteroid is left or right of laser source
@@ -598,21 +600,98 @@ AsteroidScene.prototype.rayCast = function () {
                 else if(theta<0 && astx>=0){
                     mirror=true;
                 }
+                               
                 
+                //ray to far bottom corner
+                var thetaMax=0;
                 
-                var y = Math.abs(astx-this.mHero.getXform().getXPos())/Math.tan(Math.abs(theta)-this.mHero.getXform().getYPos());
+                //ray to near top corner
+                var thetaMin=0;
                 
+                //case 1: Asteroid to left  (0 degrees is straight up, horizontal left is 90, horizontal right in -90...don't Ask... ask Kelvin              
+                if(astx<=0){
+                    //top right
+                    thetaMin= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
+                    
+                    
+                    //bottom left
+                    thetaMax= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
+                }
                 
+                //asteroid on right
+                else{
+                    //top left corner
+                    thetaMin= -1*(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
+                    
+                    //bottom right corner
+                    thetaMax= -1*(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
+                }
+                
+                //console.log("asty "+asty+"  intersect y:" +y +" theta: "+theta*180/Math.PI);
+                
+                console.log(" theta: "+theta*180/Math.PI + " thetaMAx:"+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
+                
+                if(astx<=0){
+                    var rend = new Renderable();
+                    rend.setColor([1,0,0,1]);
+                    
+                    var toprx = astx + axf.getWidth()/2;
+                    var topry = asty + axf.getHeight()/2;
+                    
+                    
+                    rend.getXform().setPosition(toprx/2, topry/2 -30);
+                    rend.getXform().setSize(1,Math.sqrt(toprx*toprx+(topry+60)*(topry+60)));
+                    rend.getXform().setRotationInRad(thetaMin);
+                    
+                    this.mAllObjs.addToSet(rend);
+                    
+                    var rend2 = new Renderable();
+                    rend2.setColor([1,0,0,1]);
+                    
+                    var blx = astx - axf.getWidth()/2;
+                    var bly = asty - axf.getHeight()/2;
+                    
+                    
+                    rend2.getXform().setPosition(blx/2, bly/2 -30);
+                    rend2.getXform().setSize(1,Math.sqrt(blx*blx+(bly+60)*(bly+60)));
+                    rend2.getXform().setRotationInRad(thetaMax);
+                    
+                    this.mAllObjs.addToSet(rend2);
+                }
+                else{
+                    var rend = new Renderable();
+                    rend.setColor([1,0,0,1]);
+                    
+                    var tlx = astx - axf.getWidth()/2;
+                    var tly = asty + axf.getHeight()/2;
+                    
+                    
+                    rend.getXform().setPosition(tlx/2, tly/2 -30);
+                    rend.getXform().setSize(1,Math.sqrt(tlx*tlx+(tly+60)*(tly+60)));
+                    rend.getXform().setRotationInRad(thetaMin);
+                    
+                    this.mAllObjs.addToSet(rend);
+                    
+                    var rend2 = new Renderable();
+                    rend2.setColor([1,0,0,1]);
+                    
+                    var brx = astx + axf.getWidth()/2;
+                    var bry = asty - axf.getHeight()/2;
+                    
+                    
+                    rend2.getXform().setPosition(brx/2, bry/2 -30);
+                    rend2.getXform().setSize(1,Math.sqrt(brx*brx+(bry+60)*(bry+60)));
+                    rend2.getXform().setRotationInRad(thetaMax);
+                    
+                    this.mAllObjs.addToSet(rend2);  
+                }
 
-                console.log("asty "+asty+"  intersect y:" +y +" theta: "+theta*180/Math.PI);
 
-                var yhi= y +axf.getHeight()*.5;
-                var ylow = y-axf.getHeight()*.5;
-
-                //check if intersection
-                if(asty>= ylow && asty <= yhi && mirror){
-
+                //check if in possible theta range for collision
+                  if(Math.abs(theta)>=Math.abs(thetaMin) && Math.abs(theta) <=Math.abs(thetaMax)){
                     console.log("Ray Hit!");
+                    
+     
                     //check if correct data types
                     if(ast.dataType == this.selectionIndex){
                         this.incrementScore(true);

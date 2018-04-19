@@ -7,7 +7,6 @@
         </group>
         <group name="452-MPSolutions"/>
         <group name="BookChapters"/>
-        <group name="GameTopics"/>
         <group>
             <file>file:/C:/Users/jgn2/Documents/GitHub/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/Engine/Utils/InterpolateVec2.js</file>
             <file>file:/C:/Users/jgn2/Documents/GitHub/CSS496CodeQuest/GamePhysicsIntegrated/public_html/src/Engine/Renderables/Renderable.js</file>
@@ -33,6 +32,9 @@
             <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/Engine/Utils/BoundingBox.js</file>
             <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Projectile.js</file>
             <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/Engine/GameObjects/GameObject.js</file>
+        </group>
+        <group name="GameTopics">
+            <file>file:/C:/Users/jgn2/Documents/GitHub/CSS496CodeQuest22222/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
         </group>
     </open-files>
 </project-private>
