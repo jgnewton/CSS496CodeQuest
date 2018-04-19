@@ -68,11 +68,7 @@ function AsteroidScene() {
     
     this.markOffset = 10;
     this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
-<<<<<<< HEAD
     this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - this.markOffset;
-=======
-    this.nextMarkY = this.WCCenterY - (this.WCHeight / 2) + this.markOffset;
->>>>>>> parent of 2e8b0d5... Added Game Over
     
     this.ground = null;
     
@@ -83,12 +79,7 @@ function AsteroidScene() {
     this.selectIndex = 0;
     this.helpTableObject = null;
     this.helpTableVisible = false;
-<<<<<<< HEAD
     this.GenerateOn=true;
-=======
-    
-    this.helpTableText = null;
->>>>>>> parent of 2e8b0d5... Added Game Over
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -212,14 +203,8 @@ AsteroidScene.prototype.initialize = function () {
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
-<<<<<<< HEAD
     this.helpTableObject.getXform().setSize(180, 80);
     
-=======
-    this.helpTableObject.getXform().setSize(220, 80);
-    
-    this.helpTableText = new MenuElement("Press H for a hint!", 0, -90, 5);
->>>>>>> parent of 2e8b0d5... Added Game Over
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -240,10 +225,6 @@ AsteroidScene.prototype.draw = function () {
         //console.log(this.elements[i]);
         this.elements[i].draw(this.mCamera);
     }
-<<<<<<< HEAD
-=======
-    this.helpTableText.draw(this.mCamera);
->>>>>>> parent of 2e8b0d5... Added Game Over
     
     this.selectionArrow.draw(this.mCamera);
     
@@ -439,7 +420,6 @@ AsteroidScene.prototype.processInput = function(){
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.generateProjectile();
-<<<<<<< HEAD
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Y)) {
@@ -496,8 +476,6 @@ AsteroidScene.prototype.generateAsteroid = function () {
         Asteroid1.yv=-7;
 
         this.mAllObjs.addToSet(Asteroid1); 
-=======
->>>>>>> parent of 2e8b0d5... Added Game Over
     }
 };
 
