@@ -68,7 +68,7 @@ function AsteroidScene() {
     
     this.markOffset = 10;
     this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
-    this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - this.markOffset;
+    this.nextMarkY = this.WCCenterY - (this.WCHeight / 2) + this.markOffset;
     
     this.ground = null;
     
@@ -145,14 +145,7 @@ AsteroidScene.prototype.initialize = function () {
     this.ground.getXform().setRotationInDegree(0); // In Degree
     this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
     this.mAllObjs.addToSet(this.ground);
-    
-   /*
-   // Selection message
-    this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
-    this.mShapeMsg.setColor([0, 0, 0, 1]);
-    this.mShapeMsg.getXform().setPosition(this.WCCenterX-this.WCWidth/2, this.WCCenterY-80);
-    this.mShapeMsg.setTextHeight(7.5);
-    */
+
     
     // background init
     this.mBackground = new TextureRenderable(this.kMW);
@@ -161,24 +154,9 @@ AsteroidScene.prototype.initialize = function () {
     bxf.setPosition(50,40);
     bxf.setWidth(500);
     bxf.setHeight(500);
-    
-    /*
-     *     if(this.selection==0){
-        selection = "Integer";
-    }
-        if(this.selection==1){
-        selection = "Double";
-    }
-        if(this.selection==2){
-        selection = "Boolean";
-    }
-        if(this.selection==3){
-        selection = "Char";
-    }
-        if(this.selection==4){
-        selection = "String";
-    }
-     */
+   
+   
+   
     // initialize the text that represents data types
     
     var textSize = 5;
@@ -374,7 +352,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
     
     // check if y needs to be incremented and x reset
     if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
-        this.nextMarkY -= this.markOffset;
+        this.nextMarkY += this.markOffset;
         this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
     }
 };
