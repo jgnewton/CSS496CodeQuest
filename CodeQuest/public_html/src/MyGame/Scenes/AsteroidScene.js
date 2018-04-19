@@ -145,7 +145,6 @@ AsteroidScene.prototype.initialize = function () {
     this.ground.getXform().setRotationInDegree(0); // In Degree
     this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
     this.mAllObjs.addToSet(this.ground);
-    
    /*
    // Selection message
     this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);

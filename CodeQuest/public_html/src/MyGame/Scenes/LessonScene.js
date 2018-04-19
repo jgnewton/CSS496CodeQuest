@@ -21,6 +21,9 @@ function LessonScene() {
     //this.kMW = "assets/MW2.jpg";
     //this.scoreMarks = "assets/scoreMarks.png"
     // The camera to view the scene
+    
+    this.speechBouble = "assets/speechBouble.PNG";
+    
     this.mCamera = null;
 
     this.mMsg = null;
@@ -68,6 +71,7 @@ function LessonScene() {
     //this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - 10;
     
     //this.raycast = false;
+    this.lessonOnObject = 0;
 }
 gEngine.Core.inheritPrototype(LessonScene, Scene);
 
@@ -83,6 +87,10 @@ LessonScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMW); 
     gEngine.Textures.loadTexture(this.scoreMarks); 
     */
+   
+   gEngine.Textures.loadTexture(this.speechBouble); 
+   //gEngine.Textures.loadTexture(this.lessonOne); 
+   
 };
 
 LessonScene.prototype.unloadScene = function () {
@@ -96,6 +104,9 @@ LessonScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMW); 
     gEngine.Textures.unloadTexture(this.scoreMarks); 
     */
+   
+   gEngine.Textures.unloadTexture(this.speechBouble); 
+   //gEngine.Textures.unloadTexture(this.lessonOne);
    
     //var MG = new MyGame();
     gEngine.Core.startScene(new AsteroidScene); 
@@ -153,6 +164,9 @@ LessonScene.prototype.initialize = function () {
     //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, -140, 109.5, true)); 
     //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, -135, 109.5, false));
     //this.setCameraFollowTarget(this.mHero);
+    
+   this.initLessonOne();
+   
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -175,6 +189,9 @@ LessonScene.prototype.draw = function () {
     
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     //this.mShapeMsg.draw(this.mCamera);
+    
+    this.speechBoubleObject.draw(this.mCamera);
+    //this.lessonOneObject.draw(this.mCamera);
 
 };
 
@@ -200,5 +217,18 @@ LessonScene.prototype.update = function () {
 
 LessonScene.prototype.initLessonOne = function() {
     
+     this.speechBoubleObject = new TextureRenderable(this.speechBouble);
+    //this.speechBoubleObject.getXform().setSize(350, 160);
+    var sbo = this.speechBoubleObject.getXform();
+    sbo.setPosition(30,0);
+    sbo.setWidth(350);
+    sbo.setHeight(160);
     
+    this.lessonOne = [];
+    var secOne = "Asteroids are falling to destroy the village! \n\
+                    You are the one who can stop them and protect the village.";
+    this.lessonOne.push(secOne);
+    
+    this.lessonOnObject = new TextureRenderable(this.lessonOne[0]);
+    var loo = this.lessonOneObject;
 }
