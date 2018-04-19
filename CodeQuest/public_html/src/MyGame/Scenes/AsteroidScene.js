@@ -79,6 +79,7 @@ function AsteroidScene() {
     this.selectIndex = 0;
     this.helpTableObject = null;
     this.helpTableVisible = false;
+<<<<<<< HEAD
     this.GenerateOn=true;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
