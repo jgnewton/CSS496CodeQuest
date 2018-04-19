@@ -68,7 +68,7 @@ function AsteroidScene() {
     
     this.markOffset = 10;
     this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
-    this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - this.markOffset;
+    this.nextMarkY = this.WCCenterY - (this.WCHeight / 2) + this.markOffset;
     this.scoreMarksArray = [];
     
     
@@ -259,6 +259,11 @@ AsteroidScene.prototype.draw = function () {
         {
            this.helpTableObject.draw(this.mCamera);
         }
+        
+        for(var i = 0; i < this.scoreMarksArray.length; i++){
+            //console.log(this.elements[i]);
+            this.scoreMarksArray[i].draw(this.mCamera);
+        }
     }
     
     
@@ -401,7 +406,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
     }
     // check if y needs to be incremented and x reset
     if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
-        this.nextMarkY -= this.markOffset;
+        this.nextMarkY += this.markOffset;
         this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
     }
 };
