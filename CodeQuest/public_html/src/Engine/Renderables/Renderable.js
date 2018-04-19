@@ -59,11 +59,11 @@ Renderable.prototype.update = function () {};
  */
 Renderable.prototype.getXform = function () { return this.mXform; };
 
-Renderable.prototype.getBBox = function () {
-    var xform = this.getXform();
-    var b = new BoundingBox(xform.getPosition(), xform.getWidth(), xform.getHeight());
-    return b;
-};
+//Renderable.prototype.getBBox = function () {
+//    //var xform = this.getXform();
+//    //var b = new BoundingBox(xform.getPosition(), xform.getWidth(), xform.getHeight());
+//    //return b;
+//};
 
 /**
  * Sets the Color of the Renderable.

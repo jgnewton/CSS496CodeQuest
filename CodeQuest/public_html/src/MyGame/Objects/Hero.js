@@ -39,6 +39,8 @@ Hero.prototype.update = function () {
     //this.aimShoot();
     
 }
+
+/*
     
 Hero.prototype.aimShoot = function () {
     var xform = this.getXform();
@@ -62,3 +64,5 @@ Hero.prototype.aimShoot = function () {
 Hero.prototype.shoot = function () {
     this.firing=true;
 };
+
+*/

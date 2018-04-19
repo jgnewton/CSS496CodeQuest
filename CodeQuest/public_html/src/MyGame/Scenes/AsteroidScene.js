@@ -68,9 +68,9 @@ function AsteroidScene() {
     
     this.markOffset = 10;
     this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
-    this.nextMarkY = this.WCCenterY + (this.WCHeight / 2) - this.markOffset;
+    this.nextMarkY = this.WCCenterY - (this.WCHeight / 2) + this.markOffset;
+    this.scoreMarksArray = [];
     
-    this.raycast = false;
     
     this.ground = null;
     
@@ -81,6 +81,22 @@ function AsteroidScene() {
     this.selectIndex = 0;
     this.helpTableObject = null;
     this.helpTableVisible = false;
+    this.GenerateOn=true;
+    
+        
+    // the number of Xs the player has
+    this.numIncorrect = 0;
+    this.numCorrect = 0;
+    // the number of Xs required to lose the game
+    this.gameOverNumber = 1;
+    
+    // when gameOver is true, we display the player's score and prompt them
+    // to play again or return to main menu
+    this.gameOver = false;
+    this.gameOverText = null;
+    this.gameOverText2 = null;
+    this.gameOverText3 = null;
+    this.gameOverText4 = null;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -205,6 +221,11 @@ AsteroidScene.prototype.initialize = function () {
     this.helpTableObject = new TextureRenderable(this.helpTable);
     this.helpTableObject.getXform().setSize(180, 80);
     
+    this.gameOverText = new MenuElement("Game Over", -15, 30, 10);
+    this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -25, 0, 10);
+    this.gameOverText3 = new MenuElement("Press X to return to overworld", -70, -30, 10);
+    //this.gameOverText4 = new MenuElement("Press Space to play again", -45, -60, 10);
+    
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -217,26 +238,39 @@ AsteroidScene.prototype.draw = function () {
     
     //this.mBackground.draw(this.mCamera);
     
-    
-    
-    this.mAllObjs.draw(this.mCamera);
-    
-    for(var i = 0; i < this.elements.length; i++){
-        //console.log(this.elements[i]);
-        this.elements[i].draw(this.mCamera);
-    }
-    
-    this.selectionArrow.draw(this.mCamera);
-    
-    if (this.helpTableVisible)
+    if(this.gameOver)
     {
-       this.helpTableObject.draw(this.mCamera);
+        this.gameOverText.draw(this.mCamera);
+        this.gameOverText2.draw(this.mCamera);
+        this.gameOverText3.draw(this.mCamera);
+        //this.gameOverText4.draw(this.mCamera);
+    } else {
+        this.mAllObjs.draw(this.mCamera);
+    
+        for(var i = 0; i < this.elements.length; i++){
+            //console.log(this.elements[i]);
+            this.elements[i].draw(this.mCamera);
+        }
+
+        this.selectionArrow.draw(this.mCamera);
+
+        if (this.helpTableVisible)
+        {
+           this.helpTableObject.draw(this.mCamera);
+        }
+        
+        for(var i = 0; i < this.scoreMarksArray.length; i++){
+            //console.log(this.elements[i]);
+            this.scoreMarksArray[i].draw(this.mCamera);
+        }
     }
+    
+    
     
     // for now draw these ...
     /*for (var i = 0; i<this.mCollisionInfos.length; i++) 
         this.mCollisionInfos[i].draw(this.mCamera); */
-    this.mCollisionInfos = []; 
+    //this.mCollisionInfos = []; 
     
     //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     //this.mShapeMsg.draw(this.mCamera);
@@ -284,6 +318,7 @@ AsteroidScene.prototype.update = function () {
 
     // don't call rayCast 60 times per second, should be called when pressing fire right?
     //this.rayCast();
+    
 };
 
 AsteroidScene.prototype.updateObjects = function(){
@@ -307,7 +342,7 @@ AsteroidScene.prototype.updateObjects = function(){
             //var groundHeight = this.WCHeight / 4.5;
             //this.ground.getXform().setPosition(0, -this.WCHeight / 2 + groundHeight / 2);
             if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
-                console.log("asteroid collision with ground");
+                //console.log("asteroid collision with ground");
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
             }
@@ -317,36 +352,25 @@ AsteroidScene.prototype.updateObjects = function(){
                 
                 var proj = this.mAllObjs.getObjectAt(j);
                 if(proj instanceof Projectile){
-                    
-                    
+                                       
                     var projectileBound = proj.getBBox();
-                    
-                    
+                                       
                     if(obj.bound.intersectsBound(projectileBound)!= 0){
                         if(obj.dataType == proj.dataType){
                             this.incrementScore(true);
                             this.mAllObjs.removeFromSet(obj);
+                            this.mAllObjs.removeFromSet(proj);
+                            
                         }
                         else{
                             this.incrementScore(false);
                             this.mAllObjs.removeFromSet(obj);
+                            this.mAllObjs.removeFromSet(proj);
                         }
                     }
                     
                 }
-            }
-            
-            /*
-            // assteroids check collision with the ground instead of the world view
-            obj.testTerminated(this.ground);
-            if (obj.terminated){
-                console.log(obj.terminated);
-                this.incrementScore(false);
-                this.mAllObjs.removeFromSet(obj);
-            }
-            */
-           
-            
+            }      
         
         }
         else if(obj instanceof Projectile){
@@ -355,22 +379,33 @@ AsteroidScene.prototype.updateObjects = function(){
                 this.mAllObjs.removeFromSet(obj);
             }
         }
-        /*
-        else{
-            obj.update();
-        }
-        */
     }
 };
 
 AsteroidScene.prototype.incrementScore = function(hit){
-    console.log("score incremented");
-    this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
+    //console.log("score incremented");
+    //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
+    //this.nextMarkX += this.markOffset;
+    this.scoreMarksArray.push(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
     this.nextMarkX += this.markOffset;
     
+    // if the score was incremented with a bad hit, increase number of
+    // incorrect/missed asteroids
+    if(!hit){
+        this.numIncorrect++;
+    } else {
+        this.numCorrect++;
+    }
+    
+    // toggle gameover state if exceeded gameeover number
+    if(this.numIncorrect >= this.gameOverNumber){
+        // set this text element to correctly display numCorrect
+        this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -20, 0, 10);
+        this.gameOver = true;
+    }
     // check if y needs to be incremented and x reset
     if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
-        this.nextMarkY -= this.markOffset;
+        this.nextMarkY += this.markOffset;
         this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
     }
 };
@@ -381,64 +416,103 @@ AsteroidScene.prototype.processInput = function(){
          gEngine.GameLoop.stop();  
     }
     
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.H)) {
-        this.helpTableVisible = true;
+    if(!this.gameOver){
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.H)) {
+            this.helpTableVisible = true;
+        }
+        else
+        {
+            this.helpTableVisible = false;
+        }
+
+
+
+        //selecting Ray type:
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
+                gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
+
+            this.selectIndex--;
+            this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+            this.selectedElement = this.elements[this.selectIndex];
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
+                gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+            this.selectIndex++;
+            this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+            this.selectedElement = this.elements[this.selectIndex];
+        }    
+
+        var heroXF = this.mHero.getXform();
+
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
+            heroXF.incRotationByDegree(1.5);       
+        }
+
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
+            heroXF.incRotationByDegree(-1.5);    
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
+            this.generateProjectile();
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Y)) {
+            for (var i = 0; i < this.mAllObjs.size(); i++) {
+                var obj = this.mAllObjs.getObjectAt(i);
+
+
+                //written like this because displayCoord is not defined in all objects
+                if(obj.displayCoord){
+                    obj.displayCoord=false;
+                }else{
+                   obj.displayCoord=true;   
+                }
+
+            }
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
+            this.GenerateOn=!this.GenerateOn; 
+            console.log("generating Asteroids: " + this.GenerateOn);
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) {
+
+            for (var i = 0; i < this.mAllObjs.size(); i++) {
+                var obj = this.mAllObjs.getObjectAt(i);
+
+                if(obj.yv==0){
+                    obj.yv=-7;
+                }
+                else{
+                    obj.yv=0;
+                }
+            }
+        }
     }
-    else
-    {
-        this.helpTableVisible = false;
-    }
     
-  
-    
-    //selecting Ray type:
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
-            gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
-        
-        this.selectIndex--;
-        this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
-        this.selectedElement = this.elements[this.selectIndex];
-    }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
-            gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
-        this.selectIndex++;
-        this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
-        this.selectedElement = this.elements[this.selectIndex];
-    }    
-    
-    var heroXF = this.mHero.getXform();
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
-        heroXF.incRotationByDegree(1.5);       
-    }
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
-        heroXF.incRotationByDegree(-1.5);    
-    }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-        this.generateProjectile();
-    }
 };
 
 
 //random asteroid generation
 AsteroidScene.prototype.generateAsteroid = function () {
-       
-    var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
-    var yl = 120;
-    
-    var type=0;
-    
-    type = Math.round(Math.random()*this.maxType);  
-    
-    var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl, false, type);
-    
-    //drop speed
-    Asteroid1.yv=-7;
-    
-    this.mAllObjs.addToSet(Asteroid1);    
+     
+    if(this.GenerateOn){
+        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
+        var yl = 120;
+
+        var type=0;
+
+        type = Math.round(Math.random()*this.maxType);  
+
+        var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl, false, type);
+
+        //drop speed
+        Asteroid1.yv=-7;
+
+        this.mAllObjs.addToSet(Asteroid1); 
+    }
 };
 
 
@@ -455,8 +529,8 @@ AsteroidScene.prototype.generateProjectile = function () {
         //get in radians for Math javascript func
         var rot = hxf.getRotationInRad();
         
-        var w = 200;
-        var h = 200;
+        var w = 10;
+        var h = 10;
         //create new projectile
         //console.log("selection"+this.selection);
         var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
@@ -464,26 +538,26 @@ AsteroidScene.prototype.generateProjectile = function () {
         //setting projectile velocity
         this.maxV=100;
         
-        if(this.raycast){
+        // if raycast
+        if(this.selectIndex==2){
             this.maxV=0;
             p.getXform().setRotationInRad(rot);
             
             p.getXform().setSize(10,2000);
-            
-            this.rayDataType=this.selectIndex;
-            
+                        
             //p.mMinion.getXform().setSize(2, 100);
             
            // p.mRigidBody.mWidth=2;
             //p.mRigidBody.mHeight=100;
             
             p.lifeTime=130;
+            
+            this.rayCast();
         }
         
         var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
         var yv = this.maxV*Math.cos(rot);
         
-        this.raym = Math.tan(rot);
        
         p.xv=xv;
         p.yv=yv;
@@ -496,6 +570,8 @@ AsteroidScene.prototype.generateProjectile = function () {
     //}    
 }
 
+
+//checking for raycast collisions
 AsteroidScene.prototype.rayCast = function () {
   
   
@@ -503,20 +579,52 @@ AsteroidScene.prototype.rayCast = function () {
       
         var ast= this.mAllObjs.getObjectAt(i);
         
-        var axf = ast.getXform();
-        
-        var x = axf.getXPos();
-        var y = axf.getYPos();
-        
-        if(y == this.raym*x ){
-            
-            if(ast.dataType== this.rayDataType){
-                ast.hit();
-            }
-            else{
-                ast.falseHit();
-            }
-        }
-  }
-    
+        if(ast instanceof Asteroid){
+
+                var axf = ast.getXform();
+
+                var astx = axf.getXPos();
+                var asty = axf.getYPos();
+                            
+                
+                //given asteroid x position, calculate where ray would intersect
+                var theta = this.mHero.getXform().getRotationInRad();
+                
+                // find out which direction the laser is firing and compare to if asteroid is left or right of laser source
+                var mirror=false;
+                if (theta >0 && astx<=0){
+                    mirror=true;
+                }
+                else if(theta<0 && astx>=0){
+                    mirror=true;
+                }
+                
+                
+                var y = Math.abs(astx-this.mHero.getXform().getXPos())/Math.tan(Math.abs(theta)-this.mHero.getXform().getYPos());
+                
+                
+
+                console.log("asty "+asty+"  intersect y:" +y +" theta: "+theta*180/Math.PI);
+
+                var yhi= y +axf.getHeight()*.5;
+                var ylow = y-axf.getHeight()*.5;
+
+                //check if intersection
+                if(asty>= ylow && asty <= yhi && mirror){
+
+                    console.log("Ray Hit!");
+                    //check if correct data types
+                    if(ast.dataType == this.selectionIndex){
+                        this.incrementScore(true);
+                        this.mAllObjs.removeFromSet(ast);
+
+                    }
+                    else{
+                        this.incrementScore(false);
+                        this.mAllObjs.removeFromSet(ast);
+                    }
+                    
+                }
+          }
+    }  
 }
