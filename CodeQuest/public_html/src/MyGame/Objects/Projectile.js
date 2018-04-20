@@ -58,7 +58,7 @@ function Projectile(spriteTexture, atX, atY, width, height, createCircle, type) 
         this.mMinion.setColor([1, 1, 0, 1]);   
     }
         if(type==2){
-        this.mMinion.setColor([0, 0, 1, 1]);   
+        this.mMinion.setColor([1, .1, .1, 2]);   
     }
         if(type==3){
         this.mMinion.setColor([1, 0, 1, 1]);   
@@ -119,7 +119,7 @@ Projectile.prototype.draw = function (aCamera) {
         }
         
         if ((this.mRigidBody !== null) && (this.mDrawRigidShape)){
-            this.mRigidBody.draw(aCamera);
+            //this.mRigidBody.draw(aCamera);
         }
     }
     //this.text.draw(aCamera);

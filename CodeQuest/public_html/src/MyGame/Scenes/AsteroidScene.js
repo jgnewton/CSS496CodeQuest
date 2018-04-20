@@ -543,14 +543,14 @@ AsteroidScene.prototype.generateProjectile = function () {
             this.maxV=0;
             p.getXform().setRotationInRad(rot);
             
-            p.getXform().setSize(2,2000);
+            p.getXform().setSize(1,2000);
                         
             //p.mMinion.getXform().setSize(2, 100);
             
            // p.mRigidBody.mWidth=2;
             //p.mRigidBody.mHeight=100;
             
-            p.lifeTime=1030;
+            p.lifeTime=30;
             
             this.rayCast();
         }
@@ -631,6 +631,10 @@ AsteroidScene.prototype.rayCast = function () {
                 
                 console.log(" theta: "+theta*180/Math.PI + " thetaMAx:"+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
                 
+                
+                // displaying Boundary rays
+                
+                /*
                 if(astx<=0){
                     var rend = new Renderable();
                     rend.setColor([1,0,0,1]);
@@ -685,6 +689,8 @@ AsteroidScene.prototype.rayCast = function () {
                     
                     this.mAllObjs.addToSet(rend2);  
                 }
+                */
+               
 
 
                 //check if in possible theta range for collision

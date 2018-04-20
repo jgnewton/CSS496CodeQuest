@@ -100,16 +100,16 @@ LessonScene.prototype.loadScene = function () {
    
    gEngine.Textures.loadTexture(this.speechBouble); 
    //gEngine.Textures.loadTexture(this.lessonOne); 
-//   
-   //gEngine.Textures.loadTexture(this.LessoneOne1); 
-//   gEngine.Textures.loadTexture(this.LessoneOne2); 
-//   gEngine.Textures.loadTexture(this.LessoneOne3); 
-//   gEngine.Textures.loadTexture(this.LessoneOne4); 
-//   gEngine.Textures.loadTexture(this.LessoneOne5); 
-//   gEngine.Textures.loadTexture(this.LessoneOne6); 
-//   gEngine.Textures.loadTexture(this.LessoneOne7); 
-//   gEngine.Textures.loadTexture(this.LessoneOne8); 
-//   gEngine.Textures.loadTexture(this.LessoneOne9); 
+   
+   gEngine.Textures.loadTexture(this.LessoneOne1); 
+   gEngine.Textures.loadTexture(this.LessoneOne2); 
+   gEngine.Textures.loadTexture(this.LessoneOne3); 
+   gEngine.Textures.loadTexture(this.LessoneOne4); 
+   gEngine.Textures.loadTexture(this.LessoneOne5); 
+   gEngine.Textures.loadTexture(this.LessoneOne6); 
+   gEngine.Textures.loadTexture(this.LessoneOne7); 
+   gEngine.Textures.loadTexture(this.LessoneOne8); 
+   gEngine.Textures.loadTexture(this.LessoneOne9); 
    
 };
 
