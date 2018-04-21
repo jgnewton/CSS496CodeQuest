@@ -237,11 +237,15 @@ LessonScene.prototype.update = function () {
     
     // left and right should scroll the text of the lesson??
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) {
-
+            
+            this.current--;
+            this.current = clamp(this.current, 0, this.LessonOne.length - 1);
+            //this.selectedElement = this.elements[this.selectIndex];
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right)) {
-
+            this.current++;
+            this.current = clamp(this.current, 0, this.LessonOne.length - 1);
     }    
     
     
