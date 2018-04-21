@@ -197,7 +197,7 @@ MyGame.prototype.checkZones = function () {
             
             // hard coding this to be the lesson scene for now
             //this.nextScene=this.zones[i].sceneNumber;
-            this.nextScene = 1;
+            this.nextScene = 2;
             
             gEngine.GameLoop.stop();
         }

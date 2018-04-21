@@ -101,15 +101,15 @@ LessonScene.prototype.loadScene = function () {
    gEngine.Textures.loadTexture(this.speechBouble); 
    //gEngine.Textures.loadTexture(this.lessonOne); 
    
-   gEngine.Textures.loadTexture(this.LessoneOne1); 
-   gEngine.Textures.loadTexture(this.LessoneOne2); 
-   gEngine.Textures.loadTexture(this.LessoneOne3); 
-   gEngine.Textures.loadTexture(this.LessoneOne4); 
-   gEngine.Textures.loadTexture(this.LessoneOne5); 
-   gEngine.Textures.loadTexture(this.LessoneOne6); 
-   gEngine.Textures.loadTexture(this.LessoneOne7); 
-   gEngine.Textures.loadTexture(this.LessoneOne8); 
-   gEngine.Textures.loadTexture(this.LessoneOne9); 
+   gEngine.Textures.loadTexture(this.LessonOne1); 
+   gEngine.Textures.loadTexture(this.LessonOne2); 
+   gEngine.Textures.loadTexture(this.LessonOne3); 
+   gEngine.Textures.loadTexture(this.LessonOne4); 
+   gEngine.Textures.loadTexture(this.LessonOne5); 
+   gEngine.Textures.loadTexture(this.LessonOne6); 
+   gEngine.Textures.loadTexture(this.LessonOne7); 
+   gEngine.Textures.loadTexture(this.LessonOne8); 
+   gEngine.Textures.loadTexture(this.LessonOne9); 
    
 };
 
@@ -128,15 +128,15 @@ LessonScene.prototype.unloadScene = function () {
    //gEngine.Textures.unloadTexture(this.speechBouble); 
    //gEngine.Textures.unloadTexture(this.lessonOne);
    
-   gEngine.Textures.unloadTexture(this.LessoneOne1); 
-   gEngine.Textures.unloadTexture(this.LessoneOne2); 
-   gEngine.Textures.unloadTexture(this.LessoneOne3); 
-   gEngine.Textures.unloadTexture(this.LessoneOne4); 
-   gEngine.Textures.unloadTexture(this.LessoneOne5); 
-   gEngine.Textures.unloadTexture(this.LessoneOne6); 
-   gEngine.Textures.unloadTexture(this.LessoneOne7); 
-   gEngine.Textures.unloadTexture(this.LessoneOne8); 
-   gEngine.Textures.unloadTexture(this.LessoneOne9);
+   gEngine.Textures.unloadTexture(this.LessonOne1); 
+   gEngine.Textures.unloadTexture(this.LessonOne2); 
+   gEngine.Textures.unloadTexture(this.LessonOne3); 
+   gEngine.Textures.unloadTexture(this.LessonOne4); 
+   gEngine.Textures.unloadTexture(this.LessonOne5); 
+   gEngine.Textures.unloadTexture(this.LessonOne6); 
+   gEngine.Textures.unloadTexture(this.LessonOne7); 
+   gEngine.Textures.unloadTexture(this.LessonOne8); 
+   gEngine.Textures.unloadTexture(this.LessonOne9);
    
     //var MG = new MyGame();
     gEngine.Core.startScene(new AsteroidScene); 
@@ -282,14 +282,14 @@ LessonScene.prototype.initLessonOne = function() {
     this.LessonOneTextures.push(this.LessonOne9);
     
     this.LessonOne = [];
-    for(var i=0; i < LessonOneTextures.length; i++){
+    for(var i=0; i < this.LessonOneTextures.length; i++){
         var texture = new TextureRenderable(this.LessonOneTextures[i]);
         var txf = texture.getXform();
         txf.setPosition(30,0);
         txf.setWidth(350);
         txf.setHeight(160);
         
-        this.lessonOne.push(texture);
+        this.LessonOne.push(texture);
     }
      
      
