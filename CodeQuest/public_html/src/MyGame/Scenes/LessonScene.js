@@ -289,8 +289,8 @@ LessonScene.prototype.initLessonOne = function() {
     for(var i=0; i < this.LessonOneTextures.length; i++){
         var texture = new TextureRenderable(this.LessonOneTextures[i]);
         var txf = texture.getXform();
-        txf.setPosition(30,0);
-        txf.setWidth(350);
+        txf.setPosition(0,0);
+        txf.setWidth(330);
         txf.setHeight(160);
         
         this.LessonOne.push(texture);
