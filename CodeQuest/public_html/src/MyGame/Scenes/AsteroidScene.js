@@ -97,6 +97,12 @@ function AsteroidScene() {
     this.gameOverText2 = null;
     this.gameOverText3 = null;
     this.gameOverText4 = null;
+    
+    this.Accuracy=null;
+    this.Shots=null;
+    this.Hits=null;
+    
+    this.revealMsg = null;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -226,6 +232,11 @@ AsteroidScene.prototype.initialize = function () {
     this.gameOverText3 = new MenuElement("Press X to return to overworld", -70, -30, 10);
     //this.gameOverText4 = new MenuElement("Press Space to play again", -45, -60, 10);
     
+    this.Accuracy=0;
+    this.Hits=0;
+    this.Shots=0;
+    
+    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -265,15 +276,12 @@ AsteroidScene.prototype.draw = function () {
         }
     }
     
+    this.accuracyText.draw(this.mCamera);
     
+    if(this.revealMsg!=null){
+        this.revealMsg.draw(this.mCamera);
+    }
     
-    // for now draw these ...
-    /*for (var i = 0; i<this.mCollisionInfos.length; i++) 
-        this.mCollisionInfos[i].draw(this.mCamera); */
-    //this.mCollisionInfos = []; 
-    
-    //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
-    //this.mShapeMsg.draw(this.mCamera);
 
 };
 
@@ -285,29 +293,6 @@ AsteroidScene.prototype.update = function () {
     var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
     this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
 
-    /*
-    //debuggin messages
-    var selection = "";
-    if(this.selection==0){
-        selection = "Integer";
-    }
-        if(this.selection==1){
-        selection = "Double";
-    }
-        if(this.selection==2){
-        selection = "Boolean";
-    }
-        if(this.selection==3){
-        selection = "Char";
-    }
-        if(this.selection==4){
-        selection = "String";
-    }
-    this.mShapeMsg.setText("Current Selection : "+selection);  
-    */
-    //this.generateProjectile();
-    
-    //updating projectiles (object) set
     
     //updating the generating of asteroids
     this.genTimer++;
@@ -318,7 +303,7 @@ AsteroidScene.prototype.update = function () {
 
     // don't call rayCast 60 times per second, should be called when pressing fire right?
     //this.rayCast();
-    
+        
 };
 
 AsteroidScene.prototype.updateObjects = function(){
@@ -326,10 +311,9 @@ AsteroidScene.prototype.updateObjects = function(){
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
         obj.update();
-        
-        
+        // if asteroid, check for collision with projectils
         if(obj instanceof Asteroid ){
-            
+                        
             //console.log(this.ground.getBBox());
             //console.log(obj.bound);
            
@@ -348,31 +332,19 @@ AsteroidScene.prototype.updateObjects = function(){
             }
             
             // check collision of this asteroid with all projectiles
-            for (var j = 0; j < this.mAllObjs.size(); j++) {
-                
+            for (var j = 0; j < this.mAllObjs.size(); j++) {                
                 var proj = this.mAllObjs.getObjectAt(j);
                 if(proj instanceof Projectile){
                                        
                     var projectileBound = proj.getBBox();
                                        
-                    if(obj.bound.intersectsBound(projectileBound)!= 0){
-                        if(obj.dataType == proj.dataType){
-                            this.incrementScore(true);
-                            this.mAllObjs.removeFromSet(obj);
-                            this.mAllObjs.removeFromSet(proj);
-                            
-                        }
-                        else{
-                            this.incrementScore(false);
-                            this.mAllObjs.removeFromSet(obj);
-                            this.mAllObjs.removeFromSet(proj);
-                        }
-                    }
-                    
+                    if(obj.bound.intersectsBound(projectileBound)!= 0){                     
+                        this.procHit(obj, proj);                        
+                    }   
                 }
-            }      
-        
+            }       
         }
+        //checking for projectile termination (upon leaving camera view)
         else if(obj instanceof Projectile){
             obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
             if (obj.terminated){
@@ -388,6 +360,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
     //this.nextMarkX += this.markOffset;
     this.scoreMarksArray.push(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
     this.nextMarkX += this.markOffset;
+    this.Shots++;
     
     // if the score was incremented with a bad hit, increase number of
     // incorrect/missed asteroids
@@ -395,6 +368,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
         this.numIncorrect++;
     } else {
         this.numCorrect++;
+        this.Hits++;
     }
     
     // toggle gameover state if exceeded gameeover number
@@ -408,6 +382,12 @@ AsteroidScene.prototype.incrementScore = function(hit){
         this.nextMarkY += this.markOffset;
         this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
     }
+    
+    if(this.Shots!=0){
+        this.Accuracy= this.Hits/ this.Shots * 100;
+    }
+    
+    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
 };
 
 AsteroidScene.prototype.processInput = function(){
@@ -426,41 +406,63 @@ AsteroidScene.prototype.processInput = function(){
         }
 
 
-
-        //selecting Ray type:
+        //selecting Projectile type:
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
                 gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
 
             this.selectIndex--;
-            this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+            
+            if(this.selectIndex<0){
+                this.selectIndex=this.elements.length-1;
+            }
+            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+            
+            
             this.selectedElement = this.elements[this.selectIndex];
         }
 
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
                 gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
             this.selectIndex++;
-            this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+            
+            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+            
+            if(this.selectIndex>this.elements.length-1){
+                this.selectIndex=0;
+            }
+            
             this.selectedElement = this.elements[this.selectIndex];
         }    
 
         var heroXF = this.mHero.getXform();
-
+        
+        
+        //roate hero firing cannon, clamped at 100 and -100
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
-            heroXF.incRotationByDegree(1.5);       
+            heroXF.incRotationByDegree(1.5);
+            
+            if(heroXF.getRotationInDegree()>100){
+               heroXF.setRotationInDegree(100);
+            }
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
-            heroXF.incRotationByDegree(-1.5);    
+            heroXF.incRotationByDegree(-1.5);
+            
+            if(heroXF.getRotationInDegree()<-100){
+               heroXF.setRotationInDegree(-100);
+            }
         }
-
+        
+        //fire
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
             this.generateProjectile();
         }
-
+        
+        //debugging to display asteroid coordinates
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Y)) {
             for (var i = 0; i < this.mAllObjs.size(); i++) {
                 var obj = this.mAllObjs.getObjectAt(i);
-
 
                 //written like this because displayCoord is not defined in all objects
                 if(obj.displayCoord){
@@ -468,15 +470,16 @@ AsteroidScene.prototype.processInput = function(){
                 }else{
                    obj.displayCoord=true;   
                 }
-
             }
         }
-
+        
+        //turn off or on asteroid generation
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
             this.GenerateOn=!this.GenerateOn; 
             console.log("generating Asteroids: " + this.GenerateOn);
         }
-
+        
+        //stop or start asteroid movement
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) {
 
             for (var i = 0; i < this.mAllObjs.size(); i++) {
@@ -495,7 +498,7 @@ AsteroidScene.prototype.processInput = function(){
 };
 
 
-//random asteroid generation
+//Generate an asteroid at a random location at the top of the camera view
 AsteroidScene.prototype.generateAsteroid = function () {
      
     if(this.GenerateOn){
@@ -544,21 +547,15 @@ AsteroidScene.prototype.generateProjectile = function () {
             p.getXform().setRotationInRad(rot);
             
             p.getXform().setSize(1,2000);
-                        
-            //p.mMinion.getXform().setSize(2, 100);
-            
-           // p.mRigidBody.mWidth=2;
-            //p.mRigidBody.mHeight=100;
-            
+                                    
             p.lifeTime=30;
             
-            this.rayCast();
+            this.rayCast(p);
         }
         
         var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
         var yv = this.maxV*Math.cos(rot);
         
-       
         p.xv=xv;
         p.yv=yv;
         
@@ -572,144 +569,94 @@ AsteroidScene.prototype.generateProjectile = function () {
 
 
 //checking for raycast collisions
-AsteroidScene.prototype.rayCast = function () {
-  
-  
+AsteroidScene.prototype.rayCast = function (p) {
+    
     for (var i = 0; i < this.mAllObjs.size(); i++) {
       
         var ast= this.mAllObjs.getObjectAt(i);
         
         if(ast instanceof Asteroid){
 
-                var axf = ast.getXform();
+            var axf = ast.getXform();
+            var astx = axf.getXPos();
+            var asty = axf.getYPos();
 
-                var astx = axf.getXPos();
-                    
-                
-                var asty = axf.getYPos();
-                            
-                
-                //the Actual Rotation of the Hero.
-                var theta = this.mHero.getXform().getRotationInRad();
-                
-                // find out which direction the laser is firing and compare to if asteroid is left or right of laser source
-                var mirror=false;
-                if (theta >0 && astx<=0){
-                    mirror=true;
-                }
-                else if(theta<0 && astx>=0){
-                    mirror=true;
-                }
-                               
-                
-                //ray to far bottom corner
-                var thetaMax=0;
-                
-                //ray to near top corner
-                var thetaMin=0;
-                
-                //case 1: Asteroid to left  (0 degrees is straight up, horizontal left is 90, horizontal right in -90...don't Ask... ask Kelvin              
-                if(astx<=0){
-                    //top right
-                    thetaMin= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
-                    
-                    
-                    //bottom left
-                    thetaMax= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
-                }
-                
-                //asteroid on right
-                else{
-                    //top left corner
-                    thetaMin= -1*(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
-                    
-                    //bottom right corner
-                    thetaMax= -1*(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
-                }
-                
-                //console.log("asty "+asty+"  intersect y:" +y +" theta: "+theta*180/Math.PI);
-                
-                console.log(" theta: "+theta*180/Math.PI + " thetaMAx:"+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
-                
-                
-                // displaying Boundary rays
-                
-                /*
-                if(astx<=0){
-                    var rend = new Renderable();
-                    rend.setColor([1,0,0,1]);
-                    
-                    var toprx = astx + axf.getWidth()/2;
-                    var topry = asty + axf.getHeight()/2;
-                    
-                    
-                    rend.getXform().setPosition(toprx/2, topry/2 -30);
-                    rend.getXform().setSize(1,Math.sqrt(toprx*toprx+(topry+60)*(topry+60)));
-                    rend.getXform().setRotationInRad(thetaMin);
-                    
-                    this.mAllObjs.addToSet(rend);
-                    
-                    var rend2 = new Renderable();
-                    rend2.setColor([1,0,0,1]);
-                    
-                    var blx = astx - axf.getWidth()/2;
-                    var bly = asty - axf.getHeight()/2;
-                    
-                    
-                    rend2.getXform().setPosition(blx/2, bly/2 -30);
-                    rend2.getXform().setSize(1,Math.sqrt(blx*blx+(bly+60)*(bly+60)));
-                    rend2.getXform().setRotationInRad(thetaMax);
-                    
-                    this.mAllObjs.addToSet(rend2);
-                }
-                else{
-                    var rend = new Renderable();
-                    rend.setColor([1,0,0,1]);
-                    
-                    var tlx = astx - axf.getWidth()/2;
-                    var tly = asty + axf.getHeight()/2;
-                    
-                    
-                    rend.getXform().setPosition(tlx/2, tly/2 -30);
-                    rend.getXform().setSize(1,Math.sqrt(tlx*tlx+(tly+60)*(tly+60)));
-                    rend.getXform().setRotationInRad(thetaMin);
-                    
-                    this.mAllObjs.addToSet(rend);
-                    
-                    var rend2 = new Renderable();
-                    rend2.setColor([1,0,0,1]);
-                    
-                    var brx = astx + axf.getWidth()/2;
-                    var bry = asty - axf.getHeight()/2;
-                    
-                    
-                    rend2.getXform().setPosition(brx/2, bry/2 -30);
-                    rend2.getXform().setSize(1,Math.sqrt(brx*brx+(bry+60)*(bry+60)));
-                    rend2.getXform().setRotationInRad(thetaMax);
-                    
-                    this.mAllObjs.addToSet(rend2);  
-                }
-                */
-               
+            //the Actual Rotation of the Hero.
+            var theta = this.mHero.getXform().getRotationInRad();                              
 
+            //ray to far bottom corner
+            var thetaMax=0;
 
-                //check if in possible theta range for collision
-                  if(Math.abs(theta)>=Math.abs(thetaMin) && Math.abs(theta) <=Math.abs(thetaMax)){
-                    console.log("Ray Hit!");
-                    
-     
-                    //check if correct data types
-                    if(ast.dataType == this.selectionIndex){
-                        this.incrementScore(true);
-                        this.mAllObjs.removeFromSet(ast);
+            //ray to near top corner
+            var thetaMin=0;
 
-                    }
-                    else{
-                        this.incrementScore(false);
-                        this.mAllObjs.removeFromSet(ast);
-                    }
-                    
-                }
+            //case 1: Asteroid to left  (0 degrees is straight up, horizontal left is 90, horizontal right in -90...don't Ask... ask Kelvin              
+            if(astx<=0){
+                //top right
+                thetaMin= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
+
+             //bottom left
+                thetaMax= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
+            }
+
+            //asteroid on right
+            else{
+                //top left corner
+                thetaMin= -1*(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
+
+                //bottom right corner
+                thetaMax= -1*(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
+            }                  
+            console.log(" theta: "+theta*180/Math.PI + " thetaMAx:"+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
+
+            //check if in possible theta range for collision
+            if(Math.abs(theta)>=Math.abs(thetaMin) && Math.abs(theta) <=Math.abs(thetaMax)){
+              console.log("Ray Hit! SelectionIndex:"+this.selectIndex+" asteroidDataType:"+ast.dataType);
+              this.procHit(ast, p);
+            }
           }
     }  
 }
+
+AsteroidScene.prototype.procHit = function(obj, proj) {   
+    //for making reveal message
+    var x = obj.getXform().getXPos();
+    var y = obj.getXform().getYPos();
+    var type = obj.dataType;
+    
+    if(obj.dataType == proj.dataType){
+        this.incrementScore(true);
+        this.mAllObjs.removeFromSet(obj);
+        this.mAllObjs.removeFromSet(proj);
+
+    }
+    else{
+        this.incrementScore(false);
+        this.mAllObjs.removeFromSet(obj);
+        this.mAllObjs.removeFromSet(proj);
+
+        // display a reveal message
+        var text="null";
+        if(type==0){
+            text = "int";
+        }
+            if(type==1){
+            text = "double";
+        }
+            if(type==2){
+            text = "boolean";
+        }
+            if(type==3){
+            text = "char";
+        }
+            if(type==4){
+            text = "string";
+        }
+
+        this.revealMsg = new FontRenderable(text);
+        this.revealMsg.setColor([0, 0, 0, 1]);
+        this.revealMsg.getXform().setPosition(x, y);
+        this.revealMsg.setTextHeight(5);
+    }
+    
+};

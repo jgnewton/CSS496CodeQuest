@@ -50,22 +50,35 @@ function Projectile(spriteTexture, atX, atY, width, height, createCircle, type) 
     
     
     this.dataType=type;
-
+    
+    var text = "text"
+    
     if(type==0){
-        this.mMinion.setColor([1, 0, 0, 1]);   
+        this.mMinion.setColor([1, 0, 0, 1]);
+        text = "int";
     }
         if(type==1){
-        this.mMinion.setColor([1, 1, 0, 1]);   
+        this.mMinion.setColor([1, 1, 0, 1]);
+        text = "double";
     }
         if(type==2){
-        this.mMinion.setColor([1, .1, .1, 2]);   
+        this.mMinion.setColor([1, .1, .1, 2]);
+        text = "boolean";
     }
         if(type==3){
-        this.mMinion.setColor([1, 0, 1, 1]);   
+        this.mMinion.setColor([1, 0, 1, 1]);
+        text = "char";
     }
         if(type==4){
-        this.mMinion.setColor([0, 1, 1, 1]);   
+        this.mMinion.setColor([0, 1, 1, 1]); 
+        text = "string";
     }
+    
+    this.text = new FontRenderable(text);
+    this.text.setColor([0, 0, 0, 1]);
+    this.text.getXform().setPosition(atX, atY);
+    this.text.setTextHeight(5);
+    
     
     
     //projectiles do not interact with physics... or gravity.
@@ -100,6 +113,8 @@ Projectile.prototype.update = function () {
     this.mMinion.updateAnimation();
     var x = mxf.getXPos();
     var y = mxf.getYPos();
+    
+    this.text.getXform().setPosition(x, y);
         
     //check for being outside camera bounds
     this.lifeTime--;
@@ -111,6 +126,9 @@ Projectile.prototype.draw = function (aCamera) {
     
             this.mRenderComponent.draw(aCamera);
             this.mMinion.draw(aCamera);
+            
+            this.text.draw(aCamera);
+            
     if (this.isVisible()) {
         
         if (this.mDrawRenderable){
