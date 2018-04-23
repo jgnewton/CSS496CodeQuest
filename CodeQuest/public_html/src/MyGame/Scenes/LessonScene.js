@@ -32,6 +32,8 @@ function LessonScene() {
     this.LessonOne7 = "assets/LessonOne/LessonOne7.PNG";
     this.LessonOne8 = "assets/LessonOne/LessonOne8.PNG";
     this.LessonOne9 = "assets/LessonOne/LessonOne9.PNG";
+   // this.LessonOne9 = "assets/LessonOne/LessonOne9.PNG";
+    
     
     this.mCamera = null;
 
