@@ -67,7 +67,8 @@ MyGame.prototype.unloadScene = function () {
     var SceneObject = new AsteroidScene();
     
     if(this.nextScene==0){
-        SceneObject = new MyGame();
+        gEngine.Core.startScene(new MyGame());
+        
     }
     
     //this.nextScene indicates which scene to load next

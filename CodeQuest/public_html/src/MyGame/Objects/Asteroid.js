@@ -170,11 +170,11 @@ Asteroid.prototype.update = function () {
     this.text.getXform().setPosition(x, y);
 };
 
-
+//commented out draw render temporarily
 Asteroid.prototype.draw = function (aCamera) {
     if (this.isVisible()) {
         if (this.mDrawRenderable)
-            this.mRenderComponent.draw(aCamera);
+           // this.mRenderComponent.draw(aCamera);
         if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
             this.mRigidBody.draw(aCamera);
     }
