@@ -110,6 +110,12 @@ function BasketScene() {
     this.Hits=null;
     
     this.revealMsg = null;
+    
+    this.basketString=null;
+    this.basketText=null;
+    
+    
+    this.revealTime=0;
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -174,13 +180,6 @@ BasketScene.prototype.initialize = function () {
     this.ground.getXform().setRotationInDegree(0); // In Degree
     this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
     this.mAllObjs.addToSet(this.ground);
-   /*
-   // Selection message
-    this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
-    this.mShapeMsg.setColor([0, 0, 0, 1]);
-    this.mShapeMsg.getXform().setPosition(this.WCCenterX-this.WCWidth/2, this.WCCenterY-80);
-    this.mShapeMsg.setTextHeight(7.5);
-    */
     
     // background init
     this.mBackground = new TextureRenderable(this.kMW);
@@ -190,46 +189,30 @@ BasketScene.prototype.initialize = function () {
     bxf.setWidth(500);
     bxf.setHeight(500);
     
-    /*
-     *     if(this.selection==0){
-        selection = "Integer";
-    }
-        if(this.selection==1){
-        selection = "Double";
-    }
-        if(this.selection==2){
-        selection = "Boolean";
-    }
-        if(this.selection==3){
-        selection = "Char";
-    }
-        if(this.selection==4){
-        selection = "String";
-    }
-     */
-    // initialize the text that represents data types
     
     var textSize = 5;
-    var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
+    var textYpos = -this.WCHeight / 2 + this.groundHeight / 2;
     var textXPos = 110;
     var textOffset = 10;
     
-    this.intText = new MenuElement("Int", textXPos, textYpos + textOffset * 4, textSize);
-    this.doubleText = new MenuElement("Double", textXPos, textYpos + textOffset * 3, textSize);
-    this.boolText = new MenuElement("Boolean", textXPos, textYpos + textOffset * 2, textSize);
-    this.charText = new MenuElement("Char", textXPos, textYpos + textOffset, textSize);
-    this.stringText = new MenuElement("String", textXPos, textYpos, textSize);
+    this.eqText = new MenuElement("==", textXPos, textYpos + textOffset * 4, textSize);
+    this.neqText = new MenuElement("!=", textXPos, textYpos + textOffset * 3, textSize);
+    this.lessText = new MenuElement("<", textXPos, textYpos + textOffset * 2, textSize);
+    this.moreText = new MenuElement(">", textXPos, textYpos + textOffset, textSize);
+    this.eqmoreText = new MenuElement(">=", textXPos, textYpos, textSize);
+    this.eqlessText = new MenuElement("<=", textXPos, textYpos - textOffset, textSize);
     //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
     
     this.elements = [
-        this.intText,
-        this.doubleText,
-        this.boolText,
-        this.charText,
-        this.stringText
+        this.eqText,
+        this.neqText,
+        this.lessText,
+        this.moreText,
+        this.eqmoreText,
+        this.eqlessText
     ];
     
-    this.selectedElement = this.intText;
+    this.selectedElement = this.elements[0];
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
@@ -246,7 +229,17 @@ BasketScene.prototype.initialize = function () {
     
     this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
     
-    this.revealTime=0;
+    this.fruit1 = new Fruit(this.kArrow, 0, 0);
+    this.mAllObjs.addToSet(this.fruit1);
+    
+    this.generateFruit(5);
+    
+    this.basketText = new FontRenderable("text");
+    this.basketText.setColor([0, 0, 0, 1]);
+    this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos() );
+    this.basketText.setTextHeight(7.5);
+     
+
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -294,6 +287,7 @@ BasketScene.prototype.draw = function () {
         }
     }
     
+    this.basketText.draw(this.mCamera);
 
 };
 
@@ -317,54 +311,23 @@ BasketScene.prototype.update = function () {
     //this.rayCast();
     
     this.revealTime--;
-        
+    
+    this.updateBasketText();
+    
+    this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos() );
+    
 };
 
 BasketScene.prototype.updateObjects = function(){
     //manually update all objects in the set
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
-        obj.update();
+        if(obj instanceof Fruit){
+            obj.update(this.mAllObjs);
+        }else{           
+            obj.update();
+        }
         // if asteroid, check for collision with projectils
-        if(obj instanceof Asteroid ){
-                        
-            //console.log(this.ground.getBBox());
-            //console.log(obj.bound);
-           
-            //var groundBound = ;
-            
-            // for some reason the Asteroid never collides with the ground... But
-            // the intersectsBound call does happen and returns false
-            //console.log(obj.bound.intersectsBound(this.ground.getBBox()));
-            //if(obj.bound.intersectsBound(this.ground.getBBox())!= 0){
-            //var groundHeight = this.WCHeight / 4.5;
-            //this.ground.getXform().setPosition(0, -this.WCHeight / 2 + groundHeight / 2);
-            if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
-                //console.log("asteroid collision with ground");
-                this.incrementScore(false);
-                this.mAllObjs.removeFromSet(obj);
-            }
-            
-            // check collision of this asteroid with all projectiles
-            for (var j = 0; j < this.mAllObjs.size(); j++) {                
-                var proj = this.mAllObjs.getObjectAt(j);
-                if(proj instanceof Projectile){
-                                       
-                    var projectileBound = proj.getBBox();
-                                       
-                    if(obj.bound.intersectsBound(projectileBound)!= 0){                     
-                        this.procHit(obj, proj);                        
-                    }   
-                }
-            }       
-        }
-        //checking for projectile termination (upon leaving camera view)
-        else if(obj instanceof Projectile){
-            obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
-            if (obj.terminated){
-                this.mAllObjs.removeFromSet(obj);
-            }
-        }
     }
 };
 
@@ -431,6 +394,33 @@ BasketScene.prototype.processInput = function(){
             heroXF.incXPosBy(deltax);
         }    
         
+        
+        //adjusting operator type
+         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A)) {
+
+            this.selectIndex--;
+            
+            if(this.selectIndex<0){
+                this.selectIndex=this.elements.length-1;
+            }
+            this.selectedElement = this.elements[this.selectIndex];
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)){
+            this.selectIndex++;           
+            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);         
+            if(this.selectIndex>this.elements.length-1){
+                this.selectIndex=0;
+            }
+
+            this.selectedElement = this.elements[this.selectIndex];
+        }  
+        
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)){
+            this.checkFruitCollision();
+               
+        }
+        
 
         
         //turn off or on asteroid generation
@@ -479,55 +469,6 @@ BasketScene.prototype.generateAsteroid = function () {
 };
 
 
-//generating projectiles
-BasketScene.prototype.generateProjectile = function () {
-//checking for Hero Firing to see if a Projectile should be created
-    //if(this.mHero.firing){
-        
-        //get hero state info
-        var hxf = this.mHero.getXform();
-        var xp = hxf.getXPos();
-        var yp = hxf.getYPos();
-        
-        //get in radians for Math javascript func
-        var rot = hxf.getRotationInRad();
-        
-        var w = 10;
-        var h = 10;
-        //create new projectile
-        //console.log("selection"+this.selection);
-        var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
-        
-        //setting projectile velocity
-        this.maxV=100;
-        
-        // if raycast
-        if(this.selectIndex==2){
-            this.maxV=0;
-            p.getXform().setRotationInRad(rot);
-            
-            p.getXform().setSize(1,2000);
-                                    
-            p.lifeTime=30;
-            
-            this.rayCast(p);
-        }
-        
-        var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
-        var yv = this.maxV*Math.cos(rot);
-        
-        p.xv=xv;
-        p.yv=yv;
-        
-        //adding projectile to set
-        this.mAllObjs.addToSet(p);
-        
-        // allow hero to fire again
-        //this.mHero.firing=false;
-    //}    
-}
-
-
 BasketScene.prototype.procHit = function(obj, proj) {   
     //for making reveal message
     var x = obj.getXform().getXPos();
@@ -571,3 +512,79 @@ BasketScene.prototype.procHit = function(obj, proj) {
     }
     
 };
+
+BasketScene.prototype.defineProblemSet = function() { 
+    
+    this.problemSet = [
+        " 5 , 3+2",  
+    ];
+};
+
+BasketScene.prototype.generateFruit = function( num) { 
+    
+    for(var i =0; i<num;i++){
+        var x = this.WCCenterX-this.WCWidth/2 + (i*this.WCWidth/num)+ (1/num)*Math.random()*(this.WCWidth - 10);
+        var y = this.mHero.getXform().getYPos();
+        
+        var type = Math.round(Math.random()*8);
+        
+        var fruit = new Fruit(this.kArrow, x, y, type);
+        this.mAllObjs.addToSet(fruit);
+    }
+};
+
+BasketScene.prototype.updateBasketText = function( ) {
+    
+    this.leftOperand="5";
+    this.rightOperand="3";
+    
+    var op = "";
+    
+    switch(this.Operator){
+        case 0:
+            op ="==";
+            break;
+        case 1:
+            op="!=";
+            break;
+        case 2:
+            op=">";
+            break;
+        case 3:
+            op="<";
+            break;
+        case 4:
+            op=">=";
+            break;        
+        
+        case 5:
+            op="<=";
+            break;        
+        case 6:
+            op="&&";
+            break;        
+        case 7:
+            op="||";
+            break;        
+    }
+    
+    this.basketString = this.leftOperand + op + this.rightOperand;
+    
+    this.basketText.setText(this.basketString);
+}
+
+BasketScene.prototype.checkFruitCollision = function( ) {
+      for (var i = 0; i < this.mAllObjs.size(); i++) {
+        var obj = this.mAllObjs.getObjectAt(i);
+        if(obj instanceof Fruit){
+            
+            if(obj.checkCollision(this.mHero)){
+                obj.terminate=true;
+                this.Operator=obj.operatorType;
+                this.updateBasketText();
+            }
+        }  
+    }
+}
+
+
