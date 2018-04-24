@@ -82,6 +82,10 @@ MyGame.prototype.unloadScene = function () {
         gEngine.Core.startScene(new LessonScene());
     }
     
+    else if(this.nextScene==3){
+        gEngine.Core.startScene(new BasketScene());
+    }
+    
     
     //gEngine.Core.startScene(SceneObject);  
         
@@ -185,6 +189,13 @@ MyGame.prototype.update = function () {
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
     }
+    
+    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.B)) {
+        this.nextScene = 3;
+         gEngine.GameLoop.stop();  
+    }
+    
     
     this.checkZones();
 };

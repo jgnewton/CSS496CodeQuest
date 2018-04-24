@@ -117,7 +117,9 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
       rn = this.randString();  
     }
 
-    
+    if(rn==null){
+        console.log("rn error "+this.dataType);
+    }
     
     msg = rn.toString();
     

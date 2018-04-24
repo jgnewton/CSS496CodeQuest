@@ -1,5 +1,12 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
 /*
- * File: AsteroidScene.js 
+ * File: BasketScene.js 
  * This is the logic of our game. 
  */
 
@@ -11,7 +18,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function AsteroidScene() {
+function BasketScene() {
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kPlatformTexture = "assets/platform.png";
     this.kWallTexture = "assets/wall.png";
@@ -104,10 +111,10 @@ function AsteroidScene() {
     
     this.revealMsg = null;
 }
-gEngine.Core.inheritPrototype(AsteroidScene, Scene);
+gEngine.Core.inheritPrototype(BasketScene, Scene);
 
 
-AsteroidScene.prototype.loadScene = function () {
+BasketScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kPlatformTexture);
     gEngine.Textures.loadTexture(this.kWallTexture);
@@ -120,7 +127,7 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.helpTable); 
 };
 
-AsteroidScene.prototype.unloadScene = function () {
+BasketScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kPlatformTexture);
     gEngine.Textures.unloadTexture(this.kWallTexture);
@@ -136,7 +143,7 @@ AsteroidScene.prototype.unloadScene = function () {
     gEngine.Core.startScene(MG); 
 };
 
-AsteroidScene.prototype.initialize = function () {
+BasketScene.prototype.initialize = function () {
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera
@@ -206,6 +213,7 @@ AsteroidScene.prototype.initialize = function () {
     var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
     var textXPos = 110;
     var textOffset = 10;
+    
     this.intText = new MenuElement("Int", textXPos, textYpos + textOffset * 4, textSize);
     this.doubleText = new MenuElement("Double", textXPos, textYpos + textOffset * 3, textSize);
     this.boolText = new MenuElement("Boolean", textXPos, textYpos + textOffset * 2, textSize);
@@ -243,7 +251,7 @@ AsteroidScene.prototype.initialize = function () {
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-AsteroidScene.prototype.draw = function () {
+BasketScene.prototype.draw = function () {
     // Step A: clear the canvas
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
@@ -289,7 +297,7 @@ AsteroidScene.prototype.draw = function () {
 
 };
 
-AsteroidScene.prototype.update = function () {
+BasketScene.prototype.update = function () {
     this.processInput();
     this.updateObjects();
     
@@ -312,7 +320,7 @@ AsteroidScene.prototype.update = function () {
         
 };
 
-AsteroidScene.prototype.updateObjects = function(){
+BasketScene.prototype.updateObjects = function(){
     //manually update all objects in the set
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
@@ -360,7 +368,7 @@ AsteroidScene.prototype.updateObjects = function(){
     }
 };
 
-AsteroidScene.prototype.incrementScore = function(hit){
+BasketScene.prototype.incrementScore = function(hit){
     //console.log("score incremented");
     //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
     //this.nextMarkX += this.markOffset;
@@ -396,7 +404,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
     this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
 };
 
-AsteroidScene.prototype.processInput = function(){
+BasketScene.prototype.processInput = function(){
         //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
@@ -411,73 +419,19 @@ AsteroidScene.prototype.processInput = function(){
             this.helpTableVisible = false;
         }
 
-
-        //selecting Projectile type:
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
-                gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
-
-            this.selectIndex--;
-            
-            if(this.selectIndex<0){
-                this.selectIndex=this.elements.length-1;
-            }
-            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
-            
-            
-            this.selectedElement = this.elements[this.selectIndex];
-        }
-
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
-                gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
-            this.selectIndex++;
-            
-            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
-            
-            if(this.selectIndex>this.elements.length-1){
-                this.selectIndex=0;
-            }
-            
-            this.selectedElement = this.elements[this.selectIndex];
-        }    
-
+        
         var heroXF = this.mHero.getXform();
-        
-        
-        //roate hero firing cannon, clamped at 100 and -100
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
-            heroXF.incRotationByDegree(1.5);
-            
-            if(heroXF.getRotationInDegree()>100){
-               heroXF.setRotationInDegree(100);
-            }
+        var deltax = 3.0;
+        //moving basket
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left)){ 
+            heroXF.incXPosBy(-1*deltax);
         }
 
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
-            heroXF.incRotationByDegree(-1.5);
-            
-            if(heroXF.getRotationInDegree()<-100){
-               heroXF.setRotationInDegree(-100);
-            }
-        }
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right)){
+            heroXF.incXPosBy(deltax);
+        }    
         
-        //fire
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-            this.generateProjectile();
-        }
-        
-        //debugging to display asteroid coordinates
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Y)) {
-            for (var i = 0; i < this.mAllObjs.size(); i++) {
-                var obj = this.mAllObjs.getObjectAt(i);
 
-                //written like this because displayCoord is not defined in all objects
-                if(obj.displayCoord){
-                    obj.displayCoord=false;
-                }else{
-                   obj.displayCoord=true;   
-                }
-            }
-        }
         
         //turn off or on asteroid generation
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
@@ -505,7 +459,7 @@ AsteroidScene.prototype.processInput = function(){
 
 
 //Generate an asteroid at a random location at the top of the camera view
-AsteroidScene.prototype.generateAsteroid = function () {
+BasketScene.prototype.generateAsteroid = function () {
      
     if(this.GenerateOn){
         var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
@@ -526,7 +480,7 @@ AsteroidScene.prototype.generateAsteroid = function () {
 
 
 //generating projectiles
-AsteroidScene.prototype.generateProjectile = function () {
+BasketScene.prototype.generateProjectile = function () {
 //checking for Hero Firing to see if a Projectile should be created
     //if(this.mHero.firing){
         
@@ -574,57 +528,7 @@ AsteroidScene.prototype.generateProjectile = function () {
 }
 
 
-//checking for raycast collisions
-AsteroidScene.prototype.rayCast = function (p) {
-    
-    for (var i = 0; i < this.mAllObjs.size(); i++) {
-      
-        var ast= this.mAllObjs.getObjectAt(i);
-        
-        if(ast instanceof Asteroid){
-
-            var axf = ast.getXform();
-            var astx = axf.getXPos();
-            var asty = axf.getYPos();
-
-            //the Actual Rotation of the Hero.
-            var theta = this.mHero.getXform().getRotationInRad();                              
-
-            //ray to far bottom corner
-            var thetaMax=0;
-
-            //ray to near top corner
-            var thetaMin=0;
-
-            //case 1: Asteroid to left  (0 degrees is straight up, horizontal left is 90, horizontal right in -90...don't Ask... ask Kelvin              
-            if(astx<=0){
-                //top right
-                thetaMin= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
-
-             //bottom left
-                thetaMax= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
-            }
-
-            //asteroid on right
-            else{
-                //top left corner
-                thetaMin= -1*(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
-
-                //bottom right corner
-                thetaMax= -1*(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
-            }                  
-            console.log(" theta: "+theta*180/Math.PI + " thetaMAx:"+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
-
-            //check if in possible theta range for collision
-            if(Math.abs(theta)>=Math.abs(thetaMin) && Math.abs(theta) <=Math.abs(thetaMax)){
-              console.log("Ray Hit! SelectionIndex:"+this.selectIndex+" asteroidDataType:"+ast.dataType);
-              this.procHit(ast, p);
-            }
-          }
-    }  
-}
-
-AsteroidScene.prototype.procHit = function(obj, proj) {   
+BasketScene.prototype.procHit = function(obj, proj) {   
     //for making reveal message
     var x = obj.getXform().getXPos();
     var y = obj.getXform().getYPos();
