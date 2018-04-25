@@ -130,7 +130,7 @@ MyGame.prototype.initialize = function () {
     */
    
     // intext, x pos, y pos, size
-    this.sceneZone1Text = new MenuElement("Asteroids", 0, 0, 4);
+    this.sceneZone1Text = new MenuElement("Meteors", 0, 0, 4);
     this.sceneZone2Text = new MenuElement("Basket", 50, 0, 4);
    
     this.mBackground = new TextureRenderable(this.kEarth);
