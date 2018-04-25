@@ -222,13 +222,13 @@ Asteroid.prototype.randString =function () {
         "\"seven\"","\"eight\"","\"nine\"","\"zero\"",
         "\"True\"","\"False\"","\"I am not a string\"", "\"this is an int\"", 
         "\"I am a double\"", "\"I am a Boolean\"", "\"This is an array of chars\"", 
-        "\"This is a double: 9.99\"", "\"HI!\"", "\"I'm friendly\"",];
+        "\"This is a double: 9.99\"", "\"HI!\"", "\"I'm friendly\""];
     
     
     
     var length = lib.length;
     
-    var index = Math.round(Math.random()*length);
+    var index = Math.round(Math.random()*(length-1));
     
     return lib[index];
         
