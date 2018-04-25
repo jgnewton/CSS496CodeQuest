@@ -107,13 +107,17 @@ MyGame.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.mHero);
 
     this.sz1 = new SceneZone(this.kMinionSprite,0,0);
-    this.sz1.scene=1;
+    this.sz1.scene = 2;
     this.mAllObjs.addToSet(this.sz1);
+    
+    this.sz2 = new SceneZone(this.kMinionSprite,50,0);
+    this.sz2.scene = 3;
+    this.mAllObjs.addToSet(this.sz2);
     
     this.mHelper = new Helper(this.kMinionSprite);
     this.mAllObjs.addToSet(this.mHelper);
     
-
+    /*
     this.mMsg = new FontRenderable("MyGame Scene1 (World View)");
     this.mMsg.setColor([0, 0, 0, 1]);
     this.mMsg.getXform().setPosition(5, 7);
@@ -123,7 +127,12 @@ MyGame.prototype.initialize = function () {
     this.mShapeMsg.setColor([0, 0, 0, 1]);
     this.mShapeMsg.getXform().setPosition(5, 73);
     this.mShapeMsg.setTextHeight(2.5);
-    
+    */
+   
+    // intext, x pos, y pos, size
+    this.sceneZone1Text = new MenuElement("Asteroids", 0, 0, 4);
+    this.sceneZone2Text = new MenuElement("Basket", 50, 0, 4);
+   
     this.mBackground = new TextureRenderable(this.kEarth);
     this.mBackground.setColor.call(this, [1, 0, 0, 1]);
     
@@ -137,6 +146,7 @@ MyGame.prototype.initialize = function () {
     
     this.zones=[];
     this.zones.push(this.sz1);
+    this.zones.push(this.sz2);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -157,9 +167,11 @@ MyGame.prototype.draw = function () {
         this.mCollisionInfos[i].draw(this.mCamera); */
     this.mCollisionInfos = []; 
     
-    this.mMsg.draw(this.mCamera);   // only draw status in the main camera
-    this.mShapeMsg.draw(this.mCamera);
-
+    //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+    //this.mShapeMsg.draw(this.mCamera);
+    
+    this.sceneZone1Text.draw(this.mCamera);
+    this.sceneZone2Text.draw(this.mCamera);
 };
 
 MyGame.prototype.increasShapeSize = function(obj, delta) {
@@ -208,8 +220,8 @@ MyGame.prototype.checkZones = function () {
         if(this.zones[i].checkCollision(this.mHero)){
             
             // hard coding this to be the lesson scene for now
-            //this.nextScene=this.zones[i].sceneNumber;
-            this.nextScene = 2;
+            this.nextScene = this.zones[i].scene;
+            //this.nextScene = 2;
             
             gEngine.GameLoop.stop();
         }
