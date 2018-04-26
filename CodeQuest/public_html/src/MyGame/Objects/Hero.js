@@ -31,6 +31,7 @@ function Hero(spriteTexture) {
     
     this.mRigidBody.mInvMass=0;
     this.firing=false;
+    this.carryHeight=2;
 }
 gEngine.Core.inheritPrototype(Hero, WASDObj);
 
@@ -38,31 +39,29 @@ Hero.prototype.update = function () {
     GameObject.prototype.update.call(this);
     //this.aimShoot();
     
+    if(this.attachedObj!=null){
+        var hxf = this.getXform();
+        var oxf = this.attachedObj.getXform();
+        
+        oxf.setXPos(hxf.getXPos());
+        oxf.setYPos(hxf.getYPos()); + this.carryHeight;
+    }
+    
 }
 
-/*
-    
-Hero.prototype.aimShoot = function () {
-    var xform = this.getXform();
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
-        xform.incRotationByDegree(1.5);       
+//pickup or drop an object
+Hero.prototype.attachObj = function (obj) {
+    if(this.attachedObj==null){
+       this.attachedObj = obj;
     }
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
-        xform.incRotationByDegree(-1.5);    
+    else{
+        var hxf = this.getXform();
+        var oxf = this.attachedObj.getXform();
+        
+        //put down
+        oxf.setYPos(hxf.getYPos());
+        
+        //detach
+        this.attachedObj=null;
     }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-        this.shoot();    
-    }
-    
-    
 };
-
-
-Hero.prototype.shoot = function () {
-    this.firing=true;
-};
-
-*/

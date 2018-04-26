@@ -52,6 +52,7 @@ gEngine.Core.inheritPrototype(Fruit, GameObject);
 
 Fruit.prototype.update = function (objset) {
     this.text.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
+    this.placeHolder.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
 };
 
 

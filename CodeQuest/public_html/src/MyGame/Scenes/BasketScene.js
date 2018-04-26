@@ -238,6 +238,8 @@ BasketScene.prototype.initialize = function () {
     this.basketText.setColor([0, 0, 0, 1]);
     this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos() );
     this.basketText.setTextHeight(7.5);
+    
+    this.startLevel();
      
 
 };
@@ -303,7 +305,7 @@ BasketScene.prototype.update = function () {
     //updating the generating of asteroids
     this.genTimer++;
     if(this.genTimer>=350){
-        this.generateAsteroid();
+        //this.generateBat();
         this.genTimer=0;
     }
 
@@ -324,10 +326,25 @@ BasketScene.prototype.updateObjects = function(){
         var obj = this.mAllObjs.getObjectAt(i);
         if(obj instanceof Fruit){
             obj.update(this.mAllObjs);
-        }else{           
+        }
+        else{           
             obj.update();
         }
-        // if asteroid, check for collision with projectils
+        //If BAt Reverse Directions:
+        if(obj instanceof Bat){
+            
+            if(obj.getXform().getYPos()<=(0 - this.WCHeight/2 + this.groundHeight)){ 
+                console.log(obj.getXform().getYPos());
+                obj.getXform().setYPos(0-this.WCHeight/2 + this.groundHeight+1);
+                obj.yv = -1 *obj.yv;               
+            }
+            if(obj.getXform().getYPos()>=this.WCCenterY+this.WCHeight/2 + 10){
+               console.log(obj.getXform().getYPos());
+               obj.getXform().setYPos(this.WCCenterY+this.WCHeight/2 + 9);
+               obj.yv = -1 *obj.yv;   
+            }
+            
+        }
     }
 };
 
@@ -426,7 +443,7 @@ BasketScene.prototype.processInput = function(){
         //turn off or on asteroid generation
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
             this.GenerateOn=!this.GenerateOn; 
-            console.log("generating Asteroids: " + this.GenerateOn);
+            console.log("generating Bats: " + this.GenerateOn);
         }
         
         //stop or start asteroid movement
@@ -449,22 +466,27 @@ BasketScene.prototype.processInput = function(){
 
 
 //Generate an asteroid at a random location at the top of the camera view
-BasketScene.prototype.generateAsteroid = function () {
+BasketScene.prototype.generateBats = function (num) {
      
-    if(this.GenerateOn){
-        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
+    for(var i =0; i<num; i++){
+        var xl = this.WCCenterX-this.WCWidth/2 + 20 + i*(this.WCWidth/num);
         var yl = 120;
 
         var type=0;
+        
+        
+        //problem type
+        type = Math.round(Math.random()*this.maxType); 
+        
+        //answer =  true or false.
+        var ans = false;
 
-        type = Math.round(Math.random()*this.maxType);  
-
-        var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl, false, type);
+        var Bat1 = new Bat(this.kMinionSprite, xl, yl, false, type, ans);
 
         //drop speed
-        Asteroid1.yv=-7;
+        Bat1.yv=-14;
 
-        this.mAllObjs.addToSet(Asteroid1); 
+        this.mAllObjs.addToSet(Bat1); 
     }
 };
 
@@ -535,8 +557,8 @@ BasketScene.prototype.generateFruit = function( num) {
 
 BasketScene.prototype.updateBasketText = function( ) {
     
-    this.leftOperand="5";
-    this.rightOperand="3";
+    //this.leftOperand="5";
+    //this.rightOperand="3";
     
     var op = "";
     
@@ -568,7 +590,7 @@ BasketScene.prototype.updateBasketText = function( ) {
             break;        
     }
     
-    this.basketString = this.leftOperand + op + this.rightOperand;
+    this.basketString = op;
     
     this.basketText.setText(this.basketString);
 }
@@ -582,9 +604,14 @@ BasketScene.prototype.checkFruitCollision = function( ) {
                 obj.terminate=true;
                 this.Operator=obj.operatorType;
                 this.updateBasketText();
+                this.mHero.attachObj(obj);
             }
         }  
     }
 }
+
+BasketScene.prototype.startLevel = function( ) {
+    this.generateBats(4);
+};
 
 

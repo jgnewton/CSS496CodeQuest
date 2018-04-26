@@ -88,7 +88,7 @@ function AsteroidScene() {
     this.numIncorrect = 0;
     this.numCorrect = 0;
     // the number of Xs required to lose the game
-    this.gameOverNumber = 10;
+    this.gameOverNumber = 3;
     
     // when gameOver is true, we display the player's score and prompt them
     // to play again or return to main menu
