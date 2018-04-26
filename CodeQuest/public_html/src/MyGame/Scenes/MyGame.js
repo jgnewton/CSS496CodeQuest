@@ -40,9 +40,6 @@ function MyGame() {
     // 1 - asteroid scene
     // 2 - lesson scene
     this.nextScene=0;
-    
-    this.meteorWin = false;
-    this.basketWin = false;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -108,18 +105,12 @@ MyGame.prototype.initialize = function () {
     this.mHero = new Hero(this.kMinionSprite);
     this.mAllObjs = new GameObjectSet();   
     this.mAllObjs.addToSet(this.mHero);
-    
-    this.initLocalStorage();
 
-    //console.log(this.meteorWin);
-    //console.log(this.basketWin);
-    
-    
-    this.sz1 = new SceneZone(this.kMinionSprite,0,0, this.meteorWin);
+    this.sz1 = new SceneZone(this.kMinionSprite,0,0);
     this.sz1.scene = 2;
     this.mAllObjs.addToSet(this.sz1);
     
-    this.sz2 = new SceneZone(this.kMinionSprite,50,0, this.basketWin);
+    this.sz2 = new SceneZone(this.kMinionSprite,50,0);
     this.sz2.scene = 3;
     this.mAllObjs.addToSet(this.sz2);
     
@@ -156,31 +147,7 @@ MyGame.prototype.initialize = function () {
     this.zones=[];
     this.zones.push(this.sz1);
     this.zones.push(this.sz2);
-    
-    
 };
-
-
-MyGame.prototype.initLocalStorage = function(){
-    
-    //console.log("Meteors win: " + localStorage.getItem("Meteors"));
-    //console.log("Baskets win: " + localStorage.getItem("Baskets"));
-    
-    
-    if(localStorage.getItem("Meteors") != null){
-        this.meteorWin = JSON.parse(localStorage.getItem("Meteors"));
-    } else {
-        this.meteorWin = false;
-        localStorage.setItem("Meteors", false);
-    }
-    
-    if(localStorage.getItem("Baskets") != null){
-        this.basketWin = JSON.parse(localStorage.getItem("Baskets"));
-    } else {
-        this.basketWin = false;
-        localStorage.setItem("Baskets", false);
-    }
-}
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.

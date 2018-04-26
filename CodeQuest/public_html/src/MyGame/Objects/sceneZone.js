@@ -5,22 +5,14 @@
  */
 
 
-function SceneZone(spriteTexture, atX, atY, win) {
+function SceneZone(spriteTexture, atX, atY) {
     
     this.w=10;
     this.h=10;
     
     
     this.placeHolder = new Renderable();
-    //this.placeHolder.setColor([1, 0, 0, 1]);
-    
-    
-    //console.log(win);
-    if(!win){
-        this.placeHolder.setColor([1, 0, 0, 1]);
-    } else {
-        this.placeHolder.setColor([0, 1, 0, 1]);
-    }
+    this.placeHolder.setColor([1, 0, 0, 1]);
     var xf = this.placeHolder.getXform();
     
     xf.setPosition(atX, atY);
