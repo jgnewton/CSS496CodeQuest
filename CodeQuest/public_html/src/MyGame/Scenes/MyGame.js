@@ -111,8 +111,8 @@ MyGame.prototype.initialize = function () {
     
     this.initLocalStorage();
 
-    console.log(this.meteorWin);
-    console.log(this.basketWin);
+    //console.log(this.meteorWin);
+    //console.log(this.basketWin);
     
     
     this.sz1 = new SceneZone(this.kMinionSprite,0,0, this.meteorWin);
@@ -163,8 +163,8 @@ MyGame.prototype.initialize = function () {
 
 MyGame.prototype.initLocalStorage = function(){
     
-    console.log("Meteors win: " + localStorage.getItem("Meteors"));
-    console.log("Baskets win: " + localStorage.getItem("Baskets"));
+    //console.log("Meteors win: " + localStorage.getItem("Meteors"));
+    //console.log("Baskets win: " + localStorage.getItem("Baskets"));
     
     
     if(localStorage.getItem("Meteors") != null){

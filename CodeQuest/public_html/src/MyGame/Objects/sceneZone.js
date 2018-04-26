@@ -15,7 +15,7 @@ function SceneZone(spriteTexture, atX, atY, win) {
     //this.placeHolder.setColor([1, 0, 0, 1]);
     
     
-    console.log(win);
+    //console.log(win);
     if(!win){
         this.placeHolder.setColor([1, 0, 0, 1]);
     } else {

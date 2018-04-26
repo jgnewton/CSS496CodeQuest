@@ -105,6 +105,12 @@ function AsteroidScene() {
     this.Hits=null;
     
     this.revealMsg = null;
+    
+    this.fireTimer = 60;
+    this.fireRate = 60;
+    this.canFire = true;
+    
+    this.burstCount = 0;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -284,6 +290,15 @@ AsteroidScene.prototype.update = function () {
             this.generateAsteroid();
             this.genTimer=0;
         }
+        
+        this.fireTimer++;
+        if(this.fireTimer >= this.fireRate){
+            //this.generateAsteroid();
+            this.canFire = true;
+            //this.genTimer=0;
+        } else{
+            this.canFire = false;
+        }
     }
 
     
@@ -450,8 +465,12 @@ AsteroidScene.prototype.processInput = function(){
         }
         
         //fire
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-            this.generateProjectile();
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space)) {
+            if(this.canFire){
+                this.fireTimer = 0;
+                this.generateProjectile();
+            }
+            
         }
         
         //debugging to display asteroid coordinates
@@ -516,50 +535,84 @@ AsteroidScene.prototype.generateAsteroid = function () {
 
 //generating projectiles
 AsteroidScene.prototype.generateProjectile = function () {
-//checking for Hero Firing to see if a Projectile should be created
-    //if(this.mHero.firing){
+            //get hero state info
+    var hxf = this.mHero.getXform();
+    var xp = hxf.getXPos();
+    var yp = hxf.getYPos();
+
+    //get in radians for Math javascript func
+    var rot = hxf.getRotationInRad();
+
+    var w = 10;
+    var h = 10;
+    //create new projectile
+    //console.log("selection"+this.selection);
+    var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
+
+    //setting projectile velocity
+    this.maxV=100;
+    
+    var v = 1;
+    
+    if(this.selectIndex == 0){
+        // int
+        v = 5;
+        p.getXform().setSize(6, 6);
+        this.fireRate = 60;
+    } else if(this.selectIndex == 1){
+        //double
+        this.fireRate = 30;
+    } else if(this.selectIndex==2){
+        //bool
+        this.fireRate = 60;
         
-        //get hero state info
-        var hxf = this.mHero.getXform();
-        var xp = hxf.getXPos();
-        var yp = hxf.getYPos();
+        this.maxV=0;
+        p.getXform().setRotationInRad(rot);
+
+        p.getXform().setSize(1,2000);
+
+        p.lifeTime=30;
+
+        this.rayCast(p);
+    } else if(this.selectIndex == 3){
+        //char
+        this.fireRate = 30;
         
-        //get in radians for Math javascript func
-        var rot = hxf.getRotationInRad();
+        v = .5;
+        p.getXform().setSize(15, 15);
+    } else if(this.selectIndex == 4){
+        //string
+        v = 1.25;
         
-        var w = 10;
-        var h = 10;
-        //create new projectile
-        //console.log("selection"+this.selection);
-        var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
-        
-        //setting projectile velocity
-        this.maxV=100;
-        
-        // if raycast
-        if(this.selectIndex==2){
-            this.maxV=0;
-            p.getXform().setRotationInRad(rot);
-            
-            p.getXform().setSize(1,2000);
-                                    
-            p.lifeTime=30;
-            
-            this.rayCast(p);
+        this.burstCount++;
+        if(this.burstCount >= 4){
+            this.burstCount = 0;
+            this.fireRate = 45;
+        } else {
+            this.fireRate = 5;
         }
+    }
         
-        var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
-        var yv = this.maxV*Math.cos(rot);
+
         
-        p.xv=xv;
-        p.yv=yv;
-        
-        //adding projectile to set
-        this.mAllObjs.addToSet(p);
-        
-        // allow hero to fire again
-        //this.mHero.firing=false;
-    //}    
+        /*
+          this.elements = [
+        this.intText,
+        this.doubleText,
+        this.boolText,
+        this.charText,
+        this.stringText
+    ];
+    */
+
+    var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
+    var yv = this.maxV*Math.cos(rot);
+
+    p.xv=xv * v;
+    p.yv=yv * v;
+
+    //adding projectile to set
+    this.mAllObjs.addToSet(p);  
 }
 
 
