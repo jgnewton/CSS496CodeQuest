@@ -556,7 +556,7 @@ AsteroidScene.prototype.generateProjectile = function () {
     
     if(this.selectIndex == 0){
         // int
-        v = 5;
+        v = 3;
         p.getXform().setSize(6, 6);
         this.fireRate = 60;
     } else if(this.selectIndex == 1){
