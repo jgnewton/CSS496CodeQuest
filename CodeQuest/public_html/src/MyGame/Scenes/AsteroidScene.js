@@ -88,7 +88,9 @@ function AsteroidScene() {
     this.numIncorrect = 0;
     this.numCorrect = 0;
     // the number of Xs required to lose the game
-    this.gameOverNumber = 10;
+    this.gameOverNumber = 3;
+    this.succeedNumber = 1;
+    //this.win = false;
     
     // when gameOver is true, we display the player's score and prompt them
     // to play again or return to main menu
@@ -167,13 +169,6 @@ AsteroidScene.prototype.initialize = function () {
     this.ground.getXform().setRotationInDegree(0); // In Degree
     this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
     this.mAllObjs.addToSet(this.ground);
-   /*
-   // Selection message
-    this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
-    this.mShapeMsg.setColor([0, 0, 0, 1]);
-    this.mShapeMsg.getXform().setPosition(this.WCCenterX-this.WCWidth/2, this.WCCenterY-80);
-    this.mShapeMsg.setTextHeight(7.5);
-    */
     
     // background init
     this.mBackground = new TextureRenderable(this.kMW);
@@ -182,24 +177,7 @@ AsteroidScene.prototype.initialize = function () {
     bxf.setPosition(50,40);
     bxf.setWidth(500);
     bxf.setHeight(500);
-    
-    /*
-     *     if(this.selection==0){
-        selection = "Integer";
-    }
-        if(this.selection==1){
-        selection = "Double";
-    }
-        if(this.selection==2){
-        selection = "Boolean";
-    }
-        if(this.selection==3){
-        selection = "Char";
-    }
-        if(this.selection==4){
-        selection = "String";
-    }
-     */
+
     // initialize the text that represents data types
     
     var textSize = 5;
@@ -236,7 +214,7 @@ AsteroidScene.prototype.initialize = function () {
     this.Hits=0;
     this.Shots=0;
     
-    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
+    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
     
     this.revealTime=0;
 };
@@ -291,22 +269,23 @@ AsteroidScene.prototype.draw = function () {
 
 AsteroidScene.prototype.update = function () {
     this.processInput();
-    this.updateObjects();
     
-    //update selection arrow position
-    var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
-    this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
+    if(!this.gameOver){
+        this.updateObjects();
 
-    
-    //updating the generating of asteroids
-    this.genTimer++;
-    if(this.genTimer>=350){
-        this.generateAsteroid();
-        this.genTimer=0;
+        //update selection arrow position
+        var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
+        this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
+
+
+        //updating the generating of asteroids
+        this.genTimer++;
+        if(this.genTimer>=350){
+            this.generateAsteroid();
+            this.genTimer=0;
+        }
     }
 
-    // don't call rayCast 60 times per second, should be called when pressing fire right?
-    //this.rayCast();
     
     this.revealTime--;
         
@@ -380,8 +359,18 @@ AsteroidScene.prototype.incrementScore = function(hit){
     // toggle gameover state if exceeded gameeover number
     if(this.numIncorrect >= this.gameOverNumber){
         // set this text element to correctly display numCorrect
+        this.gameOverText = new MenuElement("You Lose! Try Again!", -30, 30, 10);
         this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -20, 0, 10);
         this.gameOver = true;
+        //this.win = false;
+    }
+    if(this.numCorrect >= this.succeedNumber){
+        this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
+        this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
+        this.gameOver = true;
+        
+        localStorage.setItem("Meteors", true);
+        //this.win = true;
     }
     // check if y needs to be incremented and x reset
     if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
@@ -393,7 +382,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
         this.Accuracy= this.Hits/ this.Shots * 100;
     }
     
-    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
+    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
 };
 
 AsteroidScene.prototype.processInput = function(){
