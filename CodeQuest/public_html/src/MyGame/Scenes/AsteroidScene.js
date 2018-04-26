@@ -349,6 +349,7 @@ AsteroidScene.prototype.updateObjects = function(){
         else if(obj instanceof Projectile){
             obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
             if (obj.terminated){
+                
                 this.mAllObjs.removeFromSet(obj);
             }
         }
@@ -571,6 +572,14 @@ AsteroidScene.prototype.generateProjectile = function () {
         p.getXform().setRotationInRad(rot);
 
         p.getXform().setSize(1,2000);
+        
+        var xd = Math.sin(rot) * 1000;
+        var yd = Math.cos(rot) * 1000;
+        
+        //take original projectile position and adjust so end of laser starts at hero
+        //subtract because positive angles are to left (-x) 
+        p.getXform().setXPos(xp - xd);
+        p.getXform().setYPos(yp+yd);
 
         p.lifeTime=30;
 
