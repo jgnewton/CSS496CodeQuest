@@ -159,7 +159,11 @@ Projectile.prototype.testTerminated = function (WB) {
    
    if(xf.getXPos()>xc+w/2 || xf.getXPos()<xc-w/2 || 
            xf.getYPos()>yc+h/2 || xf.getYPos()<yc-h/2 ){
-       this.terminate();
+       
+       //do not terminate laser raycast projectil
+       if(this.dataType!=2){
+            this.terminate();
+        }
    }
    
    if(this.lifeTime<=0){

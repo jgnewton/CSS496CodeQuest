@@ -89,6 +89,9 @@ function AsteroidScene() {
     this.numCorrect = 0;
     // the number of Xs required to lose the game
     this.gameOverNumber = 3;
+
+    this.succeedNumber = 1;
+    //this.win = false;
     
     // when gameOver is true, we display the player's score and prompt them
     // to play again or return to main menu
@@ -103,6 +106,12 @@ function AsteroidScene() {
     this.Hits=null;
     
     this.revealMsg = null;
+    
+    this.fireTimer = 60;
+    this.fireRate = 60;
+    this.canFire = true;
+    
+    this.burstCount = 0;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -167,13 +176,6 @@ AsteroidScene.prototype.initialize = function () {
     this.ground.getXform().setRotationInDegree(0); // In Degree
     this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
     this.mAllObjs.addToSet(this.ground);
-   /*
-   // Selection message
-    this.mShapeMsg = new FontRenderable("Current Selection: "+this.selection);
-    this.mShapeMsg.setColor([0, 0, 0, 1]);
-    this.mShapeMsg.getXform().setPosition(this.WCCenterX-this.WCWidth/2, this.WCCenterY-80);
-    this.mShapeMsg.setTextHeight(7.5);
-    */
     
     // background init
     this.mBackground = new TextureRenderable(this.kMW);
@@ -182,24 +184,7 @@ AsteroidScene.prototype.initialize = function () {
     bxf.setPosition(50,40);
     bxf.setWidth(500);
     bxf.setHeight(500);
-    
-    /*
-     *     if(this.selection==0){
-        selection = "Integer";
-    }
-        if(this.selection==1){
-        selection = "Double";
-    }
-        if(this.selection==2){
-        selection = "Boolean";
-    }
-        if(this.selection==3){
-        selection = "Char";
-    }
-        if(this.selection==4){
-        selection = "String";
-    }
-     */
+
     // initialize the text that represents data types
     
     var textSize = 5;
@@ -236,7 +221,7 @@ AsteroidScene.prototype.initialize = function () {
     this.Hits=0;
     this.Shots=0;
     
-    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
+    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
     
     this.revealTime=0;
 };
@@ -291,22 +276,32 @@ AsteroidScene.prototype.draw = function () {
 
 AsteroidScene.prototype.update = function () {
     this.processInput();
-    this.updateObjects();
     
-    //update selection arrow position
-    var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
-    this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
+    if(!this.gameOver){
+        this.updateObjects();
 
-    
-    //updating the generating of asteroids
-    this.genTimer++;
-    if(this.genTimer>=350){
-        this.generateAsteroid();
-        this.genTimer=0;
+        //update selection arrow position
+        var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
+        this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
+
+
+        //updating the generating of asteroids
+        this.genTimer++;
+        if(this.genTimer>=350){
+            this.generateAsteroid();
+            this.genTimer=0;
+        }
+        
+        this.fireTimer++;
+        if(this.fireTimer >= this.fireRate){
+            //this.generateAsteroid();
+            this.canFire = true;
+            //this.genTimer=0;
+        } else{
+            this.canFire = false;
+        }
     }
 
-    // don't call rayCast 60 times per second, should be called when pressing fire right?
-    //this.rayCast();
     
     this.revealTime--;
         
@@ -354,6 +349,7 @@ AsteroidScene.prototype.updateObjects = function(){
         else if(obj instanceof Projectile){
             obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
             if (obj.terminated){
+                
                 this.mAllObjs.removeFromSet(obj);
             }
         }
@@ -380,8 +376,18 @@ AsteroidScene.prototype.incrementScore = function(hit){
     // toggle gameover state if exceeded gameeover number
     if(this.numIncorrect >= this.gameOverNumber){
         // set this text element to correctly display numCorrect
+        this.gameOverText = new MenuElement("You Lose! Try Again!", -30, 30, 10);
         this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -20, 0, 10);
         this.gameOver = true;
+        //this.win = false;
+    }
+    if(this.numCorrect >= this.succeedNumber){
+        this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
+        this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
+        this.gameOver = true;
+        
+        localStorage.setItem("Meteors", true);
+        //this.win = true;
     }
     // check if y needs to be incremented and x reset
     if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
@@ -393,7 +399,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
         this.Accuracy= this.Hits/ this.Shots * 100;
     }
     
-    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
+    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
 };
 
 AsteroidScene.prototype.processInput = function(){
@@ -461,8 +467,12 @@ AsteroidScene.prototype.processInput = function(){
         }
         
         //fire
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-            this.generateProjectile();
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space)) {
+            if(this.canFire){
+                this.fireTimer = 0;
+                this.generateProjectile();
+            }
+            
         }
         
         //debugging to display asteroid coordinates
@@ -527,50 +537,92 @@ AsteroidScene.prototype.generateAsteroid = function () {
 
 //generating projectiles
 AsteroidScene.prototype.generateProjectile = function () {
-//checking for Hero Firing to see if a Projectile should be created
-    //if(this.mHero.firing){
+            //get hero state info
+    var hxf = this.mHero.getXform();
+    var xp = hxf.getXPos();
+    var yp = hxf.getYPos();
+
+    //get in radians for Math javascript func
+    var rot = hxf.getRotationInRad();
+
+    var w = 10;
+    var h = 10;
+    //create new projectile
+    //console.log("selection"+this.selection);
+    var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
+
+    //setting projectile velocity
+    this.maxV=100;
+    
+    var v = 1;
+    
+    if(this.selectIndex == 0){
+        // int
+        v = 3;
+        p.getXform().setSize(6, 6);
+        this.fireRate = 60;
+    } else if(this.selectIndex == 1){
+        //double
+        this.fireRate = 30;
+    } else if(this.selectIndex==2){
+        //bool
+        this.fireRate = 60;
         
-        //get hero state info
-        var hxf = this.mHero.getXform();
-        var xp = hxf.getXPos();
-        var yp = hxf.getYPos();
+        this.maxV=0;
+        p.getXform().setRotationInRad(rot);
+
+        p.getXform().setSize(1,2000);
         
-        //get in radians for Math javascript func
-        var rot = hxf.getRotationInRad();
+        var xd = Math.sin(rot) * 1000;
+        var yd = Math.cos(rot) * 1000;
         
-        var w = 10;
-        var h = 10;
-        //create new projectile
-        //console.log("selection"+this.selection);
-        var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
+        //take original projectile position and adjust so end of laser starts at hero
+        //subtract because positive angles are to left (-x) 
+        p.getXform().setXPos(xp - xd);
+        p.getXform().setYPos(yp+yd);
+
+        p.lifeTime=30;
+
+        this.rayCast(p);
+    } else if(this.selectIndex == 3){
+        //char
+        this.fireRate = 30;
         
-        //setting projectile velocity
-        this.maxV=100;
+        v = .5;
+        p.getXform().setSize(15, 15);
+    } else if(this.selectIndex == 4){
+        //string
+        v = 1.25;
         
-        // if raycast
-        if(this.selectIndex==2){
-            this.maxV=0;
-            p.getXform().setRotationInRad(rot);
-            
-            p.getXform().setSize(1,2000);
-                                    
-            p.lifeTime=30;
-            
-            this.rayCast(p);
+        this.burstCount++;
+        if(this.burstCount >= 4){
+            this.burstCount = 0;
+            this.fireRate = 45;
+        } else {
+            this.fireRate = 5;
         }
+    }
         
-        var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
-        var yv = this.maxV*Math.cos(rot);
+
         
-        p.xv=xv;
-        p.yv=yv;
-        
-        //adding projectile to set
-        this.mAllObjs.addToSet(p);
-        
-        // allow hero to fire again
-        //this.mHero.firing=false;
-    //}    
+        /*
+          this.elements = [
+        this.intText,
+        this.doubleText,
+        this.boolText,
+        this.charText,
+        this.stringText
+    ];
+    */
+
+    var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
+    var yv = this.maxV*Math.cos(rot);
+
+    p.xv=xv * v;
+    p.yv=yv * v;
+
+    //adding projectile to set
+    this.mAllObjs.addToSet(p);  
 }
 
 
