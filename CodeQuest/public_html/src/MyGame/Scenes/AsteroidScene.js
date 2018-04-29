@@ -22,6 +22,14 @@ function AsteroidScene() {
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
     this.helpTable = "assets/AsteroidHelp.PNG";
+    
+    // new assets
+    this.mGrass = "assets/MeteorGame/grass.png";
+    this.mMountain = "assets/MeteorGame/mountain.png";
+    this.mSunset = "assets/MeteorGame/sunset.png";
+    this.mCloud = "assets/MeteorGame/clouds.png";
+    this.mCannon = "assets/MeteorGame/cannon.png";
+    
     // The camera to view the scene
     this.mCamera = null;
 
@@ -127,6 +135,12 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.scoreMarks); 
     gEngine.Textures.loadTexture(this.kArrow); 
     gEngine.Textures.loadTexture(this.helpTable); 
+    
+    gEngine.Textures.loadTexture(this.mGrass);
+    gEngine.Textures.loadTexture(this.mMountain);
+    gEngine.Textures.loadTexture(this.mSunset);
+    gEngine.Textures.loadTexture(this.mCloud);
+    gEngine.Textures.loadTexture(this.mCannon);
 };
 
 AsteroidScene.prototype.unloadScene = function () {
@@ -140,6 +154,12 @@ AsteroidScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.scoreMarks); 
     gEngine.Textures.unloadTexture(this.kArrow); 
     gEngine.Textures.unloadTexture(this.helpTable); 
+    
+    gEngine.Textures.unloadTexture(this.mGrass);
+    gEngine.Textures.unloadTexture(this.mMountain);
+    gEngine.Textures.unloadTexture(this.mSunset);
+    gEngine.Textures.unloadTexture(this.mCloud);
+    gEngine.Textures.unloadTexture(this.mCannon);
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -160,22 +180,38 @@ AsteroidScene.prototype.initialize = function () {
     //object Set
     this.mAllObjs = new GameObjectSet();   
     
+    
+    this.background = new TextureRenderable(this.mSunset);
+    this.background.getXform().setPosition(0, 0);
+    this.background.getXform().setRotationInDegree(0); // In Degree
+    this.background.getXform().setSize(this.WCWidth, this.WCHeight);
+    this.mAllObjs.addToSet(this.background);
+    
+    this.mountain = new TextureRenderable(this.mMountain);
+    this.mountain.getXform().setPosition(0, 0);
+    this.mountain.getXform().setRotationInDegree(0); // In Degree
+    this.mountain.getXform().setSize(this.WCWidth, this.WCHeight);
+    this.mAllObjs.addToSet(this.mountain);
+    
+    //configure ground (currently a solid color green)
+    // in the future it should be a texture renderable
+    //this.ground = new Renderable(gEngine.DefaultResources.getConstColorShader());
+    //this.ground.setColor([0, 1, 0, 1]);
+    
+    this.ground = new TextureRenderable(this.mGrass);
+    
+    // bottom of the viewport = -WCHeight / 2
+    this.groundHeight = this.WCHeight / 4.5;
+    //this.ground.getXform().setPosition(0, -this.WCHeight / 2 + this.groundHeight / 2);
+    this.ground.getXform().setPosition(0, 0);
+    this.ground.getXform().setRotationInDegree(0); // In Degree
+    this.ground.getXform().setSize(this.WCWidth, this.WCHeight);
+    this.mAllObjs.addToSet(this.ground);
+    
     //create hero and add to set
     this.mHero = new Hero(this.kMinionSprite);
     this.mHero.mDye.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
     this.mAllObjs.addToSet(this.mHero);
-    
-    
-    //configure ground (currently a solid color green)
-    // in the future it should be a texture renderable
-    this.ground = new Renderable(gEngine.DefaultResources.getConstColorShader());
-    this.ground.setColor([0, 1, 0, 1]);
-    // bottom of the viewport = -WCHeight / 2
-    this.groundHeight = this.WCHeight / 4.5;
-    this.ground.getXform().setPosition(0, -this.WCHeight / 2 + this.groundHeight / 2);
-    this.ground.getXform().setRotationInDegree(0); // In Degree
-    this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
-    this.mAllObjs.addToSet(this.ground);
     
     // background init
     this.mBackground = new TextureRenderable(this.kMW);
