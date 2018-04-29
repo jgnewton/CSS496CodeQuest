@@ -22,16 +22,16 @@ function LessonScene() {
     //this.scoreMarks = "assets/scoreMarks.png"
     // The camera to view the scene
     
-    this.speechBouble = "assets/speechBouble.png";
-    this.LessonOne1 = "assets/LessonOne/LessonOne1.png";
-    this.LessonOne2 = "assets/LessonOne/LessonOne2.png";
-    this.LessonOne3 = "assets/LessonOne/LessonOne3.png";
-    this.LessonOne4 = "assets/LessonOne/LessonOne4.png";
-    this.LessonOne5 = "assets/LessonOne/LessonOne5.png";
-    this.LessonOne6 = "assets/LessonOne/LessonOne6.png";
-    this.LessonOne7 = "assets/LessonOne/LessonOne7.png";
-    this.LessonOne8 = "assets/LessonOne/LessonOne8.png";
-    this.LessonOne9 = "assets/LessonOne/LessonOne9.png";
+    this.speechBouble = "assets/speechBouble.PNG";
+    this.LessonOne1 = "assets/LessonOne/1.PNG";
+    this.LessonOne2 = "assets/LessonOne/2.PNG";
+    this.LessonOne3 = "assets/LessonOne/3.PNG";
+    this.LessonOne4 = "assets/LessonOne/4.PNG";
+    this.LessonOne5 = "assets/LessonOne/5.PNG";
+    this.LessonOne6 = "assets/LessonOne/6.PNG";
+    this.LessonOne7 = "assets/LessonOne/7.PNG";
+    this.LessonOne8 = "assets/LessonOne/8.PNG";
+    this.LessonOne9 = "assets/LessonOne/9.PNG";
    // this.LessonOne9 = "assets/LessonOne/LessonOne9.PNG";
     
     
