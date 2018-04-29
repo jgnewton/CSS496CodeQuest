@@ -26,9 +26,10 @@ function AsteroidScene() {
     // new assets
     this.mGrass = "assets/MeteorGame/grass.png";
     this.mMountain = "assets/MeteorGame/mountain.png";
-    this.mSunset = "assets/MeteorGame/sunset.png";
+    this.mBg1 = "assets/MeteorGame/sunset.png";
+    this.mBg2 = "assets/MeteorGame/sunnyday.png";
     this.mCloud = "assets/MeteorGame/clouds.png";
-    this.mCannon = "assets/MeteorGame/cannon.png";
+    this.mCannonSprite = "assets/MeteorGame/cannon.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -40,6 +41,7 @@ function AsteroidScene() {
     this.mBounds = null;
     this.mCollisionInfos = [];
     this.mHero = null;
+    this.mCannon = null;
     
     this.mCurrentObj = 0;
     this.mTarget = null;
@@ -138,9 +140,10 @@ AsteroidScene.prototype.loadScene = function () {
     
     gEngine.Textures.loadTexture(this.mGrass);
     gEngine.Textures.loadTexture(this.mMountain);
-    gEngine.Textures.loadTexture(this.mSunset);
+    gEngine.Textures.loadTexture(this.mBg1);
+    gEngine.Textures.loadTexture(this.mBg2);
     gEngine.Textures.loadTexture(this.mCloud);
-    gEngine.Textures.loadTexture(this.mCannon);
+    gEngine.Textures.loadTexture(this.mCannonSprite);
 };
 
 AsteroidScene.prototype.unloadScene = function () {
@@ -157,9 +160,10 @@ AsteroidScene.prototype.unloadScene = function () {
     
     gEngine.Textures.unloadTexture(this.mGrass);
     gEngine.Textures.unloadTexture(this.mMountain);
-    gEngine.Textures.unloadTexture(this.mSunset);
+    gEngine.Textures.unloadTexture(this.mBg1);
+    gEngine.Textures.unloadTexture(this.mBg2);
     gEngine.Textures.unloadTexture(this.mCloud);
-    gEngine.Textures.unloadTexture(this.mCannon);
+    gEngine.Textures.unloadTexture(this.mCannonSprite);
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -181,7 +185,8 @@ AsteroidScene.prototype.initialize = function () {
     this.mAllObjs = new GameObjectSet();   
     
     
-    this.background = new TextureRenderable(this.mSunset);
+    //this.background = new TextureRenderable(this.mBg1);
+    this.background = new TextureRenderable(this.mBg2);
     this.background.getXform().setPosition(0, 0);
     this.background.getXform().setRotationInDegree(0); // In Degree
     this.background.getXform().setSize(this.WCWidth, this.WCHeight);
@@ -209,9 +214,17 @@ AsteroidScene.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.ground);
     
     //create hero and add to set
+    /*
     this.mHero = new Hero(this.kMinionSprite);
     this.mHero.mDye.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
     this.mAllObjs.addToSet(this.mHero);
+    */
+    
+    this.mCannon = new Cannon(this.mCannonSprite);
+    this.mCannon.base.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
+    this.mCannon.cannon.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
+    this.mAllObjs.addToSet(this.mCannon);
+   
     
     // background init
     this.mBackground = new TextureRenderable(this.kMW);
@@ -481,7 +494,7 @@ AsteroidScene.prototype.processInput = function(){
             
             this.selectedElement = this.elements[this.selectIndex];
         }    
-
+        /*
         var heroXF = this.mHero.getXform();
         
         
@@ -500,6 +513,18 @@ AsteroidScene.prototype.processInput = function(){
             if(heroXF.getRotationInDegree()<-100){
                heroXF.setRotationInDegree(-100);
             }
+        }
+        */
+       //var heroXF = this.mHero.getXform();
+        
+        
+        //roate cannon firing cannon, clamped at 100 and -100
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
+            this.mCannon.intRotByDeg(1.5);
+        }
+
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
+            this.mCannon.intRotByDeg(-1.5);
         }
         
         //fire
@@ -574,7 +599,7 @@ AsteroidScene.prototype.generateAsteroid = function () {
 //generating projectiles
 AsteroidScene.prototype.generateProjectile = function () {
             //get hero state info
-    var hxf = this.mHero.getXform();
+    var hxf = this.mCannon.base.getXform();
     var xp = hxf.getXPos();
     var yp = hxf.getYPos();
 
@@ -676,7 +701,7 @@ AsteroidScene.prototype.rayCast = function (p) {
             var asty = axf.getYPos();
 
             //the Actual Rotation of the Hero.
-            var theta = this.mHero.getXform().getRotationInRad();                              
+            var theta = this.mCannon.base.getXform().getRotationInRad();                              
 
             //ray to far bottom corner
             var thetaMax=0;
@@ -687,19 +712,19 @@ AsteroidScene.prototype.rayCast = function (p) {
             //case 1: Asteroid to left  (0 degrees is straight up, horizontal left is 90, horizontal right in -90...don't Ask... ask Kelvin              
             if(astx<=0){
                 //top right
-                thetaMin= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
+                thetaMin= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mCannon.base.getXform().getYPos()+axf.getHeight()/2)));
 
              //bottom left
-                thetaMax= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
+                thetaMax= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mCannon.base.getXform().getYPos()-axf.getHeight()/2)));
             }
 
             //asteroid on right
             else{
                 //top left corner
-                thetaMin= -1*(Math.atan((astx - axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()+axf.getHeight()/2)));
+                thetaMin= -1*(Math.atan((astx - axf.getWidth()/2) / (asty-this.mCannon.base.getXform().getYPos()+axf.getHeight()/2)));
 
                 //bottom right corner
-                thetaMax= -1*(Math.atan((astx + axf.getWidth()/2) / (asty-this.mHero.getXform().getYPos()-axf.getHeight()/2)));
+                thetaMax= -1*(Math.atan((astx + axf.getWidth()/2) / (asty-this.mCannon.base.getXform().getYPos()-axf.getHeight()/2)));
             }                  
             //console.log(" theta: "+theta*180/Math.PI + " thetaMAx:"+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
             
