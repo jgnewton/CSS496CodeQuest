@@ -31,6 +31,9 @@ function AsteroidScene() {
     this.mCloud = "assets/MeteorGame/clouds.png";
     this.mCannonSprite = "assets/MeteorGame/cannon.png";
     
+    this.mCannonBase = "assets/MeteorGame/cannonbase.png";
+    this.mCannonMuzzle = "assets/MeteorGame/cannonmuzzle.png";
+    
     // The camera to view the scene
     this.mCamera = null;
 
@@ -144,6 +147,9 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.mBg2);
     gEngine.Textures.loadTexture(this.mCloud);
     gEngine.Textures.loadTexture(this.mCannonSprite);
+    
+    gEngine.Textures.loadTexture(this.mCannonBase);
+    gEngine.Textures.loadTexture(this.mCannonMuzzle);
 };
 
 AsteroidScene.prototype.unloadScene = function () {
@@ -164,6 +170,9 @@ AsteroidScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.mBg2);
     gEngine.Textures.unloadTexture(this.mCloud);
     gEngine.Textures.unloadTexture(this.mCannonSprite);
+    
+    gEngine.Textures.unloadTexture(this.mCannonBase);
+    gEngine.Textures.unloadTexture(this.mCannonMuzzle);
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -220,9 +229,9 @@ AsteroidScene.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.mHero);
     */
     
-    this.mCannon = new Cannon(this.mCannonSprite);
+    this.mCannon = new Cannon(this.mCannonBase, this.mCannonMuzzle);
     this.mCannon.base.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
-    this.mCannon.cannon.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
+    this.mCannon.cannon.getXform().setPosition(this.WCCenterX, this.WCCenterY-50);
     this.mAllObjs.addToSet(this.mCannon);
    
     
