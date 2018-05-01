@@ -324,15 +324,11 @@ BasketScene.prototype.updateObjects = function(){
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
         if(obj instanceof Fruit){
-            obj.update(this.mAllObjs);
-            this.fruitGravity(obj);
-             obj.update();
-        }
-        else{           
             obj.update();
+            this.fruitGravity(obj);
         }
         //If BAt Reverse Directions:
-        if(obj instanceof Bat){
+        else if(obj instanceof Bat){
             
             if(obj.getXform().getYPos()<=(0 - this.WCHeight/2 + this.groundHeight)){ 
                 console.log(obj.getXform().getYPos());
@@ -344,7 +340,15 @@ BasketScene.prototype.updateObjects = function(){
                obj.getXform().setYPos(this.WCCenterY+this.WCHeight/2 + 9);
                obj.yv = -1 *obj.yv;   
             }
-            
+            obj.update();
+        }
+        else if(obj instanceof Platform){
+            if(obj.checkCollision(this.mAllObjs) && !obj.isFull){
+                console.log("collide");
+            }
+        }
+        else{           
+            obj.update();
         }
     }
 };
@@ -656,13 +660,18 @@ BasketScene.prototype.generatePlatforms = function (num) {
 BasketScene.prototype.fruitGravity = function( fruit ) {
     if (fruit.getXform().getYPos() > this.groundLevel){
       //  fruit.mRigidBody.setVelocity(0,50);
-      if(!fruit.attached){
-        fruit.mRigidBody.mInvMass=1;
+      if(!fruit.attached && !fruit.onPlatform){
+       // fruit.mRigidBody.mInvMass=1;
+       fruit.mRigidBody.setMass(1);
         console.log("fall!");
       }
     }
     else{
-        fruit.mRigidBody.mInvMass=0;
+        fruit.mRigidBody.setMass(0);
+//        fruit.mRigidBody.mInvMass=0;
+//        fruit.mRigidBody.set
+//        fruit.mRigidBody.setVelocity(0,0);
+//        fruit.mRigidBody.setE(0,50);
         fruit.getXform().setYPos(this.groundLevel);
     }
 };

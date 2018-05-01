@@ -9,20 +9,20 @@ function Platform(spriteTexture, atX, atY, wid, height, otype) {
     
     this.w=wid;
     this.h=height;
-//    this.x=0;
-//    this.y =0;
+    this.x=atX;
+    this.y =atY;
     
     this.block = new Renderable();
     this.block.setColor([0, .5, .2, 1]);
     var bxf = this.block.getXform();
     
-    bxf.setPosition(atX, atY);
+    bxf.setPosition(this.x, this.y);
     bxf.setSize(this.w, this.h);
     
     
     this.mDye = new SpriteRenderable(spriteTexture);
     this.mDye.setColor([1, 1, 1, 0]);
-    this.mDye.getXform().setPosition(atX, atY);
+    this.mDye.getXform().setPosition(this.x, this.y);
     this.mDye.getXform().setSize(this.w, this.h);
     this.mDye.setElementPixelPositions(0, 120, 0, 180);
     
@@ -35,6 +35,7 @@ function Platform(spriteTexture, atX, atY, wid, height, otype) {
     console.log(this.operatorType);
     
    this.myFruit = null;   
+   this.isFull = false;
 }
 gEngine.Core.inheritPrototype(Platform, GameObject);
 
@@ -49,15 +50,24 @@ Platform.prototype.draw = function (aCamera) {
     //this.text.draw(aCamera);
 };
 
-Platform.prototype.checkCollision = function (obj){
+Platform.prototype.checkCollision = function (objSet){
+    var BBox = this.getBBox();
+    BBox.setBounds([this.getXform().getXPos(), this.getXform().getYPos() + (this.h/2)], this.w, this.h/4);
     
-    if(this.getBBox().intersectsBound(obj.getBBox())!=0){
-        return true;
+    for (var i = 0; i < objSet.size(); i++) {
+       var obj = objSet.getObjectAt(i);
+       if(obj instanceof Fruit){
+           if(BBox.intersectsBound(obj.getBBox())!=0){
+               //obj.getXform().setYPos()
+               obj.mRigidBody.setMass(0);
+               this.setFruit(obj);
+               this.isFull = true;
+               obj.onPlatform = true;//need to set it to false when the bat eats the fruit and when the hero pick it up again
+               return true;
+           }
+        }
     }
-    else{
-        return false;
-    }
-    
+    return false;
 };
 
 Platform.prototype.getFruit = function(){
@@ -69,7 +79,7 @@ Platform.prototype.setFruit = function (currFruit){
     this.myFruit = currFruit;
     var mxf = this.myFruit.getXform();
     
-    mxf.setPosition(atX, atY+this.h);
+    mxf.setPosition(this.x, this.y+this.h);
     
     
 };

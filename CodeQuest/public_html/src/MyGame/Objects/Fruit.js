@@ -49,7 +49,7 @@ function Fruit(spriteTexture, atX, atY, otype) {
     this.setRigidBody(r);
     this.mRigidBody.mInvMass=0;
     this.attached = false;
-    
+    this.onPlatform = false;
 }
 gEngine.Core.inheritPrototype(Fruit, WASDObj);
 
