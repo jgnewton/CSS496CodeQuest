@@ -70,6 +70,8 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     
     this.answer=ans;
     
+    this.correctOType=0;
+    
     this.setText();
     
 }
@@ -236,12 +238,9 @@ Bat.prototype.generateExpression =function (){
         operand2 = operand1 - sum;
     }
     
-    var falseSum = sum;
     
-    var diff = Math.round(Math.random()*8) -4;
-    
-    
-    //cannot be equal
+    var diff = Math.round(Math.random()*8) -4;  
+    //12.5% of the time the difference will randomly be 0, so we change that to 1 up or down
     if(diff ==0){
         if(Math.random>.5){
             diff = 1;
@@ -250,23 +249,139 @@ Bat.prototype.generateExpression =function (){
         }
     }
     
-    if(this.answer){
+    
+    //percent of times to make both sides of the expression equal
+    var equalPercent = 0;
+    
+    // the two sides of the expression will be equal roughly 50% of the time
+    if(this.problemType==1){
+        equalPercent = 1;
+    }
+    else if (this.problemType==2){
+        equalPercent = .33;
+    }
+    
+    //adjusting the difference
+    if(Math.random<equalPercent){
         this.diff=0;
     }
     
-    falseSum+=diff;
+    var falseSum= sum + diff;
     
     var operand3 = Math.round(falseSum*Math.random());
     
-        var operand4 = 0;
+    var operand4 = 0;
     
     if(op2==1){
         operand4 = falseSum-operand3;
     }
     else{
-        operand4 = falseSum + operand3;
+        operand3 = falseSum + operand3;
+        operand4 = operand3 - falseSum;
     }
     
-    var msg = "["+sum+"]"+operand1+" "+operator1+" "+operand2+" __ " + operand3 + " " +operator2+" "+operand4;
+    // determing the correct answer
+    if(this.problemType==1){
+        // the first two sides of the expression are equal
+        if(diff==0){
+            //right side is ==True
+            if(this.ans){
+                this.correctOType=0; // ==
+            }
+            // right side == False
+            else{
+               this.correctOType=1; // != 
+            }
+        }
+        // the first two sides are not equal
+        else{
+            //right side is ==True
+            if(this.ans){
+                this.correctOType=1; // !=
+            }
+            // right side == False
+            else{
+               this.correctOType=0; // == 
+            }  
+        }
+    }
+    
+    // choice are < , == , >
+    else if(this.problemType==2){
+        //case equal
+        if(diff==0){
+            //case true
+            if(this.ans){
+                this.correctOType=0; // ==
+            }
+            //case false
+            else{
+                //any other choice should be correct
+                this.correctOType=-1;
+            }
+        }
+        
+        //case left < right
+        else if(diff>0){
+            //case true
+            if(this.ans){
+                this.correctOType=3; // < lessthan
+            }
+            else{
+                //any other choice should be correct
+                this.correctOType=-1;   
+            }
+        }
+        else if (diff<0){
+            //case true
+            if(this.ans){
+                this.correctOType=2; // > greater than
+            }
+            else{
+                //any other choice should be correct
+                this.correctOType=-1;   
+            }
+        }
+    }
+      
+    
+    
+    var op = "";
+    
+    switch(this.correctOType){
+        
+        case -1:
+            op="anyNot==";
+            break;
+        
+        case 0:
+            op ="==";
+            break;
+        case 1:
+            op="!=";
+            break;
+        case 2:
+            op=">";
+            break;
+        case 3:
+            op="<";
+            break;
+        case 4:
+            op=">=";
+            break;        
+        
+        case 5:
+            op="<=";
+            break;        
+        case 6:
+            op="&&";
+            break;        
+        case 7:
+            op="||";
+            break;        
+    }
+     
+    
+    var msg = "["+op+"]"+operand1+" "+operator1+" "+operand2+" __ " + operand3 + " " +operator2+" "+operand4;
     return msg;
 };
