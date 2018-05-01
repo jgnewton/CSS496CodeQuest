@@ -264,12 +264,8 @@ BasketScene.prototype.draw = function () {
     } else {
         this.mAllObjs.draw(this.mCamera);
     
-        for(var i = 0; i < this.elements.length; i++){
-            //console.log(this.elements[i]);
-            this.elements[i].draw(this.mCamera);
-        }
 
-        this.selectionArrow.draw(this.mCamera);
+        //this.selectionArrow.draw(this.mCamera);
 
         if (this.helpTableVisible)
         {
@@ -290,7 +286,7 @@ BasketScene.prototype.draw = function () {
         }
     }
     
-    this.basketText.draw(this.mCamera);
+   // this.basketText.draw(this.mCamera);
 
 };
 
@@ -461,6 +457,8 @@ BasketScene.prototype.processInput = function(){
                 }
             }
         }
+        
+        this.heroControls();
     }
     
 };
@@ -615,4 +613,19 @@ BasketScene.prototype.startLevel = function( ) {
     this.generateBats(4);
 };
 
+
+//special controls for jumping and etc.
+BasketScene.prototype.heroControls = function( ) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)){
+        this.mHero.mRigidBody.setVelocity(0,50);
+        this.mHero.mRigidBody.mInvMass=1;
+        console.log("jump!");
+    }
+    
+    if(this.mHero.getXform().getYPos()<= this.WCCenterY -this.WCHeight/2 + this.groundHeight){
+        console.log(this.groundHeight + "," + this.mHero.getXform().getYPos());
+        this.mHero.mRigidBody.mInvMass=0;
+        this.mHero.getXform().setYPos(this.WCCenterY -this.WCHeight/2 + this.groundHeight+1);
+    }
+};
 

@@ -17,6 +17,8 @@ var kMinionHeight = 10;
 var kMinionRandomSize = 0;
 */
 
+//type = type of question
+// ans = true or false.
 function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
         
     var w = 25;
@@ -130,25 +132,30 @@ Bat.prototype.setText =function (){
     
     if(this.problemType == 0){
         msg+="== , !=";
+        this.equalOrNot();
     }
     
     if(this.problemType == 1){
         msg+="> , ==,  <";
+       this.moreOrEqualOrLess();
 
     }
     
     if(this.problemType == 2){
         msg+=">=, <";
+        this.greaterEqualOrLess();
     }
     
     if(this.problemType == 3 ){
         msg+="<=, >";
+        this.lesserEqualOrMore();
         
     }
     
        
     if(this.problemType == 4){
         msg+="&&, ||";
+        this.andOrOR();
     }
     
     var addendum = "";
@@ -166,4 +173,17 @@ Bat.prototype.setText =function (){
     this.text.setTextHeight(5);    
 } ;
 
+Bat.prototype.equalOrNot =function (){
+};
 
+Bat.prototype.moreOrEqualOrLess =function (){
+};
+
+Bat.prototype.greaterEqualOrLess =function (){
+};
+
+Bat.prototype.lesserEqualOrMore =function (){
+};
+
+Bat.prototype.andOrOR =function (){
+};
