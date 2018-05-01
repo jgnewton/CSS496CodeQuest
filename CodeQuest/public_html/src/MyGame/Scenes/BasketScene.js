@@ -471,7 +471,7 @@ BasketScene.prototype.generateBats = function (num) {
      
     for(var i =0; i<num; i++){
         var xl = this.WCCenterX-this.WCWidth/2 + 20 + i*(this.WCWidth/num);
-        var yl = 120;
+        var yl = 120-(15*i);
 
         var type=0;
         
