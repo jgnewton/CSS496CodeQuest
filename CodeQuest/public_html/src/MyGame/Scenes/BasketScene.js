@@ -175,7 +175,7 @@ BasketScene.prototype.initialize = function () {
     this.ground = new Renderable(gEngine.DefaultResources.getConstColorShader());
     this.ground.setColor([0, 1, 0, 1]);
     // bottom of the viewport = -WCHeight / 2
-    this.groundHeight = this.WCHeight / 4.5;
+    this.groundHeight = this.WCHeight / 4.5;   
     this.ground.getXform().setPosition(0, -this.WCHeight / 2 + this.groundHeight / 2);
     this.ground.getXform().setRotationInDegree(0); // In Degree
     this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
