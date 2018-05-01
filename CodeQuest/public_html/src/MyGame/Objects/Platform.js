@@ -13,7 +13,7 @@ function Platform(spriteTexture, atX, atY, wid, hight, otype) {
 //    this.y =0;
     
     this.block = new Renderable();
-    this.block.setColor([1, 0, 0, 1]);
+    this.block.setColor([0, .5, .2, 1]);
     var bxf = this.block.getXform();
     
     bxf.setPosition(atX, atY);

@@ -116,6 +116,7 @@ function BasketScene() {
     
     
     this.revealTime=0;
+    this.groundLevel = null;
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -195,6 +196,8 @@ BasketScene.prototype.initialize = function () {
     var textXPos = 110;
     var textOffset = 10;
     
+    this.groundLevel = this.WCCenterY - (this.WCHeight/2) + this.groundHeight;
+    
     this.eqText = new MenuElement("==", textXPos, textYpos + textOffset * 4, textSize);
     this.neqText = new MenuElement("!=", textXPos, textYpos + textOffset * 3, textSize);
     this.lessText = new MenuElement("<", textXPos, textYpos + textOffset * 2, textSize);
@@ -241,6 +244,7 @@ BasketScene.prototype.initialize = function () {
     
     this.startLevel();
      
+    
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -546,7 +550,7 @@ BasketScene.prototype.generateFruit = function( num) {
     
     for(var i =0; i<num;i++){
         var x = this.WCCenterX-this.WCWidth/2 + (i*this.WCWidth/num)+ (1/num)*Math.random()*(this.WCWidth - 10);
-        var y = this.mHero.getXform().getYPos();
+        var y = this.groundLevel;
         
         var type = Math.round(Math.random()*8);
         
@@ -635,10 +639,10 @@ BasketScene.prototype.generatePlatforms = function (num) {
      
     for(var i =0; i<num; i++){
         var xl = this.WCCenterX-this.WCWidth/2 + 20 + i*(this.WCWidth/num);
-        var yl = 120;
+        var yl = this.groundLevel;
         
 
-        var Platform1 = new Platform(this.kMinionSprite, xl, yl, 10,20, );
+        var Platform1 = new Platform(this.kMinionSprite, xl, yl, 10, 20 );
 
 //        //drop speed
 //        Bat1.yv=-14;
