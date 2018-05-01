@@ -5,18 +5,19 @@
  */
 
 
-function Platform(spriteTexture, atX, atY, otype) {
+function Platform(spriteTexture, atX, atY, wid, hight, otype) {
     
-    this.w=10;
-    this.h=10;
+    this.w=wid;
+    this.h=hight;
+//    this.x=0;
+//    this.y =0;
     
+    this.block = new Renderable();
+    this.block.setColor([1, 0, 0, 1]);
+    var bxf = this.block.getXform();
     
-    this.placeHolder = new Renderable();
-    this.placeHolder.setColor([1, 0, 0, 1]);
-    var xf = this.placeHolder.getXform();
-    
-    xf.setPosition(atX, atY);
-    xf.setSize(this.w, this.h);
+    bxf.setPosition(atX, atY);
+    bxf.setSize(this.w, this.h);
     
     
     this.mDye = new SpriteRenderable(spriteTexture);
@@ -32,20 +33,25 @@ function Platform(spriteTexture, atX, atY, otype) {
     
     this.operatorType=otype;
     console.log(this.operatorType);
+<<<<<<< HEAD
+    
+   this.myFruit = null;
+=======
      
+>>>>>>> 85fa1177e879b795414167a7a8131af4de7ff5d0
     
 }
 gEngine.Core.inheritPrototype(Platform, GameObject);
 
 Platform.prototype.update = function (objset) {
-    this.text.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
-    this.placeHolder.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
+   // this.text.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
+    this.block.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
 };
 
 
 Platform.prototype.draw = function (aCamera) {
-    this.placeHolder.draw(aCamera);
-    this.text.draw(aCamera);
+    this.block.draw(aCamera);
+    //this.text.draw(aCamera);
 };
 
 Platform.prototype.checkCollision = function (obj){
@@ -57,4 +63,18 @@ Platform.prototype.checkCollision = function (obj){
         return false;
     }
     
-} ;
+};
+
+Platform.prototype.getFruit = function(){
+    return this.myFruit;
+    
+};
+
+Platform.prototype.setFruit = function (currFruit){
+    this.myFruit = currFruit;
+    var mxf = this.myFruit.getXform();
+    
+    mxf.setPosition(atX, atY+this.h);
+    
+    
+};

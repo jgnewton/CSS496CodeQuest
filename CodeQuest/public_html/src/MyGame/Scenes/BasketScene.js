@@ -241,7 +241,7 @@ BasketScene.prototype.initialize = function () {
     
     this.startLevel();
      
-
+  
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
