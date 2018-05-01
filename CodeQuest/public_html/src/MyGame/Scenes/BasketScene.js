@@ -241,8 +241,7 @@ BasketScene.prototype.initialize = function () {
     
     this.startLevel();
      
-    this.platform = new Platform(this.kArrow, 10, this.mHero.getXform().getYPos(), 20, 15);
-    this.mAllObjs.addToSet(this.platform);
+  
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
