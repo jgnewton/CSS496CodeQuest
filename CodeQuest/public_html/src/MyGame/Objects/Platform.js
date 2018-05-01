@@ -33,12 +33,9 @@ function Platform(spriteTexture, atX, atY, wid, hight, otype) {
     
     this.operatorType=otype;
     console.log(this.operatorType);
-<<<<<<< HEAD
-    
+
    this.myFruit = null;
-=======
-     
->>>>>>> 85fa1177e879b795414167a7a8131af4de7ff5d0
+
     
 }
 gEngine.Core.inheritPrototype(Platform, GameObject);
