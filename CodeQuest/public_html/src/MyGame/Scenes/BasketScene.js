@@ -475,6 +475,9 @@ BasketScene.prototype.generateBats = function (num) {
         //problem type
         type = Math.round(Math.random()*this.maxType); 
         
+        
+        type=1;
+        
         //answer =  true or false.
         var ans = false;
 
