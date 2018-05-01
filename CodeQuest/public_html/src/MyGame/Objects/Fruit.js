@@ -45,12 +45,16 @@ function Fruit(spriteTexture, atX, atY, otype) {
      */
     this.setText();
     
-    
+     var r = new RigidRectangle(this.getXform(), this.w, this.h);
+    this.setRigidBody(r);
+    this.mRigidBody.mInvMass=0;
+    this.attached = false;
     
 }
-gEngine.Core.inheritPrototype(Fruit, GameObject);
+gEngine.Core.inheritPrototype(Fruit, WASDObj);
 
 Fruit.prototype.update = function (objset) {
+    GameObject.prototype.update.call(this);
     this.text.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
     this.placeHolder.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
 };

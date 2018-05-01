@@ -5,10 +5,10 @@
  */
 
 
-function Platform(spriteTexture, atX, atY, wid, hight, otype) {
+function Platform(spriteTexture, atX, atY, wid, height, otype) {
     
     this.w=wid;
-    this.h=hight;
+    this.h=height;
 //    this.x=0;
 //    this.y =0;
     

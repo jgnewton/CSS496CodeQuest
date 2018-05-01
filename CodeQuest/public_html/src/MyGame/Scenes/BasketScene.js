@@ -232,8 +232,8 @@ BasketScene.prototype.initialize = function () {
     
     this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
     
-    this.fruit1 = new Fruit(this.kArrow, 0, 0);
-    this.mAllObjs.addToSet(this.fruit1);
+   // this.fruit1 = new Fruit(this.kArrow, 0, 0);
+    //this.mAllObjs.addToSet(this.fruit1);
     
     this.generateFruit(5);
     
@@ -325,6 +325,8 @@ BasketScene.prototype.updateObjects = function(){
         var obj = this.mAllObjs.getObjectAt(i);
         if(obj instanceof Fruit){
             obj.update(this.mAllObjs);
+            this.fruitGravity(obj);
+             obj.update();
         }
         else{           
             obj.update();
@@ -648,5 +650,19 @@ BasketScene.prototype.generatePlatforms = function (num) {
 //        Bat1.yv=-14;
 
         this.mAllObjs.addToSet(Platform1); 
+    }
+};
+
+BasketScene.prototype.fruitGravity = function( fruit ) {
+    if (fruit.getXform().getYPos() > this.groundLevel){
+      //  fruit.mRigidBody.setVelocity(0,50);
+      if(!fruit.attached){
+        fruit.mRigidBody.mInvMass=1;
+        console.log("fall!");
+      }
+    }
+    else{
+        fruit.mRigidBody.mInvMass=0;
+        fruit.getXform().setYPos(this.groundLevel);
     }
 };

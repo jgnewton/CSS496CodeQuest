@@ -53,15 +53,19 @@ Hero.prototype.update = function () {
 Hero.prototype.attachObj = function (obj) {
     if(this.attachedObj==null){
        this.attachedObj = obj;
+       obj.attached = true;
+      // obj.mRigidBody.mInvMass=0;
     }
     else{
         var hxf = this.getXform();
         var oxf = this.attachedObj.getXform();
         
         //put down
-        oxf.setYPos(hxf.getYPos());
-        
+        //oxf.setYPos(hxf.getYPos());
+        //obj.mRigidBody.mInvMass=1;
+        obj.attached = false;
         //detach
         this.attachedObj=null;
+        
     }
 };
