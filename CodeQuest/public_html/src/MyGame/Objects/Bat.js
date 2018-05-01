@@ -104,6 +104,8 @@ Bat.prototype.update = function () {
     
 
     this.text.getXform().setPosition(x, y);
+    
+    this.test();
 };
 
 //commented out draw render temporarily
@@ -186,4 +188,17 @@ Bat.prototype.lesserEqualOrMore =function (){
 };
 
 Bat.prototype.andOrOR =function (){
+};
+
+
+
+Bat.prototype.generateExpression =function (){
+    
+    var op1 = Math.random();
+    var op2 = Math.random();
+    var op3 = Math.random();
+    var op4 = Math.random();
+    
+    var sum = Math.round(Math.random()*100);
+    
 };
