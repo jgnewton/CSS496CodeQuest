@@ -103,7 +103,7 @@ Bat.prototype.update = function () {
     }
     
 
-    this.text.getXform().setPosition(x, y);
+    this.text.getXform().setPosition(x-15, y);
     
     this.test();
 };
@@ -111,10 +111,10 @@ Bat.prototype.update = function () {
 //commented out draw render temporarily
 Bat.prototype.draw = function (aCamera) {
     if (this.isVisible()) {
-        if (this.mDrawRenderable)
-           // this.mRenderComponent.draw(aCamera);
-        if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
-            this.mRigidBody.draw(aCamera);
+        //if (this.mDrawRenderable)
+            //this.mRenderComponent.draw(aCamera);
+        //if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
+            //this.mRigidBody.draw(aCamera);
     }
     this.text.draw(aCamera);
 };
@@ -132,38 +132,38 @@ Bat.prototype.setText =function (){
     
     //console.log(this.problemType);
     
-    if(this.problemType == 0){
+    if(this.problemType == 1){
         msg+=this.equalOrNot();
     }
     
-    if(this.problemType == 1){
+    if(this.problemType == 2){
         msg+="> , ==,  <";
        this.moreOrEqualOrLess();
 
     }
     
-    if(this.problemType == 2){
+    if(this.problemType == 3){
         msg+=">=, <";
         this.greaterEqualOrLess();
     }
     
-    if(this.problemType == 3 ){
+    if(this.problemType == 4 ){
         msg+="<=, >";
         this.lesserEqualOrMore();
         
     }
     
        
-    if(this.problemType == 4){
+    if(this.problemType == 5){
         msg+="&&, ||";
         this.andOrOR();
     }
     
     var addendum = "";
     if(this.answer){
-        addendum= " )= true";
+        addendum= " )== true";
     }else{
-        addendum= " )= false";
+        addendum= " )== false";
     }
     
     msg+=addendum;
@@ -171,11 +171,11 @@ Bat.prototype.setText =function (){
     this.text = new FontRenderable(msg);
     this.text.setColor([0, 0, 0, 1]);
     this.text.getXform().setPosition(200, 200);
-    this.text.setTextHeight(5);    
+    this.text.setTextHeight(4);    
 } ;
 
 Bat.prototype.equalOrNot =function (){
-    return generateExpression();
+    return this.generateExpression();
 };
 
 Bat.prototype.moreOrEqualOrLess =function (){
@@ -227,14 +227,15 @@ Bat.prototype.generateExpression =function (){
            
     var sum = Math.round(Math.random()*100);
     
-    var operand1 = MAth.round(sum*Math.random());
+    var operand1 = Math.round(sum*Math.random());
     var operand2 = 0;
     
     if(op1==1){
         operand2 = sum-operand1;
     }
     else{
-        operand2 = sum + operand1;
+        operand1 = sum + operand1;
+        operand2 = operand1 - sum;
     }
     
     var falseSum = sum;
@@ -253,7 +254,7 @@ Bat.prototype.generateExpression =function (){
     
     falseSum+=diff;
     
-    var operand3 = MAth.round(falseSum*Math.random());
+    var operand3 = Math.round(falseSum*Math.random());
     
         var operand4 = 0;
     
@@ -264,6 +265,6 @@ Bat.prototype.generateExpression =function (){
         operand4 = falseSum + operand3;
     }
     
-    var msg = ""+operand1+" "+operator1+" "+operand2+" ___ " + operand3 + " " +operator2+" "+operand4;
+    var msg = "["+sum+"]"+operand1+" "+operator1+" "+operand2+" __ " + operand3 + " " +operator2+" "+operand4;
     return msg;
 };
