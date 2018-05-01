@@ -133,8 +133,7 @@ Bat.prototype.setText =function (){
     //console.log(this.problemType);
     
     if(this.problemType == 0){
-        msg+="== , !=";
-        this.equalOrNot();
+        msg+=this.equalOrNot();
     }
     
     if(this.problemType == 1){
@@ -176,6 +175,7 @@ Bat.prototype.setText =function (){
 } ;
 
 Bat.prototype.equalOrNot =function (){
+    return generateExpression();
 };
 
 Bat.prototype.moreOrEqualOrLess =function (){
@@ -201,43 +201,69 @@ Bat.prototype.generateExpression =function (){
     
     
     var op1 = Math.random();
-    var op2 = Math.random();
-    var op3 = Math.random();
-    var op4 = Math.random();
+    var op2 = Math.random();  
     
+    var operator1 = "_";
+    var operator2 = "_";
     
     if(op1<=.5){
         op1 = 1;
+        operator1 = "+";
     }
     else{
         op1 =2;
+        operator1 = "-";
     }
     
     if(op2<=.5){
         op2 = 1;
+        operator2 = "+";
     }
     else{
         op2 =2;
+        operator2 = "-";
     }
-    
-    if(op3<=.5){
-        op3 = 1;
-    }
-    else{
-        op3 =2;
-    }
-    
-    if(op4<=.5){
-        op1 = 1;
-    }
-    else{
-        op4 =2;
-    }
-       
-    
-    
+
+           
     var sum = Math.round(Math.random()*100);
     
     var operand1 = MAth.round(sum*Math.random());
+    var operand2 = 0;
     
+    if(op1==1){
+        operand2 = sum-operand1;
+    }
+    else{
+        operand2 = sum + operand1;
+    }
+    
+    var falseSum = sum;
+    
+    var diff = Math.round(Math.random()*8) -4;
+    
+    
+    //cannot be equal
+    if(diff ==0){
+        if(Math.random>.5){
+            diff = 1;
+        }else{
+            diff = -1;
+        }
+    }
+    
+    falseSum+=diff;
+    
+    var operand3 = MAth.round(falseSum*Math.random());
+    
+        var operand4 = 0;
+    
+    if(op2==1){
+        operand4 = falseSum-operand3;
+    }
+    else{
+        operand4 = falseSum + operand3;
+    }
+    
+    var msg = ""+operand1+" "+operator1+" "+operand2+" ___ " + operand3 + " " +operator2+" "+operand4;
+    return msg;
 };
