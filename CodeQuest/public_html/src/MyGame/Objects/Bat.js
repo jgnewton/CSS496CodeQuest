@@ -139,7 +139,6 @@ Bat.prototype.setText =function (){
     if(this.problemType == 2){
         msg+="> , ==,  <";
        this.moreOrEqualOrLess();
-
     }
     
     if(this.problemType == 3){
@@ -149,8 +148,7 @@ Bat.prototype.setText =function (){
     
     if(this.problemType == 4 ){
         msg+="<=, >";
-        this.lesserEqualOrMore();
-        
+        this.lesserEqualOrMore();        
     }
     
        
@@ -171,7 +169,7 @@ Bat.prototype.setText =function (){
     this.text = new FontRenderable(msg);
     this.text.setColor([0, 0, 0, 1]);
     this.text.getXform().setPosition(200, 200);
-    this.text.setTextHeight(4);    
+    this.text.setTextHeight(5);    
 } ;
 
 Bat.prototype.equalOrNot =function (){
@@ -250,6 +248,10 @@ Bat.prototype.generateExpression =function (){
         }else{
             diff = -1;
         }
+    }
+    
+    if(this.answer){
+        this.diff=0;
     }
     
     falseSum+=diff;
