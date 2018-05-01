@@ -19,6 +19,6 @@ var kMinionRandomSize = 0;
 
 //type = type of question
 // ans = true or false.
-Bat.prototype.initBar = function () {
+Bat.prototype.test = function () {
     console.log("test");
 };

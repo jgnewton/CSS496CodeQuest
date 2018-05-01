@@ -194,11 +194,50 @@ Bat.prototype.andOrOR =function (){
 
 Bat.prototype.generateExpression =function (){
     
+    var ADD =1;
+    var SUB =2;
+    var MX = 3;
+    var DIV = 4;
+    
+    
     var op1 = Math.random();
     var op2 = Math.random();
     var op3 = Math.random();
     var op4 = Math.random();
     
+    
+    if(op1<=.5){
+        op1 = 1;
+    }
+    else{
+        op1 =2;
+    }
+    
+    if(op2<=.5){
+        op2 = 1;
+    }
+    else{
+        op2 =2;
+    }
+    
+    if(op3<=.5){
+        op3 = 1;
+    }
+    else{
+        op3 =2;
+    }
+    
+    if(op4<=.5){
+        op1 = 1;
+    }
+    else{
+        op4 =2;
+    }
+       
+    
+    
     var sum = Math.round(Math.random()*100);
+    
+    var operand1 = MAth.round(sum*Math.random());
     
 };
