@@ -32,7 +32,9 @@ function Platform(spriteTexture, atX, atY, otype) {
     
     this.operatorType=otype;
     console.log(this.operatorType);
-     
+    
+   
+    
     
 }
 gEngine.Core.inheritPrototype(Platform, GameObject);
