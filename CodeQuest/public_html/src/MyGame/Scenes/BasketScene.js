@@ -609,6 +609,7 @@ BasketScene.prototype.checkFruitCollision = function( ) {
 
 BasketScene.prototype.startLevel = function( ) {
     this.generateBats(4);
+    this.generatePlatforms(4);
 };
 
 
@@ -627,3 +628,18 @@ BasketScene.prototype.heroControls = function( ) {
     }
 };
 
+BasketScene.prototype.generatePlatforms = function (num) {
+     
+    for(var i =0; i<num; i++){
+        var xl = this.WCCenterX-this.WCWidth/2 + 20 + i*(this.WCWidth/num);
+        var yl = 120;
+        
+
+        var Platform1 = new Platform(this.kMinionSprite, xl, yl, 10,20, );
+
+//        //drop speed
+//        Bat1.yv=-14;
+
+        this.mAllObjs.addToSet(Platform1); 
+    }
+};
