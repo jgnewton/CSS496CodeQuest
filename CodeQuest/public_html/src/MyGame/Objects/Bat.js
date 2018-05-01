@@ -232,6 +232,7 @@ Bat.prototype.generateExpression =function (){
     
     if(op1==1){
         operand2 = sum-operand1;
+        //sum= operand1 + operand2;
     }
     else{
         operand1 = sum + operand1;
@@ -253,18 +254,26 @@ Bat.prototype.generateExpression =function (){
     //percent of times to make both sides of the expression equal
     var equalPercent = 0;
     
+    //console.log(this.problemType);
+    
     // the two sides of the expression will be equal roughly 50% of the time
     if(this.problemType==1){
-        equalPercent = 1;
+        equalPercent = .5;
     }
     else if (this.problemType==2){
         equalPercent = .33;
     }
     
-    //adjusting the difference
-    if(Math.random<equalPercent){
-        this.diff=0;
+    else if (this.problemType==3){
+         equalPercent = .25;   
     }
+        //console.log(equalPercent);
+    
+    //adjusting the difference
+    if(Math.random()<equalPercent){
+        diff=0;
+    }
+    //console.log(diff);
     
     var falseSum= sum + diff;
     
@@ -274,6 +283,7 @@ Bat.prototype.generateExpression =function (){
     
     if(op2==1){
         operand4 = falseSum-operand3;
+        //falseSum = operand4+operand3;
     }
     else{
         operand3 = falseSum + operand3;
@@ -332,6 +342,7 @@ Bat.prototype.generateExpression =function (){
                 this.correctOType=-1;   
             }
         }
+        //case left> right
         else if (diff<0){
             //case true
             if(this.ans){
@@ -343,7 +354,79 @@ Bat.prototype.generateExpression =function (){
             }
         }
     }
-      
+    
+    //choices: >= , <
+    else if(this.problemType==3){
+        //case equal
+        if(diff==0){
+            //case true
+            if(this.ans){
+                this.correctOType=4; // >=
+            }
+            //case false
+            else{
+                this.correctOType=3; // <
+            }
+        }
+        //case left < right
+        else if(diff>0){
+            //case true
+            if(this.ans){
+                this.correctOType=3; // <
+            }
+            //case false
+            else{
+                this.correctOType=4; // >=
+            }
+        }
+        //case left > right
+        else if(diff<0){
+            //case true
+            if(this.ans){
+                this.correctOType=4; // >=
+            }
+            //case false
+            else{
+                this.correctOType=3; // <
+            }    
+        }
+    }
+        //choices: <= , >
+    else if(this.problemType==4){
+        //case equal
+        if(diff==0){
+            //case true
+            if(this.ans){
+                this.correctOType=5; // <=
+            }
+            //case false
+            else{
+                this.correctOType=2; // >
+            }
+        }
+        //case left < right
+        else if(diff>0){
+            //case true
+            if(this.ans){
+                this.correctOType=5; // <=
+            }
+            //case false
+            else{
+                this.correctOType=2; // >
+            }
+        }
+        //case left > right
+        else if(diff<0){
+            //case true
+            if(this.ans){
+                this.correctOType=2; // >
+            }
+            //case false
+            else{
+                this.correctOType=5; // <=
+            }    
+        }
+    } 
     
     
     var op = "";
@@ -382,6 +465,47 @@ Bat.prototype.generateExpression =function (){
     }
      
     
-    var msg = "["+op+"]"+operand1+" "+operator1+" "+operand2+" __ " + operand3 + " " +operator2+" "+operand4;
+    var msg = ""+operand1+" "+operator1+" "+operand2+" __ " + " "+operand3 + " " +operator2+" "+operand4;
     return msg;
 };
+
+
+Bat.prototype.boolBank =function (){
+    var bank = [
+    
+    
+    "hello",
+    "yo",
+    
+    "True __ False",
+    "True __ True",
+    "False __ False",
+    "False __ True",
+    
+    "(True __ False) && True",
+    "(False __ False) && True",
+    
+    "(True __ False) && False",
+    
+    "(False __ False) || False",
+    "(True __ False) || False",
+    
+    "(False __ False) || True",
+    
+    "(False__False && True && True",
+    
+    "(False || False) __ True || False",
+    
+    "(False || False) __ True || False",
+    
+    "(False && False) __ True && False", 
+    
+    "(2+2==4) __ (2+2==5) == True", 
+    
+    "(2+2==4) __ (2+2==5) == False",   
+    ];
+    
+    var idx = Math.round(Math.random()*bank.length-1);
+    return bank[idx];
+    
+}
