@@ -33,8 +33,14 @@ function Platform(spriteTexture, atX, atY, wid, hight, otype) {
     
     this.operatorType=otype;
     console.log(this.operatorType);
+<<<<<<< HEAD
 
    this.myFruit = null;
+=======
+    
+   this.myFruit = null;
+  
+>>>>>>> 26cf8c5ca408215873e16f7405ea40cbffb3e2e6
 
     
 }

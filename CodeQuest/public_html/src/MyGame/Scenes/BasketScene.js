@@ -600,7 +600,7 @@ BasketScene.prototype.checkFruitCollision = function( ) {
             if(obj.checkCollision(this.mHero)){
                 obj.terminate=true;
                 this.Operator=obj.operatorType;
-                this.updateBasketText();
+                //this.updateBasketText();
                 this.mHero.attachObj(obj);
             }
         }  
