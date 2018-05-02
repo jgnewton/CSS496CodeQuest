@@ -407,9 +407,16 @@ BasketScene.prototype.processInput = function(){
         
         var heroXF = this.mHero.getXform();
         var deltax = 3.0;
+        
+        var airborndx =.3;
+        
+        if(this.mHero.mRigidBody.mInvMass!=0){
+            deltax = airborndx;
+        }
+                
         //moving basket
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left)){ 
-            heroXF.incXPosBy(-1*deltax);
+                heroXF.incXPosBy(-1*deltax);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right)){
@@ -629,10 +636,17 @@ BasketScene.prototype.startLevel = function( ) {
 //special controls for jumping and etc.
 BasketScene.prototype.heroControls = function( ) {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)){
-        this.mHero.mRigidBody.setVelocity(0,50);
-        this.mHero.mRigidBody.mInvMass=1;
+        this.mHero.mRigidBody.setVelocity(0,30);
+        this.mHero.mRigidBody.mInvMass=100;
         console.log("jump!");
     }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)){
+        this.mHero.mRigidBody.setVelocity(0,-30);
+        //this.mHero.mRigidBody.mInvMass=100;
+        console.log("jump!");
+    }
+    
     
     if(this.mHero.getXform().getYPos()<= this.WCCenterY -this.WCHeight/2 + this.groundHeight){
         console.log(this.groundHeight + "," + this.mHero.getXform().getYPos());

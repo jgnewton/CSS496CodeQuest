@@ -65,6 +65,9 @@ Platform.prototype.checkCollision = function (objSet){
                obj.onPlatform = true;//need to set it to false when the bat eats the fruit and when the hero pick it up again
                return true;
            }
+           else{
+               //obj.onPlatform = false;
+           }
         }
     }
     return false;

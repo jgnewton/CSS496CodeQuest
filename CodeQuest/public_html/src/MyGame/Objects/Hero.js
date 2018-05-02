@@ -54,6 +54,7 @@ Hero.prototype.attachObj = function (obj) {
     if(this.attachedObj==null){
        this.attachedObj = obj;
        obj.attached = true;
+       obj.onPlatform = false;
       // obj.mRigidBody.mInvMass=0;
     }
     else{
@@ -64,6 +65,7 @@ Hero.prototype.attachObj = function (obj) {
         //oxf.setYPos(hxf.getYPos());
         //obj.mRigidBody.mInvMass=1;
         obj.attached = false;
+        obj.onPlatform = false;
         //detach
         this.attachedObj=null;
         
