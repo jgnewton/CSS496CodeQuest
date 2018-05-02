@@ -56,3 +56,44 @@
                     this.mAllObjs.addToSet(rend2);  
                 }
                 */
+               
+               
+   
+/*
+               
+BasketScene.prototype.updateBasketText = function( ) {
+    
+    //this.leftOperand="5";
+    //this.rightOperand="3";
+    
+    var op = "";
+    
+    switch(this.Operator){
+        case 0:
+            op ="==";
+            break;
+        case 1:
+            op="!=";
+            break;
+        case 2:
+            op=">";
+            break;
+        case 3:
+            op="<";
+            break;
+        case 4:
+            op=">=";
+            break;        
+        
+        case 5:
+            op="<=";
+            break;        
+        case 6:
+            op="&&";
+            break;        
+        case 7:
+            op="||";
+            break;        
+    }
+    
+    */

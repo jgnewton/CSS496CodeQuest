@@ -29,6 +29,8 @@ function BasketScene() {
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
     this.helpTable = "assets/AsteroidHelp.PNG";
+    this.kbats ="assets/bats.png";
+    
     // The camera to view the scene
     this.mCamera = null;
 
@@ -110,10 +112,7 @@ function BasketScene() {
     this.Hits=null;
     
     this.revealMsg = null;
-    
-    this.basketString=null;
-    this.basketText=null;
-    
+   
     
     this.revealTime=0;
     this.groundLevel = null;
@@ -131,7 +130,8 @@ BasketScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMW); 
     gEngine.Textures.loadTexture(this.scoreMarks); 
     gEngine.Textures.loadTexture(this.kArrow); 
-    gEngine.Textures.loadTexture(this.helpTable); 
+    gEngine.Textures.loadTexture(this.helpTable);
+    gEngine.Textures.loadTexture(this.kbats); 
 };
 
 BasketScene.prototype.unloadScene = function () {
@@ -144,7 +144,8 @@ BasketScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMW); 
     gEngine.Textures.unloadTexture(this.scoreMarks); 
     gEngine.Textures.unloadTexture(this.kArrow); 
-    gEngine.Textures.unloadTexture(this.helpTable); 
+    gEngine.Textures.unloadTexture(this.helpTable);
+    gEngine.Textures.unloadTexture(this.kbats); 
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -235,13 +236,9 @@ BasketScene.prototype.initialize = function () {
    // this.fruit1 = new Fruit(this.kArrow, 0, 0);
     //this.mAllObjs.addToSet(this.fruit1);
     
-    this.generateFruit(5);
-    
-    this.basketText = new FontRenderable("text");
-    this.basketText.setColor([0, 0, 0, 1]);
-    this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos() );
-    this.basketText.setTextHeight(7.5);
-    
+    //# of fruits, and problem type range
+    this.generateFruit(5,0,1);
+       
     this.startLevel();
      
     
@@ -288,36 +285,13 @@ BasketScene.prototype.draw = function () {
         }
     }
     
-   // this.basketText.draw(this.mCamera);
 
 };
 
 BasketScene.prototype.update = function () {
     this.processInput();
     this.updateObjects();
-    
-    //update selection arrow position
-    var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
-    this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
-
-    
-    //updating the generating of asteroids
-    this.genTimer++;
-    if(this.genTimer>=350){
-        //this.generateBat();
-        this.genTimer=0;
-    }
-
-    // don't call rayCast 60 times per second, should be called when pressing fire right?
-    //this.rayCast();
-    
-    this.revealTime--;
-    
-    this.updateBasketText();
-    
-    this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos() );
-    
-};
+ };
 
 BasketScene.prototype.updateObjects = function(){
     //manually update all objects in the set
@@ -424,42 +398,14 @@ BasketScene.prototype.processInput = function(){
         }    
         
         
-        //adjusting operator type
-         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A)) {
-
-            this.selectIndex--;
-            
-            if(this.selectIndex<0){
-                this.selectIndex=this.elements.length-1;
-            }
-            this.selectedElement = this.elements[this.selectIndex];
-        }
-
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)){
-            this.selectIndex++;           
-            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);         
-            if(this.selectIndex>this.elements.length-1){
-                this.selectIndex=0;
-            }
-
-            this.selectedElement = this.elements[this.selectIndex];
-        }  
-        
+        // pick up fruit or put down
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)){
-            this.checkFruitCollision();
-               
+            this.checkFruitCollision();      
         }
         
-
         
-        //turn off or on asteroid generation
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
-            this.GenerateOn=!this.GenerateOn; 
-            console.log("generating Bats: " + this.GenerateOn);
-        }
-        
-        //stop or start asteroid movement
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) {
+        //stop all object movement (testing only)
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Z)) {
 
             for (var i = 0; i < this.mAllObjs.size(); i++) {
                 var obj = this.mAllObjs.getObjectAt(i);
@@ -473,6 +419,7 @@ BasketScene.prototype.processInput = function(){
             }
         }
         
+        //further hero controls
         this.heroControls();
     }
     
@@ -488,11 +435,9 @@ BasketScene.prototype.generateBats = function (num) {
 
         var type=0;
         
-        
         //problem type
         type = Math.round(Math.random()*this.maxType); 
-        
-        
+                
         type=1;
         
         //answer =  true or false.
@@ -508,109 +453,18 @@ BasketScene.prototype.generateBats = function (num) {
 };
 
 
-BasketScene.prototype.procHit = function(obj, proj) {   
-    //for making reveal message
-    var x = obj.getXform().getXPos();
-    var y = obj.getXform().getYPos();
-    var type = obj.dataType;
-    
-    if(obj.dataType == proj.dataType){
-        this.incrementScore(true);
-        this.mAllObjs.removeFromSet(obj);
-        this.mAllObjs.removeFromSet(proj);
-
-    }
-    else{
-        this.incrementScore(false);
-        this.mAllObjs.removeFromSet(obj);
-        this.mAllObjs.removeFromSet(proj);
-
-        // display a reveal message
-        var text="X ";
-        if(type==0){
-            text += "int";
-        }
-            if(type==1){
-            text += "double";
-        }
-            if(type==2){
-            text += "boolean";
-        }
-            if(type==3){
-            text += "char";
-        }
-            if(type==4){
-            text += "string";
-        }
-
-        this.revealMsg = new FontRenderable(text);
-        this.revealMsg.setColor([1, 0, 0, 1]);
-        this.revealMsg.getXform().setPosition(x, y);
-        this.revealMsg.setTextHeight(5);
-        this.revealTime=120;
-    }
-    
-};
-
-BasketScene.prototype.defineProblemSet = function() { 
-    
-    this.problemSet = [
-        " 5 , 3+2",  
-    ];
-};
-
-BasketScene.prototype.generateFruit = function( num) { 
+BasketScene.prototype.generateFruit = function( num, pt0, ptmax) { 
     
     for(var i =0; i<num;i++){
         var x = this.WCCenterX-this.WCWidth/2 + (i*this.WCWidth/num)+ (1/num)*Math.random()*(this.WCWidth - 10);
         var y = this.groundLevel;
         
-        var type = Math.round(Math.random()*8);
+        var type = Math.round(Math.random()*(ptmax-pt0)) + pt0;
         
         var fruit = new Fruit(this.kArrow, x, y, type);
         this.mAllObjs.addToSet(fruit);
     }
 };
-
-BasketScene.prototype.updateBasketText = function( ) {
-    
-    //this.leftOperand="5";
-    //this.rightOperand="3";
-    
-    var op = "";
-    
-    switch(this.Operator){
-        case 0:
-            op ="==";
-            break;
-        case 1:
-            op="!=";
-            break;
-        case 2:
-            op=">";
-            break;
-        case 3:
-            op="<";
-            break;
-        case 4:
-            op=">=";
-            break;        
-        
-        case 5:
-            op="<=";
-            break;        
-        case 6:
-            op="&&";
-            break;        
-        case 7:
-            op="||";
-            break;        
-    }
-    
-    this.basketString = op;
-    
-    this.basketText.setText(this.basketString);
-}
 
 BasketScene.prototype.checkFruitCollision = function( ) {
       for (var i = 0; i < this.mAllObjs.size(); i++) {
@@ -620,7 +474,7 @@ BasketScene.prototype.checkFruitCollision = function( ) {
             if(obj.checkCollision(this.mHero)){
                 obj.terminate=true;
                 this.Operator=obj.operatorType;
-                //this.updateBasketText();
+
                 this.mHero.attachObj(obj);
             }
         }  
@@ -635,7 +489,7 @@ BasketScene.prototype.startLevel = function( ) {
 
 //special controls for jumping and etc.
 BasketScene.prototype.heroControls = function( ) {
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)){
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up) && this.mHero.mRigidBody.mInvMass==0){
         this.mHero.mRigidBody.setVelocity(0,30);
         this.mHero.mRigidBody.mInvMass=100;
         console.log("jump!");
@@ -661,7 +515,6 @@ BasketScene.prototype.generatePlatforms = function (num) {
         var xl = this.WCCenterX-this.WCWidth/2 + 20 + i*(this.WCWidth/num);
         var yl = this.groundLevel;
         
-
         var Platform1 = new Platform(this.kMinionSprite, xl, yl, 10, 20 );
 
 //        //drop speed
@@ -682,10 +535,6 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
     }
     else{
         fruit.mRigidBody.setMass(0);
-//        fruit.mRigidBody.mInvMass=0;
-//        fruit.mRigidBody.set
-//        fruit.mRigidBody.setVelocity(0,0);
-//        fruit.mRigidBody.setE(0,50);
         fruit.getXform().setYPos(this.groundLevel);
     }
 };
