@@ -125,6 +125,7 @@ Projectile.prototype.draw = function (aCamera) {
     
     
             this.mRenderComponent.draw(aCamera);
+            console.log("drawing projectile");
             this.mMinion.draw(aCamera);
             
             this.text.draw(aCamera);
@@ -137,7 +138,7 @@ Projectile.prototype.draw = function (aCamera) {
         }
         
         if ((this.mRigidBody !== null) && (this.mDrawRigidShape)){
-            //this.mRigidBody.draw(aCamera);
+            this.mRigidBody.draw(aCamera);
         }
     }
     //this.text.draw(aCamera);

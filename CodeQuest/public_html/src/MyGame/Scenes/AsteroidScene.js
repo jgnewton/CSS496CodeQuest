@@ -125,6 +125,8 @@ function AsteroidScene() {
     this.canFire = true;
     
     this.burstCount = 0;
+    
+    this.Ray=null;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -188,12 +190,10 @@ AsteroidScene.prototype.initialize = function () {
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
-        
-    
+          
     //object Set
     this.mAllObjs = new GameObjectSet();   
-    
-    
+       
     //this.background = new TextureRenderable(this.mBg1);
     this.background = new TextureRenderable(this.mBg2);
     this.background.getXform().setPosition(0, 0);
@@ -327,6 +327,10 @@ AsteroidScene.prototype.draw = function () {
         if(this.revealTime>0){
            this.revealMsg.draw(this.mCamera);
         }
+    }
+    
+    if(this.Ray!=null){
+        this.Ray.draw(this.mCamera);
     }
     
 
@@ -613,7 +617,7 @@ AsteroidScene.prototype.generateProjectile = function () {
     var yp = hxf.getYPos();
 
     //get in radians for Math javascript func
-    var rot = hxf.getRotationInRad();
+    var rot = this.mCannon.cannon.getXform().getRotationInRad();
 
     var w = 10;
     var h = 10;
@@ -641,7 +645,7 @@ AsteroidScene.prototype.generateProjectile = function () {
         this.maxV=0;
         p.getXform().setRotationInRad(rot);
 
-        p.getXform().setSize(1,2000);
+        p.getXform().setSize(2,2000);
         
         var xd = Math.sin(rot) * 1000;
         var yd = Math.cos(rot) * 1000;
@@ -654,6 +658,8 @@ AsteroidScene.prototype.generateProjectile = function () {
         p.lifeTime=30;
 
         this.rayCast(p);
+        
+        this.Ray = p;
     } else if(this.selectIndex == 3){
         //char
         this.fireRate = 30;
@@ -672,18 +678,7 @@ AsteroidScene.prototype.generateProjectile = function () {
             this.fireRate = 5;
         }
     }
-        
-
-        
-        /*
-          this.elements = [
-        this.intText,
-        this.doubleText,
-        this.boolText,
-        this.charText,
-        this.stringText
-    ];
-    */
+         
 
     var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
     var yv = this.maxV*Math.cos(rot);
@@ -698,6 +693,7 @@ AsteroidScene.prototype.generateProjectile = function () {
 
 //checking for raycast collisions
 AsteroidScene.prototype.rayCast = function (p) {
+    console.log("raycast");
     
     for (var i = 0; i < this.mAllObjs.size(); i++) {
       
