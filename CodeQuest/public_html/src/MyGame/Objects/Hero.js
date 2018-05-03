@@ -82,5 +82,4 @@ Hero.prototype.checkCollision = function (obj){
     else{
         return false;
     }
-    
 } ;
