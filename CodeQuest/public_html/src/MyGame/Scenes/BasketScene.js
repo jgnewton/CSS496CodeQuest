@@ -319,6 +319,7 @@ BasketScene.prototype.update = function () {
  };
 
 BasketScene.prototype.updateObjects = function(){
+    
     //manually update all objects in the set
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
@@ -349,6 +350,12 @@ BasketScene.prototype.updateObjects = function(){
         else{           
             obj.update();
         }
+    }
+    if(this.mHero.checkCollision(this.mFruit)){
+        //this.mFruit.freeze() the Fruit disappear
+        this.mFruit = null;
+        //add fruit to the storage
+        //generate a new fruit
     }
 };
 
@@ -423,10 +430,10 @@ BasketScene.prototype.processInput = function(){
         }    
         
         
-        // pick up fruit or put down
+       /* // pick up fruit or put down
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)){
             this.checkFruitCollision();      
-        }
+        }*/
         
         
         //stop all object movement (testing only)
@@ -493,6 +500,7 @@ BasketScene.prototype.generateFruit = function( num, pt0, ptmax) {
     }
 };
 
+/*
 BasketScene.prototype.checkFruitCollision = function( ) {
       for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
@@ -507,7 +515,7 @@ BasketScene.prototype.checkFruitCollision = function( ) {
         }  
     }
 }
-
+*/
 BasketScene.prototype.startLevel = function( ) {
     //this.generateBats(1);
     //this.generatePlatforms(4);
