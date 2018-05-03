@@ -234,10 +234,10 @@ Bat.prototype.equalityBank =function (){
     console.log("idx" + idx);
     var cutoff = 8;
     if(idx<cutoff){
-        this.correctAnswer=EQUAL;
+        this.correctAnswer=NOT_EQUAL;
     }
     else{
-        this.correctAnswer=NOT_EQUAL;
+        this.correctAnswer=EQUAL;
     }
     
     var ret = bank[idx];

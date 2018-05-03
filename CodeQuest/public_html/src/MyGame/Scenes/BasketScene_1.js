@@ -29,7 +29,7 @@ BasketScene.prototype.limitSelection = function () {
     //4 ||   &&
     
     /*
-     * const EQUAL = 0;
+     *  const EQUAL = 0;
         const NOT_EQUAL = 1;
         const GREATER = 2;
         const LESSER = 3;
