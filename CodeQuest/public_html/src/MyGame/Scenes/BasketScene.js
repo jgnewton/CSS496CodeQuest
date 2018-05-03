@@ -348,6 +348,7 @@ BasketScene.prototype.updateObjects = function(){
                 //console.log("asteroid collision with ground");
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
+                this.mFruit = null;
             }
         }
         //If Bat Remove
