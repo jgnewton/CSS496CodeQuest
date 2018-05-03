@@ -342,7 +342,7 @@ BasketScene.prototype.updateObjects = function(){
             obj.update();
         }
     }
-    if(this.mHero.checkCollision(this.mFruit)){
+    if(this.mFruit != null && this.mHero.checkCollision(this.mFruit)){
         //this.mFruit.freeze() the Fruit disappear
         this.mFruit = null;
         //add fruit to the storage
