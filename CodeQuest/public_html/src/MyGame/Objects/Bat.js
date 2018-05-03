@@ -228,7 +228,7 @@ Bat.prototype.equalityBank =function (){
         "2-2 __ 0",
     ];
     
-    var idx = Math.round(Math.random()*bank.length-1);
+    var idx = Math.round(Math.random()*(bank.length-1));
     
     
     console.log("idx" + idx);
@@ -274,7 +274,7 @@ Bat.prototype.ltgtBank =function (){
         "2.72__ 2.72",
         "0 __ 3-3",
     ];
-    var idx = Math.round(Math.random()*bank.length-1);
+    var idx = Math.round(Math.random()*(bank.length-1));
     var ret = bank[idx];
     
         var cutoff = 6;
@@ -330,7 +330,7 @@ Bat.prototype.goEltBank =function (){
             "2.71__ 2.72",
             "0 __ 3-2",
     ];
-    var idx = Math.round(Math.random()*bank.length-1);
+    var idx = Math.round(Math.random()*(bank.length-1));
     var ret = bank[idx];
     
     var cutoff = 12;
@@ -388,7 +388,7 @@ Bat.prototype.loEgtBank =function (){
         "3 __ 2+2",
 
     ];
-    var idx = Math.round(Math.random()*bank.length-1);
+    var idx = Math.round(Math.random()*(bank.length-1));
     var ret = bank[idx];
     
     var cutoff = 12;
@@ -428,7 +428,7 @@ Bat.prototype.boolBank =function (){
     
     ];
     
-    var idx = Math.round(Math.random()*bank.length-1);
+    var idx = Math.round(Math.random()*(bank.length-1));
     
 
     

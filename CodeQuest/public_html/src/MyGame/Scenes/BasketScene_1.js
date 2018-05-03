@@ -39,7 +39,7 @@ BasketScene.prototype.limitSelection = function () {
         const LOGICAL_OR = 7;
      */
   
-    this.allowed= [false, false,false, false,false, false,false];
+    this.allowed= [false, false, false, false, false, false, false];
         
     switch (this.problemType){
         case 0:
@@ -52,11 +52,16 @@ BasketScene.prototype.limitSelection = function () {
             this.allowed[3]=true;
             break;
         case 2:
-            
+            this.allowed[4]=true;
+            this.allowed[3]=true;
             break;
         case 3:
+            this.allowed[5]=true;
+            this.allowed[2]=true;            
             break;
         case 4:
+            this.allowed[6]=true;
+            this.allowed[7]=true;               
             break;
     }
 

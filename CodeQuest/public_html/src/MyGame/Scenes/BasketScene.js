@@ -122,7 +122,9 @@ function BasketScene() {
     this.mFruit = null;
     this.mBat = null;
     this.mAnswer = null;
-    this.problemType=0;
+    this.problemType=4;
+    
+    this.allowed=[];
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -200,20 +202,20 @@ BasketScene.prototype.initialize = function () {
     
     
     var textSize = 5;
-    var textYpos = -this.WCHeight / 2 + this.groundHeight / 2;
-    var textXPos = 110;
+    var textYpos = -this.WCHeight / 2 + this.groundHeight / 2 +15;
+    var textXPos = 120;
     var textOffset = 10;
     
     this.groundLevel = this.WCCenterY - (this.WCHeight/2) + this.groundHeight;
     
     this.eqText = new MenuElement("==", textXPos, textYpos + textOffset * 4, textSize);
     this.neqText = new MenuElement("!=", textXPos, textYpos + textOffset * 3, textSize);
-    this.lessText = new MenuElement("<", textXPos, textYpos + textOffset * 2, textSize);
-    this.moreText = new MenuElement(">", textXPos, textYpos + textOffset, textSize);
+    this.moreText = new MenuElement(">", textXPos, textYpos + textOffset * 2, textSize);
+    this.lessText = new MenuElement("<", textXPos, textYpos + textOffset, textSize);
     this.eqmoreText = new MenuElement(">=", textXPos, textYpos, textSize);
     this.eqlessText = new MenuElement("<=", textXPos, textYpos - textOffset, textSize);
-    this.eqlessText = new MenuElement("&&", textXPos, textYpos - textOffset, textSize);
-    this.eqlessText = new MenuElement("||", textXPos, textYpos - textOffset, textSize);
+    this.AndText = new MenuElement("&&", textXPos, textYpos - textOffset*2, textSize);
+    this.OrText = new MenuElement("||", textXPos, textYpos - textOffset*3, textSize);
     
     //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
     
@@ -223,7 +225,9 @@ BasketScene.prototype.initialize = function () {
         this.moreText,
         this.lessText,
         this.eqmoreText,
-        this.eqlessText
+        this.eqlessText,
+        this.AndText,
+        this.OrText
     ];
     
     this.selectedElement = this.elements[0];
@@ -472,10 +476,13 @@ BasketScene.prototype.processInput = function(){
         }    
         
         
+        
         //selecting Projectile type:
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
                 gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
-
+                
+                this.limitSelection();
+                
             this.selectIndex--;
             
             if(this.selectIndex<0){
@@ -489,6 +496,9 @@ BasketScene.prototype.processInput = function(){
 
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
                 gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+            
+            this.limitSelection();
+            
             this.selectIndex++;
             
             //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
