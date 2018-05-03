@@ -509,3 +509,8 @@ Bat.prototype.boolBank =function (){
     return bank[idx];
     
 }
+
+
+Bat.prototype.dropFruit =function (){
+    
+};
