@@ -19,6 +19,16 @@ var kMinionRandomSize = 0;
 
 //type = type of question
 // ans = true or false.
+
+const EQUAL = 0;
+const NOT_EQUAL = 1;
+const GREATER = 2;
+const LESSER = 3;
+const GREATER_OR_EQUAL = 4;
+const LESSER_OR_EQUAL = 5;
+const LOGICAL_AND = 6;
+const LOGICAL_OR = 7;
+
 function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
         
     var w = 25;
@@ -82,6 +92,8 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     this.DROP_DELAY = 60;
     
     this.timer = 0;
+    
+    this.correctAnswer;
     
 }
 gEngine.Core.inheritPrototype(Bat, GameObject);
@@ -599,13 +611,8 @@ Bat.prototype.goEltBank =function (){
 }
 
 
-
-
-
-
 Bat.prototype.boolBank =function (){
     var bank = [
-    
     
     "hello",
     "yo",
@@ -639,6 +646,11 @@ Bat.prototype.boolBank =function (){
     ];
     
     var idx = Math.round(Math.random()*bank.length-1);
+    
+    
+    this.correctAnswer=this.EQUAL;
+    
+    
     return bank[idx];
     
 }
