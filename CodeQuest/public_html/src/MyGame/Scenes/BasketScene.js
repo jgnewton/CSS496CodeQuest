@@ -125,6 +125,9 @@ function BasketScene() {
     this.problemType=4;
     
     this.allowed=[];
+    
+    
+    
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -201,38 +204,9 @@ BasketScene.prototype.initialize = function () {
     bxf.setHeight(500);
     
     
-    var textSize = 5;
-    var textYpos = -this.WCHeight / 2 + this.groundHeight / 2 +15;
-    var textXPos = 120;
-    var textOffset = 10;
-    
+    this.setOperators();
     this.groundLevel = this.WCCenterY - (this.WCHeight/2) + this.groundHeight;
     
-    this.eqText = new MenuElement("==", textXPos, textYpos + textOffset * 4, textSize);
-    this.neqText = new MenuElement("!=", textXPos, textYpos + textOffset * 3, textSize);
-    this.moreText = new MenuElement(">", textXPos, textYpos + textOffset * 2, textSize);
-    this.lessText = new MenuElement("<", textXPos, textYpos + textOffset, textSize);
-    this.eqmoreText = new MenuElement(">=", textXPos, textYpos, textSize);
-    this.eqlessText = new MenuElement("<=", textXPos, textYpos - textOffset, textSize);
-    this.AndText = new MenuElement("&&", textXPos, textYpos - textOffset*2, textSize);
-    this.OrText = new MenuElement("||", textXPos, textYpos - textOffset*3, textSize);
-    
-    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
-    
-    this.elements = [
-        this.eqText,
-        this.neqText,
-        this.moreText,
-        this.lessText,
-        this.eqmoreText,
-        this.eqlessText,
-        this.AndText,
-        this.OrText
-    ];
-    
-    this.selectedElement = this.elements[0];
-    this.selectionArrow = new TextureRenderable(this.kArrow);
-    this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
     this.helpTableObject.getXform().setSize(180, 80);
     
@@ -285,7 +259,7 @@ BasketScene.prototype.draw = function () {
             this.elements[i].draw(this.mCamera);
         }
 
-        this.selectionArrow.draw(this.mCamera);
+       // this.selectionArrow.draw(this.mCamera);
 
         if (this.helpTableVisible)
         {
@@ -316,8 +290,8 @@ BasketScene.prototype.update = function () {
         this.updateObjects();
 
         //update selection arrow position
-        var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
-        this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
+       // var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
+       // this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
     }
     //console.log(this.timer);
     if(this.timer<=0){
@@ -663,6 +637,7 @@ BasketScene.prototype.generatePlatforms = function (num) {
 };
 
 BasketScene.prototype.fruitGravity = function( fruit ) {
+    
     if (fruit.getXform().getYPos() > this.groundLevel){
       //  fruit.mRigidBody.setVelocity(0,50);
       if(!fruit.attached && !fruit.onPlatform){
@@ -686,3 +661,90 @@ BasketScene.prototype.checkAnswer = function( ) {
         this.incrementScore(false);
     }
 }
+BasketScene.prototype.setOperators = function() {
+    
+    var posY1 = 0;
+    var offSet = 1;
+    var posY2 = posY1 - offSet;
+    var posY3 = posY1 - 2* offSet;
+    var posX = 0;
+    var textSize = 7.5;
+    
+    var fontRenderable1 = new FontRenderable("1");
+    fontRenderable1.setColor([0, 0, 0, 1]);
+    fontRenderable1.getXform().setPosition(posX, posY1);
+    fontRenderable1.setTextHeight(textSize);
+    this.mAllObjs.addToSet(fontRenderable1);
+    
+    var fontRenderable2 = new FontRenderable("2");
+    fontRenderable2.setColor([0, 0, 0, 1]);
+    fontRenderable2.getXform().setPosition(posX, posY2);
+    fontRenderable2.setTextHeight(textSize);
+    this.mAllObjs.addToSet(fontRenderable2);
+
+    var fontRenderable3 = new FontRenderable("3");
+    fontRenderable3.setColor([0, 0, 0, 1]);
+    fontRenderable3.getXform().setPosition(posX, posY3);
+    fontRenderable3.setTextHeight(textSize);
+    this.mAllObjs.addToSet(fontRenderable3);
+    
+    var msg1 = "";
+    var msg2 = "";
+    var msg3 = "";
+    
+     switch (this.problemType){
+        case 0:
+            msg1 = "==";
+            msg2 = "!=";
+            break;
+        case 1:
+            msg1 = ">";
+            msg2 = "==";
+            msg3 = "<";
+            break;
+        case 2:
+            this.allowed[4]=true;
+            this.allowed[3]=true;
+            break;
+        case 3:
+            this.allowed[5]=true;
+            this.allowed[2]=true;            
+            break;
+        case 4:
+            this.allowed[6]=true;
+            this.allowed[7]=true;               
+            break;
+    }
+
+ /*   var textSize = 7;
+    var textYpos = -this.WCHeight / 2 + this.groundHeight / 2 +15;
+    var textXPos = 120;
+    var textOffset = 10;
+    
+    
+    this.eqText = new MenuElement("==", textXPos, textYpos + textOffset * 4, textSize);
+    this.neqText = new MenuElement("!=", textXPos, textYpos + textOffset * 3, textSize);
+    this.moreText = new MenuElement(">", textXPos, textYpos + textOffset * 2, textSize);
+    this.lessText = new MenuElement("<", textXPos, textYpos + textOffset, textSize);
+    this.eqmoreText = new MenuElement(">=", textXPos, textYpos, textSize);
+    this.eqlessText = new MenuElement("<=", textXPos, textYpos - textOffset, textSize);
+    this.AndText = new MenuElement("&&", textXPos, textYpos - textOffset*2, textSize);
+    //this.OrText = new MenuElement("||", textXPos, textYpos - textOffset*3, textSize);
+    
+    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
+    
+    this.elements = [
+        this.eqText,
+        this.neqText,
+        this.moreText,
+        this.lessText,
+        this.eqmoreText,
+        this.eqlessText,
+        this.AndText,
+       // this.OrText
+    ];
+    
+    this.selectedElement = this.elements[0];
+    this.selectionArrow = new TextureRenderable(this.kArrow);
+    this.selectionArrow.getXform().setSize(3, 3);*/
+ }
