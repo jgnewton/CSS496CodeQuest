@@ -93,7 +93,7 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     
     this.timer = 0;
     
-    this.correctAnswer;
+    this.correctAnswer=0;
     
 }
 gEngine.Core.inheritPrototype(Bat, GameObject);
@@ -527,7 +527,17 @@ Bat.prototype.equalityBank =function (){
         "3.14__ 3.14",
         "2-2 __ 0",
     ];
+    
     var idx = Math.round(Math.random()*bank.length-1);
+    
+    var cutoff = 8;
+    if(idx<cutoff){
+        this.correctAnswer=EQUAL;
+    }
+    else{
+        this.correctAnswer=NOT_EQUAL;
+    }
+    
     var ret = bank[idx];
     
     return ret;
@@ -563,6 +573,19 @@ Bat.prototype.ltgtBank =function (){
     ];
     var idx = Math.round(Math.random()*bank.length-1);
     var ret = bank[idx];
+    
+        var cutoff = 6;
+        var cutoff2 = 12;
+    if(idx<cutoff){
+        this.correctAnswer=LESSER;
+    }
+    else if(idx<cutoff2) {
+        this.correctAnswer=GREATER;
+    }
+    else{
+        this.correctAnswer=EQUAL;
+    }
+    
     
     return ret;
 }
@@ -607,8 +630,77 @@ Bat.prototype.goEltBank =function (){
     var idx = Math.round(Math.random()*bank.length-1);
     var ret = bank[idx];
     
+    var cutoff = 12;
+    if(idx<cutoff){
+        this.correctAnswer=GREATER_OR_EQUAL;
+    }
+    else{
+        this.correctAnswer=LESSER;
+    }
+    
+    
     return ret;
 }
+
+
+//>=  or    <
+Bat.prototype.loEgtBank =function (){
+    var bank = [
+
+        // >
+                       
+            // >
+            "1 __ 0",
+            "2+1 __ 2",        
+            "7.5 __ 7",
+            "1.01 __ 1.00",
+            "2 __ 1",
+            "0 __ -1",
+             
+            "1+2 __ 4",
+            "2.1 __ 2.2",
+            "2+2 __ 5",
+            "3 __ 2+4",
+            "2.71__ 2.72",
+            "0 __ 3-2",
+            // 
+            // 
+
+        // <=
+             //
+            //==
+            "1+3 __ 4",
+            "2.1 __ 2.1",
+            "2+3 __ 5",
+            "6 __ 2+4",
+            "2.72__ 2.72",
+            "0 __ 3-3",
+        
+        // <        
+        "1 __ 2",
+        "2 __ 3",
+        "-1 __ 0",
+        "-1 __ 1",
+        "4 __ 5",
+        "3 __ 2+2",
+
+    ];
+    var idx = Math.round(Math.random()*bank.length-1);
+    var ret = bank[idx];
+    
+    var cutoff = 12;
+    if(idx<cutoff){
+        this.correctAnswer=GREATER_OR_EQUAL;
+    }
+    else{
+        this.correctAnswer=LESSER;
+    }
+    
+    
+    return ret;
+}
+
+
 
 
 Bat.prototype.boolBank =function (){
