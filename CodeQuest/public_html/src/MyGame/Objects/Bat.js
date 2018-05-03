@@ -74,6 +74,9 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     
     this.setText();
     
+    this.text.getXform().setPosition(atX-15, atY);
+    
+    
     this.sprite = spriteTexture;
     
     this.DROP_DELAY = 60;
@@ -111,7 +114,7 @@ Bat.prototype.update = function () {
     }
     
 
-    this.text.getXform().setPosition(x-15, y);
+    //this.text.getXform().setPosition(x-15, y);
     
     this.test();
     
@@ -123,9 +126,9 @@ Bat.prototype.update = function () {
 Bat.prototype.draw = function (aCamera) {
     if (this.isVisible()) {
         //if (this.mDrawRenderable)
-            //this.mRenderComponent.draw(aCamera);
+            this.mRenderComponent.draw(aCamera);
         //if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
-            //this.mRigidBody.draw(aCamera);
+            this.mRigidBody.draw(aCamera);
     }
     this.text.draw(aCamera);
 };
@@ -182,10 +185,13 @@ Bat.prototype.setText =function (){
     this.text = new FontRenderable(msg);
     this.text.setColor([0, 0, 0, 1]);
     this.text.getXform().setPosition(200, 200);
-    this.text.setTextHeight(5); 
+    this.text.setTextHeight(10); 
     
     if(!this.answer){
         this.text.setColor([1, 0, 0, 1]);    
+   }
+   else{
+       this.text.setColor([0, 0, 1, 1]);  
    }
 } ;
 
@@ -485,6 +491,110 @@ Bat.prototype.generateExpression =function (){
 };
 
 
+//!=    or    ==
+Bat.prototype.equalityBank =function (){
+    var bank = [
+        
+        //!=
+        "True __ False",
+        "False __ True",
+        "1 __ 2",
+        "1 __ 0",
+        "2+2 __ 5",        
+        "6 __ 7",
+        "1.01 __ 1.00",
+        "2 __ 1",
+        
+        //==
+        "True __ True",
+        "False __ False",
+        "1 __ 1",
+        "2 __ 2",
+        "2+2 __ 4",
+        "2+4 __ 6",
+        "3.14__ 3.14",
+        "2-2 __ 0",
+    ];
+    var idx = Math.round(Math.random()*bank.length-1);
+    var ret = bank[idx];
+    
+    return ret;
+}
+
+// >   or    <     or    ==
+Bat.prototype.ltgtBank =function (){
+    var bank = [
+
+        // <
+        "1 __ 2",
+        "2 __ 3",
+        "-1 __ 0",
+        "-1 __ 1",
+        "4 __ 5",
+        "3 __ 2+2",
+               
+        // >
+        "1 __ 0",
+        "2+1 __ 2",        
+        "7.5 __ 7",
+        "1.01 __ 1.00",
+        "2 __ 1",
+        "0 __ -1",
+        
+        //==
+        "1+3 __ 4",
+        "2.1 __ 2.1",
+        "2+3 __ 5",
+        "6 __ 2+4",
+        "2.72__ 2.72",
+        "0 __ 3-3",
+    ];
+    var idx = Math.round(Math.random()*bank.length-1);
+    var ret = bank[idx];
+    
+    return ret;
+}
+
+
+//>=  or    <
+Bat.prototype.goEltBank =function (){
+    var bank = [
+
+        // >=
+        "1 __ 2",
+        "2 __ 3",
+        "-1 __ 0",
+        "-1 __ 1",
+        "4 __ 5",
+        "3 __ 2+2",
+               
+        // >
+        "1 __ 0",
+        "2+1 __ 2",        
+        "7.5 __ 7",
+        "1.01 __ 1.00",
+        "2 __ 1",
+        "0 __ -1",
+        
+        //==
+        "1+3 __ 4",
+        "2.1 __ 2.1",
+        "2+3 __ 5",
+        "6 __ 2+4",
+        "2.72__ 2.72",
+        "0 __ 3-3",
+    ];
+    var idx = Math.round(Math.random()*bank.length-1);
+    var ret = bank[idx];
+    
+    return ret;
+}
+
+
+
+
+
+
 Bat.prototype.boolBank =function (){
     var bank = [
     
@@ -529,7 +639,7 @@ Bat.prototype.boolBank =function (){
 Bat.prototype.dropFruit =function (){
     
     console.log("bat dropping fruit");
-    var fruit = new Fruit (this.sprite, this.getXform().getXPos(), this.getXform().getYPos(), 0);    
+    var fruit = new Fruit (this.sprite, this.getXform().getXPos(), this.getXform().getYPos(), this.answer);    
     return fruit;
 };
 
