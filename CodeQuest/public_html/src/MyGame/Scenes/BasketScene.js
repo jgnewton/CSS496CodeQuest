@@ -663,7 +663,7 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
 };
 
 BasketScene.prototype.checkAnswer = function( ) {
-    if (this.mAnswer == this.mBat.correctAnswer){
+    if (this.selectedElement == this.mBat.correctAnswer){
         this.incrementScore(true);
     }
     else{
