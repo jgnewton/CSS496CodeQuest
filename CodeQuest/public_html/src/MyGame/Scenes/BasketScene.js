@@ -212,13 +212,16 @@ BasketScene.prototype.initialize = function () {
     this.moreText = new MenuElement(">", textXPos, textYpos + textOffset, textSize);
     this.eqmoreText = new MenuElement(">=", textXPos, textYpos, textSize);
     this.eqlessText = new MenuElement("<=", textXPos, textYpos - textOffset, textSize);
+    this.eqlessText = new MenuElement("&&", textXPos, textYpos - textOffset, textSize);
+    this.eqlessText = new MenuElement("||", textXPos, textYpos - textOffset, textSize);
+    
     //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
     
     this.elements = [
         this.eqText,
         this.neqText,
-        this.lessText,
         this.moreText,
+        this.lessText,
         this.eqmoreText,
         this.eqlessText
     ];

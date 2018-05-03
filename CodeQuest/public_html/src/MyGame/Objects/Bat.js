@@ -230,6 +230,8 @@ Bat.prototype.equalityBank =function (){
     
     var idx = Math.round(Math.random()*bank.length-1);
     
+    
+    console.log(idx);
     var cutoff = 8;
     if(idx<cutoff){
         this.correctAnswer=EQUAL;
