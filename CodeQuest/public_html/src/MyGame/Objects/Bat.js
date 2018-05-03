@@ -532,3 +532,9 @@ Bat.prototype.dropFruit =function (){
     var fruit = new Fruit (this.sprite, this.getXform().getXPos(), this.getXform().getYPos(), 0);    
     return fruit;
 };
+
+
+
+Bat.prototype.flyAway =function (){
+    this.yv = 8;
+};
