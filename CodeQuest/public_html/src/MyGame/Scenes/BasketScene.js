@@ -97,10 +97,10 @@ function BasketScene() {
     this.numIncorrect = 0;
     this.numCorrect = 0;
     // the number of Xs required to lose the game
-    this.gameOverNumber = 2;
+    this.gameOverNumber = 5;
     
     //success
-    this.succeedNumber = 1;
+    this.succeedNumber = 10;
     // when gameOver is true, we display the player's score and prompt them
     // to play again or return to main menu
     this.gameOver = false;
