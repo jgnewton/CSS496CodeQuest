@@ -561,28 +561,36 @@ Bat.prototype.goEltBank =function (){
     var bank = [
 
         // >=
+                       
+            // >
+            "1 __ 0",
+            "2+1 __ 2",        
+            "7.5 __ 7",
+            "1.01 __ 1.00",
+            "2 __ 1",
+            "0 __ -1",
+             // OR
+            //==
+            "1+3 __ 4",
+            "2.1 __ 2.1",
+            "2+3 __ 5",
+            "6 __ 2+4",
+            "2.72__ 2.72",
+            "0 __ 3-3",
+        
+        // <        
         "1 __ 2",
         "2 __ 3",
         "-1 __ 0",
         "-1 __ 1",
         "4 __ 5",
         "3 __ 2+2",
-               
-        // >
-        "1 __ 0",
-        "2+1 __ 2",        
-        "7.5 __ 7",
-        "1.01 __ 1.00",
-        "2 __ 1",
-        "0 __ -1",
-        
-        //==
-        "1+3 __ 4",
-        "2.1 __ 2.1",
-        "2+3 __ 5",
-        "6 __ 2+4",
-        "2.72__ 2.72",
-        "0 __ 3-3",
+            "1+2 __ 4",
+            "2.1 __ 2.2",
+            "2+2 __ 5",
+            "3 __ 2+4",
+            "2.71__ 2.72",
+            "0 __ 3-2",
     ];
     var idx = Math.round(Math.random()*bank.length-1);
     var ret = bank[idx];
@@ -636,13 +644,11 @@ Bat.prototype.boolBank =function (){
 }
 
 
-Bat.prototype.dropFruit =function (){
-    
+Bat.prototype.dropFruit =function (){    
     console.log("bat dropping fruit");
     var fruit = new Fruit (this.sprite, this.getXform().getXPos(), this.getXform().getYPos(), this.answer);    
     return fruit;
 };
-
 
 
 Bat.prototype.flyAway =function (){
