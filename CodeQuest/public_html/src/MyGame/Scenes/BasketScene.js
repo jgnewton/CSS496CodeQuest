@@ -353,10 +353,9 @@ BasketScene.prototype.updateObjects = function(){
         }
     }
     if(this.mFruit != null && this.mHero.checkCollision(this.mFruit)){
-        //this.mFruit.freeze() the Fruit disappear
+        console.log("collide");
+        this.mAllObjs.removeFromSet(this.mFruit);
         this.mFruit = null;
-        //add fruit to the storage
-        //generate a new fruit
     }
 };
 
@@ -574,3 +573,50 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
         fruit.getXform().setYPos(this.groundLevel);
     }
 };
+/*
+AsteroidScene.prototype.incrementScore = function(hit){
+    //console.log("score incremented");
+    //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
+    //this.nextMarkX += this.markOffset;
+    this.scoreMarksArray.push(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
+    this.nextMarkX += this.markOffset;
+    this.Shots++;
+    
+    // if the score was incremented with a bad hit, increase number of
+    // incorrect/missed asteroids
+    if(!hit){
+        this.numIncorrect++;
+    } else {
+        this.numCorrect++;
+        this.Hits++;
+    }
+    
+    // toggle gameover state if exceeded gameeover number
+    if(this.numIncorrect >= this.gameOverNumber){
+        // set this text element to correctly display numCorrect
+        this.gameOverText = new MenuElement("You Lose! Try Again!", -30, 30, 10);
+        this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -20, 0, 10);
+        this.gameOver = true;
+        //this.win = false;
+    }
+    if(this.numCorrect >= this.succeedNumber){
+        this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
+        this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
+        this.gameOver = true;
+        
+        localStorage.setItem("Meteors", true);
+        //this.win = true;
+    }
+    // check if y needs to be incremented and x reset
+    if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
+        this.nextMarkY += this.markOffset;
+        this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
+    }
+    
+    if(this.Shots!=0){
+        this.Accuracy= this.Hits/ this.Shots * 100;
+    }
+    
+    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
+};
+*/
