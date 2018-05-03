@@ -231,7 +231,7 @@ Bat.prototype.equalityBank =function (){
     var idx = Math.round(Math.random()*bank.length-1);
     
     
-    console.log(idx);
+    console.log("idx" + idx);
     var cutoff = 8;
     if(idx<cutoff){
         this.correctAnswer=EQUAL;
@@ -242,6 +242,7 @@ Bat.prototype.equalityBank =function (){
     
     var ret = bank[idx];
     
+    console.log("correct answer in bat:"+this.correctAnswer);
     return ret;
 }
 
