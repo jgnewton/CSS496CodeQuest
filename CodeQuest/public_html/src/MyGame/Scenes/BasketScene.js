@@ -270,7 +270,7 @@ BasketScene.prototype.draw = function () {
         this.mAllObjs.draw(this.mCamera);
     
 
-        //this.selectionArrow.draw(this.mCamera);
+        this.selectionArrow.draw(this.mCamera);
 
         if (this.helpTableVisible)
         {
@@ -301,11 +301,20 @@ BasketScene.prototype.update = function () {
     if(this.timer<=0){
         this.timer=this.SPAWN_INTERVAL;
         if(!this.hasBat){
-            this.generateBats(1);
+            this.generateBat();
         }
     }else{
         this.timer--;
     }
+    
+    if(this.mBat != null){
+        if (this.mBat.timer >= this.mBat.DROP_DELAY){
+            this.mFruit = this.mBat.dropFruit();
+            this.mAllObjs.addToSet(this.mFruit);
+        }
+    }
+    
+   // console.log(this.mBat.timer);
     
  };
 
@@ -450,9 +459,8 @@ BasketScene.prototype.processInput = function(){
 
 
 //Generate an asteroid at a random location at the top of the camera view
-BasketScene.prototype.generateBats = function (num) {
+BasketScene.prototype.generateBat = function () {
      
-    for(var i =0; i<num; i++){
         var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*this.WCWidth;
         
         var yl = this.WCCenterY+ this.WCHeight/2 -20;
@@ -475,7 +483,7 @@ BasketScene.prototype.generateBats = function (num) {
         this.mAllObjs.addToSet(Bat1); 
         
         this.hasBat = true;
-    }
+        this.mBat = Bat1;
 };
 
 

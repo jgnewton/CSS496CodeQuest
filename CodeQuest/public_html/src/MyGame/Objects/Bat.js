@@ -74,6 +74,12 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     
     this.setText();
     
+    this.sprite = spriteTexture;
+    
+    this.DROP_DELAY = 60;
+    
+    this.timer = 0;
+    
 }
 gEngine.Core.inheritPrototype(Bat, GameObject);
 
@@ -108,6 +114,9 @@ Bat.prototype.update = function () {
     this.text.getXform().setPosition(x-15, y);
     
     this.test();
+    
+    this.timer++;
+    
 };
 
 //commented out draw render temporarily
@@ -159,19 +168,25 @@ Bat.prototype.setText =function (){
         this.andOrOR();
     }
     
-    var addendum = "";
+    var addendum = ")";
     if(this.answer){
-        addendum= " )== true";
+        //addendum= " )== true";
     }else{
-        addendum= " )== false";
+        //addendum= " )== false";
     }
     
     msg+=addendum;
+   //change color instead.
+   
     
     this.text = new FontRenderable(msg);
     this.text.setColor([0, 0, 0, 1]);
     this.text.getXform().setPosition(200, 200);
-    this.text.setTextHeight(5);    
+    this.text.setTextHeight(5); 
+    
+    if(!this.answer){
+        this.text.setColor([1, 0, 0, 1]);    
+   }
 } ;
 
 Bat.prototype.equalOrNot =function (){
@@ -513,4 +528,7 @@ Bat.prototype.boolBank =function (){
 
 Bat.prototype.dropFruit =function (){
     
+    console.log("bat dropping fruit");
+    var fruit = new Fruit (this.sprite, this.getXform().getXPos(), this.getXform().getYPos(), 0);    
+    return fruit;
 };
