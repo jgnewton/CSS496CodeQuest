@@ -311,6 +311,7 @@ BasketScene.prototype.update = function () {
         if (this.mBat.timer >= this.mBat.DROP_DELAY){
             this.mFruit = this.mBat.dropFruit();
             this.mAllObjs.addToSet(this.mFruit);
+            this.mBat.DROP_DELAY=99999;
         }
     }
     
