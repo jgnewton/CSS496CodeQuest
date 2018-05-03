@@ -81,6 +81,7 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     this.answer=ans;
     
     this.correctOType=0;
+    this.correctAnswer=0;
     
     this.setText();
     
@@ -93,7 +94,6 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     
     this.timer = 0;
     
-    this.correctAnswer=0;
     
 }
 gEngine.Core.inheritPrototype(Bat, GameObject);
@@ -427,8 +427,7 @@ Bat.prototype.boolBank =function (){
     
     var idx = Math.round(Math.random()*bank.length-1);
     
-    
-    this.correctAnswer=this.EQUAL;
+
     
     var cutoff = 8;
     if(idx<cutoff){
