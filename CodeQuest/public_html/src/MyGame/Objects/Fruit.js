@@ -62,7 +62,7 @@ Fruit.prototype.update = function (objset) {
 
 Fruit.prototype.draw = function (aCamera) {
     this.placeHolder.draw(aCamera);
-    this.text.draw(aCamera);
+    //this.text.draw(aCamera);
 };
 
 Fruit.prototype.checkCollision = function (obj){
