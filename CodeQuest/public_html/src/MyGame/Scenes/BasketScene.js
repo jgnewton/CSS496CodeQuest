@@ -297,10 +297,11 @@ BasketScene.prototype.draw = function () {
 BasketScene.prototype.update = function () {
     this.processInput();
     this.updateObjects();
-    
+    //console.log(this.timer);
     if(this.timer<=0){
         this.timer=this.SPAWN_INTERVAL;
         if(!this.hasBat){
+            console.log("generatebat");
             this.generateBat();
         }
     }else{
@@ -312,6 +313,7 @@ BasketScene.prototype.update = function () {
             this.mFruit = this.mBat.dropFruit();
             this.mAllObjs.addToSet(this.mFruit);
             this.mBat.DROP_DELAY=99999;
+            this.mBat.flyAway(); 
         }
     }
     
@@ -328,18 +330,20 @@ BasketScene.prototype.updateObjects = function(){
             obj.update();
             this.fruitGravity(obj);
         }
-        //If BAt Reverse Directions:
+        //If Bat Remove
         else if(obj instanceof Bat){
-            
-            if(obj.getXform().getYPos()<=(0 - this.WCHeight/2 + this.groundHeight)){ 
+            if(obj.getXform().getYPos()>=this.WCCenterY+this.WCHeight/2 + 10){
                 console.log(obj.getXform().getYPos());
-                obj.getXform().setYPos(0-this.WCHeight/2 + this.groundHeight+1);
-                obj.yv = -1 *obj.yv;               
+                this.mAllObjs.removeFromSet(this.mBat);
+                this.mBat=null;
+                this.hasBat=false;
+                //obj.getXform().setYPos(0-this.WCHeight/2 + this.groundHeight+1);
+                //obj.yv = -1 *obj.yv;               
             }
             if(obj.getXform().getYPos()>=this.WCCenterY+this.WCHeight/2 + 10){
-               console.log(obj.getXform().getYPos());
-               obj.getXform().setYPos(this.WCCenterY+this.WCHeight/2 + 9);
-               obj.yv = -1 *obj.yv;   
+               //console.log(obj.getXform().getYPos());
+               //obj.getXform().setYPos(this.WCCenterY+this.WCHeight/2 + 9);
+               //obj.yv = -1 *obj.yv;   
             }
             obj.update();
         }
@@ -356,6 +360,9 @@ BasketScene.prototype.updateObjects = function(){
         console.log("collide");
         this.mAllObjs.removeFromSet(this.mFruit);
         this.mFruit = null;
+
+        //add fruit to the storage
+        //generate a new fruit
     }
 };
 
