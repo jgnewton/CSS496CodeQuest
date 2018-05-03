@@ -378,9 +378,10 @@ BasketScene.prototype.updateObjects = function(){
     }
     if(this.mFruit != null && this.mHero.checkCollision(this.mFruit)){
         console.log("collide");
+        this.checkAnswer();
         this.mAllObjs.removeFromSet(this.mFruit);
         this.mFruit = null;
-        this.checkAnswer();
+        
         
         //add fruit to the storage
         //generate a new fruit
@@ -653,7 +654,7 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
       if(!fruit.attached && !fruit.onPlatform){
        // fruit.mRigidBody.mInvMass=1;
        fruit.mRigidBody.setMass(1);
-        console.log("fall!");
+        //console.log("fall!");
       }
     }
     else{
@@ -663,7 +664,8 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
 };
 
 BasketScene.prototype.checkAnswer = function( ) {
-    if (this.selectedElement == this.mBat.correctAnswer){
+    console.log("selectIndex " + this.selectIndex + "mBatAnswer " + this.mBat.correctAnswer)
+    if (this.selectIndex == this.mBat.correctAnswer){
         this.incrementScore(true);
     }
     else{
