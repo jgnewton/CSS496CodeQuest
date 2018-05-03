@@ -116,6 +116,9 @@ function BasketScene() {
     
     this.revealTime=0;
     this.groundLevel = null;
+    
+    this.mFruit = null;
+    this.mBat = null;
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -237,9 +240,12 @@ BasketScene.prototype.initialize = function () {
     //this.mAllObjs.addToSet(this.fruit1);
     
     //# of fruits, and problem type range
-    this.generateFruit(5,0,1);
+    //this.generateFruit(5,0,1);
        
-    this.startLevel();
+    //this.startLevel();
+    
+    this.timer =0;
+    this.SPAWN_INTERVAL=120;
      
     
 };
@@ -291,6 +297,16 @@ BasketScene.prototype.draw = function () {
 BasketScene.prototype.update = function () {
     this.processInput();
     this.updateObjects();
+    
+    if(this.timer<=0){
+        this.timer=this.SPAWN_INTERVAL;
+        if(!this.hasBat){
+            this.generateBats(1);
+        }
+    }else{
+        this.timer--;
+    }
+    
  };
 
 BasketScene.prototype.updateObjects = function(){
@@ -420,7 +436,7 @@ BasketScene.prototype.processInput = function(){
         }
         
         //further hero controls
-        this.heroControls();
+        //this.heroControls();
     }
     
 };
@@ -430,8 +446,9 @@ BasketScene.prototype.processInput = function(){
 BasketScene.prototype.generateBats = function (num) {
      
     for(var i =0; i<num; i++){
-        var xl = this.WCCenterX-this.WCWidth/2 + 20 + i*(this.WCWidth/num);
-        var yl = 120-(15*i);
+        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*this.WCWidth;
+        
+        var yl = this.WCCenterY+ this.WCHeight/2 -20;
 
         var type=0;
         
@@ -446,9 +463,11 @@ BasketScene.prototype.generateBats = function (num) {
         var Bat1 = new Bat(this.kMinionSprite, xl, yl, false, type, ans);
 
         //drop speed
-        Bat1.yv=-14;
+        //Bat1.yv=-14;
 
         this.mAllObjs.addToSet(Bat1); 
+        
+        this.hasBat = true;
     }
 };
 
@@ -482,8 +501,8 @@ BasketScene.prototype.checkFruitCollision = function( ) {
 }
 
 BasketScene.prototype.startLevel = function( ) {
-    this.generateBats(4);
-    this.generatePlatforms(4);
+    //this.generateBats(1);
+    //this.generatePlatforms(4);
 };
 
 
