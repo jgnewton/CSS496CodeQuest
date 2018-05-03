@@ -64,7 +64,7 @@ Fruit.prototype.draw = function (aCamera) {
     this.placeHolder.draw(aCamera);
     this.text.draw(aCamera);
 };
-
+/*
 Fruit.prototype.checkCollision = function (obj){
     
     if(this.getBBox().intersectsBound(obj.getBBox())!=0){
@@ -75,7 +75,7 @@ Fruit.prototype.checkCollision = function (obj){
     }
     
 } ;
-
+*/
 Fruit.prototype.Transition = function (){
 }
 

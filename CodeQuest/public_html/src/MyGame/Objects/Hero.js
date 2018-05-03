@@ -39,13 +39,14 @@ Hero.prototype.update = function () {
     GameObject.prototype.update.call(this);
     //this.aimShoot();
     
-    if(this.attachedObj!=null){
+    /*if(this.attachedObj!=null){
         var hxf = this.getXform();
         var oxf = this.attachedObj.getXform();
         
         oxf.setXPos(hxf.getXPos());
         oxf.setYPos(hxf.getYPos()); + this.carryHeight;
-    }
+    }*/
+    
     
 }
 
@@ -71,3 +72,15 @@ Hero.prototype.attachObj = function (obj) {
         
     }
 };
+
+//Eat Fruits
+Hero.prototype.checkCollision = function (obj){
+    
+    if(this.getBBox().intersectsBound(obj.getBBox())!=0){
+        return true;
+    }
+    else{
+        return false;
+    }
+    
+} ;

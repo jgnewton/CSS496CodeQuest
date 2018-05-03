@@ -398,10 +398,10 @@ BasketScene.prototype.processInput = function(){
         }    
         
         
-        // pick up fruit or put down
+       /* // pick up fruit or put down
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)){
             this.checkFruitCollision();      
-        }
+        }*/
         
         
         //stop all object movement (testing only)
