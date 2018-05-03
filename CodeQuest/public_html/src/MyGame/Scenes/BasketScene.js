@@ -109,19 +109,19 @@ function BasketScene() {
     this.gameOverText3 = null;
     this.gameOverText4 = null;
     
-    this.Accuracy=null;
-    this.Shots=null;
-    this.Hits=null;
+    this.Accuracy = null;
+    this.Shots = null;
+    this.Hits = null;
     
     this.revealMsg = null;
    
     
-    this.revealTime=0;
+    this.revealTime = 0;
     this.groundLevel = null;
     
     this.mFruit = null;
     this.mBat = null;
-    
+    this.mAnswer = null;
     this.problemType=0;
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
@@ -273,6 +273,10 @@ BasketScene.prototype.draw = function () {
     } else {
         this.mAllObjs.draw(this.mCamera);
     
+        for(var i = 0; i < this.elements.length; i++){
+            //console.log(this.elements[i]);
+            this.elements[i].draw(this.mCamera);
+        }
 
         this.selectionArrow.draw(this.mCamera);
 
@@ -301,6 +305,13 @@ BasketScene.prototype.draw = function () {
 BasketScene.prototype.update = function () {
     this.processInput();
     this.updateObjects();
+    if(!this.gameOver){
+        this.updateObjects();
+
+        //update selection arrow position
+        var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
+        this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
+    }
     //console.log(this.timer);
     if(this.timer<=0){
         this.timer=this.SPAWN_INTERVAL;
@@ -369,7 +380,8 @@ BasketScene.prototype.updateObjects = function(){
         console.log("collide");
         this.mAllObjs.removeFromSet(this.mFruit);
         this.mFruit = null;
-        this.incrementScore(true);
+        this.checkAnswer();
+        
         //add fruit to the storage
         //generate a new fruit
     }
@@ -446,14 +458,42 @@ BasketScene.prototype.processInput = function(){
         }
                 
         //moving basket
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left)){ 
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)){ 
                 heroXF.incXPosBy(-1*deltax);
         }
 
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right)){
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)){
             heroXF.incXPosBy(deltax);
         }    
         
+        
+        //selecting Projectile type:
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
+                gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
+
+            this.selectIndex--;
+            
+            if(this.selectIndex<0){
+                this.selectIndex=this.elements.length-1;
+            }
+            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+            
+            
+            this.selectedElement = this.elements[this.selectIndex];
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
+                gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+            this.selectIndex++;
+            
+            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
+            
+            if(this.selectIndex>this.elements.length-1){
+                this.selectIndex=0;
+            }
+            
+            this.selectedElement = this.elements[this.selectIndex];
+        }
         
        /* // pick up fruit or put down
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)){
@@ -621,3 +661,12 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
         fruit.getXform().setYPos(this.groundLevel);
     }
 };
+
+BasketScene.prototype.checkAnswer = function( ) {
+    if (this.mAnswer == this.mBat.correctAnswer){
+        this.incrementScore(true);
+    }
+    else{
+        this.incrementScore(false);
+    }
+}
