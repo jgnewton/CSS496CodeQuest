@@ -97,8 +97,10 @@ function BasketScene() {
     this.numIncorrect = 0;
     this.numCorrect = 0;
     // the number of Xs required to lose the game
-    this.gameOverNumber = 10;
+    this.gameOverNumber = 5;
     
+    //success
+    this.succeedNumber = 10;
     // when gameOver is true, we display the player's score and prompt them
     // to play again or return to main menu
     this.gameOver = false;
@@ -308,7 +310,7 @@ BasketScene.prototype.update = function () {
         this.timer--;
     }
     
-    if(this.mBat != null){
+    if(this.mBat != null && this.gameOver == false){
         if (this.mBat.timer >= this.mBat.DROP_DELAY){
             this.mFruit = this.mBat.dropFruit();
             this.mAllObjs.addToSet(this.mFruit);
@@ -329,6 +331,11 @@ BasketScene.prototype.updateObjects = function(){
         if(obj instanceof Fruit){
             obj.update();
             this.fruitGravity(obj);
+            if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
+                //console.log("asteroid collision with ground");
+                this.incrementScore(false);
+                this.mAllObjs.removeFromSet(obj);
+            }
         }
         //If Bat Remove
         else if(obj instanceof Bat){
@@ -347,11 +354,11 @@ BasketScene.prototype.updateObjects = function(){
             }
             obj.update();
         }
-        else if(obj instanceof Platform){
+        /*else if(obj instanceof Platform){
             if(obj.checkCollision(this.mAllObjs) && !obj.isFull){
                 console.log("collide");
             }
-        }
+        }*/
         else{           
             obj.update();
         }
@@ -360,7 +367,7 @@ BasketScene.prototype.updateObjects = function(){
         console.log("collide");
         this.mAllObjs.removeFromSet(this.mFruit);
         this.mFruit = null;
-
+        this.incrementScore(true);
         //add fruit to the storage
         //generate a new fruit
     }
@@ -388,6 +395,15 @@ BasketScene.prototype.incrementScore = function(hit){
         // set this text element to correctly display numCorrect
         this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -20, 0, 10);
         this.gameOver = true;
+    }
+    
+    if(this.numCorrect >= this.succeedNumber){
+        this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
+        this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
+        this.gameOver = true;
+        
+        localStorage.setItem("Meteors", true);
+        //this.win = true;
     }
     // check if y needs to be incremented and x reset
     if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
@@ -580,50 +596,3 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
         fruit.getXform().setYPos(this.groundLevel);
     }
 };
-/*
-AsteroidScene.prototype.incrementScore = function(hit){
-    //console.log("score incremented");
-    //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
-    //this.nextMarkX += this.markOffset;
-    this.scoreMarksArray.push(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
-    this.nextMarkX += this.markOffset;
-    this.Shots++;
-    
-    // if the score was incremented with a bad hit, increase number of
-    // incorrect/missed asteroids
-    if(!hit){
-        this.numIncorrect++;
-    } else {
-        this.numCorrect++;
-        this.Hits++;
-    }
-    
-    // toggle gameover state if exceeded gameeover number
-    if(this.numIncorrect >= this.gameOverNumber){
-        // set this text element to correctly display numCorrect
-        this.gameOverText = new MenuElement("You Lose! Try Again!", -30, 30, 10);
-        this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -20, 0, 10);
-        this.gameOver = true;
-        //this.win = false;
-    }
-    if(this.numCorrect >= this.succeedNumber){
-        this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
-        this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
-        this.gameOver = true;
-        
-        localStorage.setItem("Meteors", true);
-        //this.win = true;
-    }
-    // check if y needs to be incremented and x reset
-    if(this.nextMarkX >= this.WCCenterX - (this.WCWidth / 2) + this.markOffset + 100){
-        this.nextMarkY += this.markOffset;
-        this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
-    }
-    
-    if(this.Shots!=0){
-        this.Accuracy= this.Hits/ this.Shots * 100;
-    }
-    
-    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
-};
-*/
