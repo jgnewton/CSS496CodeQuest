@@ -122,7 +122,11 @@ function BasketScene() {
     this.mFruit = null;
     this.mBat = null;
     
+<<<<<<< HEAD
     this.mAnswer = null;
+=======
+    this.problemType=0;
+>>>>>>> 6e59f65c8e1ba4d11c867d49497e4acf98c572aa
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -511,6 +515,22 @@ BasketScene.prototype.processInput = function(){
         
         //further hero controls
         //this.heroControls();
+    
+            if (gEngine.Input.isKeyClicked(gEngine.Input.keys.k)) {
+                this.problemType++;
+                if(this.problemType>4){
+                    this.problemType=4;
+                }
+            }
+            
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.j)) {
+                this.problemType--;
+                if(this.problemType<0){
+                    this.problemType=0;
+                }
+            }
+    
+    
     }
     
 };
@@ -523,7 +543,7 @@ BasketScene.prototype.generateBat = function () {
         
         var yl = this.WCCenterY+ this.WCHeight/2 -20;
 
-        var type=0;
+        var type=this.problemType;
         
         //problem type
         type = Math.round(Math.random()*this.maxType); 
@@ -531,7 +551,13 @@ BasketScene.prototype.generateBat = function () {
         type=1;
         
         //answer =  true or false.
-        var ans = false;
+        var ans = true;
+        
+        if(this.trueOrFalse){
+            if(Math.random()>.5){
+                ans = false;
+            }
+        }
 
         var Bat1 = new Bat(this.kMinionSprite, xl, yl, false, type, ans);
 
@@ -581,6 +607,7 @@ BasketScene.prototype.startLevel = function( ) {
 
 
 //special controls for jumping and etc.
+//NOT USED
 BasketScene.prototype.heroControls = function( ) {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up) && this.mHero.mRigidBody.mInvMass==0){
         this.mHero.mRigidBody.setVelocity(0,30);

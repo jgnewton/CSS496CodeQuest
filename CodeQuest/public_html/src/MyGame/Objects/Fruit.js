@@ -5,14 +5,22 @@
  */
 
 
-function Fruit(spriteTexture, atX, atY, otype) {
+function Fruit(spriteTexture, atX, atY, answer) {
     
     this.w=10;
     this.h=10;
     
+    this.answer = answer;
     
     this.placeHolder = new Renderable();
     this.placeHolder.setColor([1, 0, 0, 1]);
+    
+    if(this.answer){
+        this.placeHolder.setColor([0, 0, 1, 1]);   
+    }else{
+        this.placeHolder.setColor([1, 0, 0, 1]);    
+    }
+    
     var xf = this.placeHolder.getXform();
     
     xf.setPosition(atX, atY);
@@ -30,8 +38,11 @@ function Fruit(spriteTexture, atX, atY, otype) {
     
     this.scene=0; //which scene to go to
     
-    this.operatorType=otype;
-    console.log(this.operatorType);
+    //this.operatorType=otype;
+    //console.log(this.operatorType);
+    
+    
+    
     
     /* 0 ==
      * 1 !=
