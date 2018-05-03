@@ -121,12 +121,8 @@ function BasketScene() {
     
     this.mFruit = null;
     this.mBat = null;
-    
-<<<<<<< HEAD
     this.mAnswer = null;
-=======
     this.problemType=0;
->>>>>>> 6e59f65c8e1ba4d11c867d49497e4acf98c572aa
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -309,6 +305,13 @@ BasketScene.prototype.draw = function () {
 BasketScene.prototype.update = function () {
     this.processInput();
     this.updateObjects();
+    if(!this.gameOver){
+        this.updateObjects();
+
+        //update selection arrow position
+        var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
+        this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
+    }
     //console.log(this.timer);
     if(this.timer<=0){
         this.timer=this.SPAWN_INTERVAL;
