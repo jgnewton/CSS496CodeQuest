@@ -18,6 +18,12 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+const EUQAL_OR_UNEQUAL=0;
+const LESS_EQUAL_GREATER=1;
+const GREATER_AND_EQUAL_OR_LESS=2;
+const LESS_AND_EQUAL_OR_GREATER=3;
+const LOGICALS=4;
+
 
 BasketScene.prototype.limitSelection = function () {
     

@@ -122,12 +122,13 @@ function BasketScene() {
     this.mFruit = null;
     this.mBat = null;
     this.mAnswer = null;
+    
     this.problemType=4;
     
     this.allowed=[];
     
-    
-    
+    this.Operators=[];
+        
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -232,6 +233,10 @@ BasketScene.prototype.initialize = function () {
     this.timer =0;
     this.SPAWN_INTERVAL=120;
      
+    this.setOperators();
+    
+    this.selectionArrow = new TextureRenderable(this.kArrow);
+    this.selectionArrow.getXform().setSize(3, 3);
     
 };
 
@@ -256,10 +261,15 @@ BasketScene.prototype.draw = function () {
     
         for(var i = 0; i < this.elements.length; i++){
             //console.log(this.elements[i]);
-            this.elements[i].draw(this.mCamera);
+            //this.elements[i].draw(this.mCamera);
         }
 
-       // this.selectionArrow.draw(this.mCamera);
+        for(var i = 0; i < this.Operators.length; i++){
+            //console.log(this.elements[i]);
+            //this.Operators[i].draw(this.mCamera);
+        }
+
+        this.selectionArrow.draw(this.mCamera);
 
         if (this.helpTableVisible)
         {
@@ -269,9 +279,10 @@ BasketScene.prototype.draw = function () {
         for(var i = 0; i < this.scoreMarksArray.length; i++){
             //console.log(this.elements[i]);
             this.scoreMarksArray[i].draw(this.mCamera);
-        }
+        }   
     }
     
+
     this.accuracyText.draw(this.mCamera);
     
     if(this.revealMsg!=null){
@@ -279,7 +290,6 @@ BasketScene.prototype.draw = function () {
            this.revealMsg.draw(this.mCamera);
         }
     }
-    
 
 };
 
@@ -291,7 +301,9 @@ BasketScene.prototype.update = function () {
 
         //update selection arrow position
        // var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
-       // this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
+       var x = 0;
+       var y = 0;
+       this.selectionArrow.getXform().setPosition(x,y);
     }
     //console.log(this.timer);
     if(this.timer<=0){
@@ -363,8 +375,7 @@ BasketScene.prototype.updateObjects = function(){
         this.checkAnswer();
         this.mAllObjs.removeFromSet(this.mFruit);
         this.mFruit = null;
-        
-        
+            
         //add fruit to the storage
         //generate a new fruit
     }
@@ -430,7 +441,6 @@ BasketScene.prototype.processInput = function(){
             this.helpTableVisible = false;
         }
 
-        
         var heroXF = this.mHero.getXform();
         var deltax = 3.0;
         
@@ -449,13 +459,20 @@ BasketScene.prototype.processInput = function(){
             heroXF.incXPosBy(deltax);
         }    
         
-        
-        
-        //selecting Projectile type:
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
-                gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
                 
-                this.limitSelection();
+        //selecting Projectile type:
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
+                
+            
+            this.position++;
+            
+            if(this.position>this.maxPosition){
+                this.position=0;
+            }
+            
+            this.selectionArrow.getXform().setYPos(this.YPos1 + this.offSet*this.position);
+            
+            this.limitSelection();
                 
             this.selectIndex--;
             
@@ -482,14 +499,12 @@ BasketScene.prototype.processInput = function(){
             }
             
             this.selectedElement = this.elements[this.selectIndex];
-        }
-        
+        }        
        /* // pick up fruit or put down
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)){
             this.checkFruitCollision();      
         }*/
-        
-        
+                
         //stop all object movement (testing only)
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Z)) {
 
@@ -521,10 +536,7 @@ BasketScene.prototype.processInput = function(){
                     this.problemType=0;
                 }
             }
-    
-    
-    }
-    
+    }    
 };
 
 
@@ -535,13 +547,11 @@ BasketScene.prototype.generateBat = function () {
         
         var yl = this.WCCenterY+ this.WCHeight/2 -20;
 
-        var type=this.problemType;
-        
+        var type=this.problemType;       
         //problem type
         //type = Math.round(Math.random()*this.maxType); 
                 
-        //type=1;
-        
+        //type=1;        
         //answer =  true or false.
         var ans = true;
         
@@ -550,7 +560,6 @@ BasketScene.prototype.generateBat = function () {
                 ans = false;
             }
         }
-
         var Bat1 = new Bat(this.kMinionSprite, xl, yl, false, type, ans);
 
         //drop speed
@@ -663,11 +672,17 @@ BasketScene.prototype.checkAnswer = function( ) {
 }
 BasketScene.prototype.setOperators = function() {
     
-    var posY1 = 0;
-    var offSet = 1;
+    console.log("Operators");
+    
+    var posY1 = -75;
+    var offSet = 10;
+    
+    this.offSet = offSet;
+    this.posY1 = posY1;
+    
     var posY2 = posY1 - offSet;
     var posY3 = posY1 - 2* offSet;
-    var posX = 0;
+    var posX = 100;
     var textSize = 7.5;
     
     var fontRenderable1 = new FontRenderable("1");
@@ -703,19 +718,25 @@ BasketScene.prototype.setOperators = function() {
             msg3 = "<";
             break;
         case 2:
-            this.allowed[4]=true;
-            this.allowed[3]=true;
+            msg1 = ">=";
+            msg2 = "<";            
             break;
         case 3:
-            this.allowed[5]=true;
-            this.allowed[2]=true;            
+            msg1 = "<=";
+            msg2 = ">";           
             break;
         case 4:
-            this.allowed[6]=true;
-            this.allowed[7]=true;               
+            msg1 = "||";
+            msg2 = "&&";              
             break;
     }
-
+    
+    fontRenderable1.setText(msg1);
+    fontRenderable2.setText(msg2);
+    fontRenderable3.setText(msg3);
+    
+    this.Operators=[fontRenderable1, fontRenderable2, fontRenderable3];
+    
  /*   var textSize = 7;
     var textYpos = -this.WCHeight / 2 + this.groundHeight / 2 +15;
     var textXPos = 120;
