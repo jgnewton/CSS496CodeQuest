@@ -114,8 +114,7 @@ function BasketScene() {
     this.Hits = null;
     
     this.revealMsg = null;
-   
-    
+
     this.revealTime = 0;
     this.groundLevel = null;
     
@@ -134,6 +133,8 @@ function BasketScene() {
     this.position=0;
     
     this.maxPosition=2;
+    
+    this.basketText = 0;
         
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
@@ -242,6 +243,12 @@ BasketScene.prototype.initialize = function () {
     
     this.setOperators();
     
+    this.basketText = new FontRenderable("");
+    this.basketText.setColor([0, 0, 0, 1]);
+    this.basketText.getXform().setPosition(this.posX, this.posY1);
+    this.basketText.setTextHeight(10);
+    this.mAllObjs.addToSet(this.basketText);
+    
     
 };
 
@@ -263,6 +270,7 @@ BasketScene.prototype.draw = function () {
         //this.gameOverText4.draw(this.mCamera);
     } else {
         this.mAllObjs.draw(this.mCamera);
+                this.basketText.draw(this.mCamera);
     
         for(var i = 0; i < this.elements.length; i++){
             //console.log(this.elements[i]);
@@ -285,8 +293,8 @@ BasketScene.prototype.draw = function () {
             //console.log(this.elements[i]);
             this.scoreMarksArray[i].draw(this.mCamera);
         }   
-    }
     
+    }
 
     this.accuracyText.draw(this.mCamera);
     
@@ -328,6 +336,7 @@ BasketScene.prototype.update = function () {
     }
     
    // console.log(this.mBat.timer);
+   this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos());
     
  };
 
@@ -749,6 +758,13 @@ BasketScene.prototype.setOperators = function() {
     
     this.Operators=[fontRenderable1, fontRenderable2, fontRenderable3];
     
+    this.basketText = new FontRenderable("msg1");
+    this.basketText.setColor([0, 0, 0, 1]);
+    this.basketText.getXform().setPosition(posX, posY3);
+    this.basketText.setTextHeight(textSize);
+    //this.mAllObjs.addToSet(this.basketText);
+    
+    
  /*   var textSize = 7;
     var textYpos = -this.WCHeight / 2 + this.groundHeight / 2 +15;
     var textXPos = 120;
@@ -781,3 +797,60 @@ BasketScene.prototype.setOperators = function() {
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);*/
  }
+
+// 
+     /*  const EQUAL = 0;
+        const NOT_EQUAL = 1;
+        const GREATER = 2;
+        const LESSER = 3;
+        const GREATER_OR_EQUAL = 4;
+        const LESSER_OR_EQUAL = 5;
+        const LOGICAL_AND = 6;
+        const LOGICAL_OR = 7;
+     */
+    
+    // Problem Types
+    //0 !=    ==
+    //1 <   ==   >
+    //2 >=   <
+    //3 <=   >
+    //4 ||   &&
+BasketScene.prototype.setAnswer = function() {
+    this.mAnswer=0;
+    var choices = [];
+    var msgs = [];
+         switch (this.problemType){
+        case 0:
+            choices = [0,1];
+            msgs = ["==", "!="];
+            break;
+        case 1:
+            choices = [0,2,3];
+            this.maxPosition=2;
+            msgs = [">", "==", "<"];
+            break;
+        case 2:
+            choices = [4,3];
+            msgs = [">=", "<"];
+            break;
+        case 3:
+            choices = [5,2]; 
+            msgs = ["<=", ">"];
+            break;
+        case 4:
+            choices = [6,7]; 
+            msgs = ["&&", "||"];
+            break;
+    }
+    this.basketText.setText(msgs[this.position]);
+    
+    
+    this.basketText = new FontRenderable("lolol");
+    this.basketText.setColor([0, 0, 0, 1]);
+    this.basketText.getXform().setPosition(this.posX, this.posY1);
+    this.basketText.setTextHeight(10);
+    this.mAllObjs.addToSet(this.basketText);
+    
+    this.mAnswer = choices[this.position];
+    
+}
