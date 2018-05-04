@@ -128,6 +128,12 @@ function BasketScene() {
     this.allowed=[];
     
     this.Operators=[];
+    this.posY1 = 0;
+    this.posX =0;
+    this.offSet =0;
+    this.position=0;
+    
+    this.maxPosition=2;
         
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
@@ -204,8 +210,6 @@ BasketScene.prototype.initialize = function () {
     bxf.setWidth(500);
     bxf.setHeight(500);
     
-    
-    this.setOperators();
     this.groundLevel = this.WCCenterY - (this.WCHeight/2) + this.groundHeight;
     
     this.helpTableObject = new TextureRenderable(this.helpTable);
@@ -232,11 +236,12 @@ BasketScene.prototype.initialize = function () {
     
     this.timer =0;
     this.SPAWN_INTERVAL=120;
-     
-    this.setOperators();
-    
+         
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
+    
+    this.setOperators();
+    
     
 };
 
@@ -301,9 +306,6 @@ BasketScene.prototype.update = function () {
 
         //update selection arrow position
        // var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
-       var x = 0;
-       var y = 0;
-       this.selectionArrow.getXform().setPosition(x,y);
     }
     //console.log(this.timer);
     if(this.timer<=0){
@@ -461,17 +463,16 @@ BasketScene.prototype.processInput = function(){
         
                 
         //selecting Projectile type:
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
-                
-            
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+                     
             this.position++;
             
             if(this.position>this.maxPosition){
-                this.position=0;
+                this.position=0
             }
             
-            this.selectionArrow.getXform().setYPos(this.YPos1 + this.offSet*this.position);
-            
+            this.selectionArrow.getXform().setYPos(this.posY1- this.offSet*this.position);
+            this.selectionArrow.getXform().setXPos(this.posX);
             this.limitSelection();
                 
             this.selectIndex--;
@@ -485,11 +486,18 @@ BasketScene.prototype.processInput = function(){
             this.selectedElement = this.elements[this.selectIndex];
         }
 
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
-                gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
             
             this.limitSelection();
             
+            this.position--;
+            
+            if(this.position<0){
+                this.position=this.maxPosition;
+            }
+            
+            this.selectionArrow.getXform().setYPos(this.posY1- this.offSet*this.position);
+            this.selectionArrow.getXform().setXPos(this.posX);
             this.selectIndex++;
             
             //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
@@ -683,7 +691,10 @@ BasketScene.prototype.setOperators = function() {
     var posY2 = posY1 - offSet;
     var posY3 = posY1 - 2* offSet;
     var posX = 100;
+    this.posX = posX -10;
     var textSize = 7.5;
+    
+    this.selectionArrow.getXform().setPosition(this.posX, this.posY1);
     
     var fontRenderable1 = new FontRenderable("1");
     fontRenderable1.setColor([0, 0, 0, 1]);
@@ -706,7 +717,7 @@ BasketScene.prototype.setOperators = function() {
     var msg1 = "";
     var msg2 = "";
     var msg3 = "";
-    
+    this.maxPosition=1;
      switch (this.problemType){
         case 0:
             msg1 = "==";
@@ -716,6 +727,7 @@ BasketScene.prototype.setOperators = function() {
             msg1 = ">";
             msg2 = "==";
             msg3 = "<";
+            this.maxPosition=2;
             break;
         case 2:
             msg1 = ">=";
