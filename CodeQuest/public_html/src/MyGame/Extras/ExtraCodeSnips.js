@@ -378,3 +378,89 @@ Bat.prototype.generateExpression =function (){
     return msg;
 };
     */
+   
+   //special controls for jumping and etc.
+//NOT USED
+//BasketScene.prototype.heroControls = function( ) {
+//    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up) && this.mHero.mRigidBody.mInvMass==0){
+//        this.mHero.mRigidBody.setVelocity(0,30);
+//        this.mHero.mRigidBody.mInvMass=100;
+//        console.log("jump!");
+//    }
+//    
+//    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)){
+//        this.mHero.mRigidBody.setVelocity(0,-30);
+//        //this.mHero.mRigidBody.mInvMass=100;
+//        console.log("jump!");
+//    }
+//    
+//    
+//    if(this.mHero.getXform().getYPos()<= this.WCCenterY -this.WCHeight/2 + this.groundHeight){
+//        console.log(this.groundHeight + "," + this.mHero.getXform().getYPos());
+//        this.mHero.mRigidBody.mInvMass=0;
+//        this.mHero.getXform().setYPos(this.WCCenterY -this.WCHeight/2 + this.groundHeight+1);
+//    }
+//};
+
+/*
+BasketScene.prototype.checkFruitCollision = function( ) {
+      for (var i = 0; i < this.mAllObjs.size(); i++) {
+        var obj = this.mAllObjs.getObjectAt(i);
+        if(obj instanceof Fruit){
+            
+            if(obj.checkCollision(this.mHero)){
+                obj.terminate=true;
+                this.Operator=obj.operatorType;
+
+                this.mHero.attachObj(obj);
+            }
+        }  
+    }
+}
+*/
+
+//BasketScene.prototype.generateFruit = function( num, pt0, ptmax) { 
+//    
+//    for(var i =0; i<num;i++){
+//        var x = this.WCCenterX-this.WCWidth/2 + (i*this.WCWidth/num)+ (1/num)*Math.random()*(this.WCWidth - 10);
+//        var y = this.groundLevel;
+//        
+//        var type = Math.round(Math.random()*(ptmax-pt0)) + pt0;
+//        
+//        var fruit = new Fruit(this.kArrow, x, y, type);
+//        this.mAllObjs.addToSet(fruit);
+//    }
+//};
+
+
+ /*   var textSize = 7;
+    var textYpos = -this.WCHeight / 2 + this.groundHeight / 2 +15;
+    var textXPos = 120;
+    var textOffset = 10;
+    
+    
+    this.eqText = new MenuElement("==", textXPos, textYpos + textOffset * 4, textSize);
+    this.neqText = new MenuElement("!=", textXPos, textYpos + textOffset * 3, textSize);
+    this.moreText = new MenuElement(">", textXPos, textYpos + textOffset * 2, textSize);
+    this.lessText = new MenuElement("<", textXPos, textYpos + textOffset, textSize);
+    this.eqmoreText = new MenuElement(">=", textXPos, textYpos, textSize);
+    this.eqlessText = new MenuElement("<=", textXPos, textYpos - textOffset, textSize);
+    this.AndText = new MenuElement("&&", textXPos, textYpos - textOffset*2, textSize);
+    //this.OrText = new MenuElement("||", textXPos, textYpos - textOffset*3, textSize);
+    
+    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
+    
+    this.elements = [
+        this.eqText,
+        this.neqText,
+        this.moreText,
+        this.lessText,
+        this.eqmoreText,
+        this.eqlessText,
+        this.AndText,
+       // this.OrText
+    ];
+    
+    this.selectedElement = this.elements[0];
+    this.selectionArrow = new TextureRenderable(this.kArrow);
+    this.selectionArrow.getXform().setSize(3, 3);*/

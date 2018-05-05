@@ -150,7 +150,7 @@ Bat.prototype.draw = function (aCamera) {
 
 Bat.prototype.setText =function (){
     //this will contain the random message to represent the data type;
-    var msg="(";
+    var msg="";
     
     var rn = Math.random()*200 -100;
     
@@ -186,7 +186,7 @@ Bat.prototype.setText =function (){
         //addendum= " )== false";
     }
     
-    msg+=addendum;
+    //msg+=addendum;
    //change color instead.
    
     
@@ -231,7 +231,7 @@ Bat.prototype.equalityBank =function (){
     var idx = Math.round(Math.random()*(bank.length-1));
     
     
-    console.log("idx" + idx);
+    //console.log("idx" + idx);
     var cutoff = 8;
     if(idx<cutoff){
         this.correctAnswer=NOT_EQUAL;
@@ -242,7 +242,7 @@ Bat.prototype.equalityBank =function (){
     
     var ret = bank[idx];
     
-    console.log("correct answer in bat:"+this.correctAnswer);
+    //console.log("correct answer in bat:"+this.correctAnswer);
     return ret;
 }
 
@@ -409,30 +409,18 @@ Bat.prototype.boolBank =function (){
     
     //    ||    
     "True __ False",
-    "True __ True",
-    "False __ True",
-    "(True __ False) || False",    
-    "(True __ False) && True",
-    "(2+2==4) __ (2+2==5) == True",
-     "(True __ False) == (True && True)",
+    "False __ True", 
     
-    
-    // &&
-    "(True __ False) == False",
-    "!(True __ False)",    
-    "(True __ False) != (True && True)",
-    "(2+2==4) __ (2+2==5) == False", 
-    "True != (True __ False)",   
-    "False && False && False && False __ True == False",
-    "!True __ !False == False",
-    
+    "!(True __ False)",
+    "!(False __ True)",  
+        
     ];
     
     var idx = Math.round(Math.random()*(bank.length-1));
     
 
     
-    var cutoff = 8;
+    var cutoff = 2;
     if(idx<cutoff){
         this.correctAnswer=LOGICAL_OR;
     }
@@ -446,7 +434,7 @@ Bat.prototype.boolBank =function (){
 
 
 Bat.prototype.dropFruit =function (){    
-    console.log("bat dropping fruit");
+    //console.log("bat dropping fruit");
     var fruit = new Fruit (this.sprite, this.getXform().getXPos(), this.getXform().getYPos(), this.answer);    
     return fruit;
 };
