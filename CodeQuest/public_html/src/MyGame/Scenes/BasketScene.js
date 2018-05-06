@@ -122,7 +122,7 @@ function BasketScene() {
     
     
     // --------------------Starting Problem Set
-    this.problemType=4;
+    this.problemType=0;
     
     this.Operators=[];
     this.posY1 = 0;
