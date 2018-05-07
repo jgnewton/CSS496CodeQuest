@@ -90,7 +90,7 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     
     this.sprite = spriteTexture;
     
-    this.DROP_DELAY = 60;
+    this.DROP_DELAY = 90;
     
     this.timer = 0;
     

@@ -522,8 +522,9 @@ BasketScene.prototype.processInput = function(){
 
 //Generate an asteroid at a random location at the top of the camera view
 BasketScene.prototype.generateBat = function () {
-     
-        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*this.WCWidth;
+        
+        // -20 to keep bat text on the screen.
+        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth-20);
         
         var yl = this.WCCenterY+ this.WCHeight/2 -20;
 

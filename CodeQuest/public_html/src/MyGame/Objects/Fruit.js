@@ -68,6 +68,7 @@ Fruit.prototype.update = function (objset) {
     GameObject.prototype.update.call(this);
     this.text.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
     this.placeHolder.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
+    this.getXform().incYPosBy(.6);
 };
 
 
