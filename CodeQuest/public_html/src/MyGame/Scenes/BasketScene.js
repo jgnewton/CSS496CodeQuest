@@ -79,8 +79,7 @@ function BasketScene() {
     this.nextMarkX = this.WCCenterX - (this.WCWidth / 2) + this.markOffset;
     this.nextMarkY = this.WCCenterY - (this.WCHeight / 2) + this.markOffset;
     this.scoreMarksArray = [];
-    
-    
+       
     this.ground = null;
     
     // elements is an array that holds all the text elements for the data ttype
@@ -91,16 +90,15 @@ function BasketScene() {
     this.helpTableObject = null;
     this.helpTableVisible = false;
     this.GenerateOn=true;
-    
-        
+       
     // the number of Xs the player has
     this.numIncorrect = 0;
     this.numCorrect = 0;
     // the number of Xs required to lose the game
-    this.gameOverNumber = 5;
+    this.gameOverNumber = 10;
     
     //success
-    this.succeedNumber = 10;
+    this.succeedNumber = 100;
     // when gameOver is true, we display the player's score and prompt them
     // to play again or return to main menu
     this.gameOver = false;
@@ -114,20 +112,33 @@ function BasketScene() {
     this.Hits = null;
     
     this.revealMsg = null;
-   
-    
+
     this.revealTime = 0;
     this.groundLevel = null;
     
     this.mFruit = null;
     this.mBat = null;
     this.mAnswer = null;
-    this.problemType=4;
-    
-    this.allowed=[];
     
     
+    // --------------------Starting Problem Set
+    this.problemType=0;
     
+    this.Operators=[];
+    this.posY1 = 0;
+    this.posX =0;
+    this.offSet =0;
+    this.position=0;
+    
+    this.maxPosition=2;
+    
+    this.basketText = null;
+    
+    this.THRESHOLD=3;
+    this.MAX_TYPE=4;
+    
+    this.successCount = 0;
+        
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -203,8 +214,6 @@ BasketScene.prototype.initialize = function () {
     bxf.setWidth(500);
     bxf.setHeight(500);
     
-    
-    this.setOperators();
     this.groundLevel = this.WCCenterY - (this.WCHeight/2) + this.groundHeight;
     
     this.helpTableObject = new TextureRenderable(this.helpTable);
@@ -231,7 +240,18 @@ BasketScene.prototype.initialize = function () {
     
     this.timer =0;
     this.SPAWN_INTERVAL=120;
-     
+         
+    this.selectionArrow = new TextureRenderable(this.kArrow);
+    this.selectionArrow.getXform().setSize(3, 3);
+    
+    
+    this.basketText = new FontRenderable("Test");
+    this.basketText.setColor([0, 0, 0, 1]);
+    this.basketText.getXform().setPosition(this.posX, this.posY1);
+    this.basketText.setTextHeight(10);
+    this.mAllObjs.addToSet(this.basketText);
+    
+    this.setOperators();
     
 };
 
@@ -253,13 +273,13 @@ BasketScene.prototype.draw = function () {
         //this.gameOverText4.draw(this.mCamera);
     } else {
         this.mAllObjs.draw(this.mCamera);
-    
-        for(var i = 0; i < this.elements.length; i++){
-            //console.log(this.elements[i]);
-            this.elements[i].draw(this.mCamera);
+                this.basketText.draw(this.mCamera);
+
+        for(var i = 0; i < this.Operators.length; i++){
+            this.Operators[i].draw(this.mCamera);
         }
 
-       // this.selectionArrow.draw(this.mCamera);
+        this.selectionArrow.draw(this.mCamera);
 
         if (this.helpTableVisible)
         {
@@ -267,11 +287,11 @@ BasketScene.prototype.draw = function () {
         }
         
         for(var i = 0; i < this.scoreMarksArray.length; i++){
-            //console.log(this.elements[i]);
             this.scoreMarksArray[i].draw(this.mCamera);
-        }
-    }
+        }   
     
+    }
+
     this.accuracyText.draw(this.mCamera);
     
     if(this.revealMsg!=null){
@@ -279,7 +299,6 @@ BasketScene.prototype.draw = function () {
            this.revealMsg.draw(this.mCamera);
         }
     }
-    
 
 };
 
@@ -291,17 +310,16 @@ BasketScene.prototype.update = function () {
 
         //update selection arrow position
        // var pos = this.selectedElement.mFontRenderable.getXform().getPosition();
-       // this.selectionArrow.getXform().setPosition(pos[0] - 5, pos[1] - 0.5);
-    }
-    //console.log(this.timer);
-    if(this.timer<=0){
+    
+        if(this.timer<=0){
         this.timer=this.SPAWN_INTERVAL;
         if(!this.hasBat){
-            console.log("generatebat");
             this.generateBat();
         }
-    }else{
-        this.timer--;
+        }else{
+            this.timer--;
+
+        }
     }
     
     if(this.mBat != null && this.gameOver == false){
@@ -313,7 +331,7 @@ BasketScene.prototype.update = function () {
         }
     }
     
-   // console.log(this.mBat.timer);
+   this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos());
     
  };
 
@@ -326,7 +344,6 @@ BasketScene.prototype.updateObjects = function(){
             obj.update();
             this.fruitGravity(obj);
             if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
-                //console.log("asteroid collision with ground");
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
                 this.mFruit = null;
@@ -334,8 +351,7 @@ BasketScene.prototype.updateObjects = function(){
         }
         //If Bat Remove
         else if(obj instanceof Bat){
-            if(obj.getXform().getYPos()>=this.WCCenterY+this.WCHeight/2 + 10){
-                console.log(obj.getXform().getYPos());
+            if(obj.getXform().getYPos()>=this.WCCenterY+this.WCHeight/2 + 10){;
                 this.mAllObjs.removeFromSet(this.mBat);
                 this.mBat=null;
                 this.hasBat=false;
@@ -343,35 +359,27 @@ BasketScene.prototype.updateObjects = function(){
                 //obj.yv = -1 *obj.yv;               
             }
             if(obj.getXform().getYPos()>=this.WCCenterY+this.WCHeight/2 + 10){
-               //console.log(obj.getXform().getYPos());
                //obj.getXform().setYPos(this.WCCenterY+this.WCHeight/2 + 9);
                //obj.yv = -1 *obj.yv;   
             }
             obj.update();
         }
-        /*else if(obj instanceof Platform){
-            if(obj.checkCollision(this.mAllObjs) && !obj.isFull){
-                console.log("collide");
-            }
-        }*/
         else{           
             obj.update();
         }
     }
     if(this.mFruit != null && this.mHero.checkCollision(this.mFruit)){
-        console.log("collide");
+        //console.log("collide");
         this.checkAnswer();
         this.mAllObjs.removeFromSet(this.mFruit);
         this.mFruit = null;
-        
-        
+            
         //add fruit to the storage
         //generate a new fruit
     }
 };
 
 BasketScene.prototype.incrementScore = function(hit){
-    //console.log("score incremented");
     //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
     //this.nextMarkX += this.markOffset;
     this.scoreMarksArray.push(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
@@ -385,8 +393,9 @@ BasketScene.prototype.incrementScore = function(hit){
     } else {
         this.numCorrect++;
         this.Hits++;
-    }
-    
+        this.checkNext();
+        
+    }    
     // toggle gameover state if exceeded gameeover number
     if(this.numIncorrect >= this.gameOverNumber){
         // set this text element to correctly display numCorrect
@@ -394,7 +403,7 @@ BasketScene.prototype.incrementScore = function(hit){
         this.gameOver = true;
     }
     
-    if(this.numCorrect >= this.succeedNumber){
+    if(this.numCorrect >= this.succeedNumber || this.gameOver){
         this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
         this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
         this.gameOver = true;
@@ -410,8 +419,7 @@ BasketScene.prototype.incrementScore = function(hit){
     
     if(this.Shots!=0){
         this.Accuracy= this.Hits/ this.Shots * 100;
-    }
-    
+    }    
     this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
 };
 
@@ -430,15 +438,8 @@ BasketScene.prototype.processInput = function(){
             this.helpTableVisible = false;
         }
 
-        
         var heroXF = this.mHero.getXform();
         var deltax = 3.0;
-        
-        var airborndx =.3;
-        
-        if(this.mHero.mRigidBody.mInvMass!=0){
-            deltax = airborndx;
-        }
                 
         //moving basket
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)){ 
@@ -449,47 +450,42 @@ BasketScene.prototype.processInput = function(){
             heroXF.incXPosBy(deltax);
         }    
         
-        
-        
-        //selecting Projectile type:
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
-                gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
                 
-                this.limitSelection();
+        //selecting Projectile type:
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+                     
+            this.position++;
+            
+            if(this.position>this.maxPosition){
+                this.position=0
+            }
+            
+            this.selectionArrow.getXform().setYPos(this.posY1- this.offSet*this.position);
+            this.selectionArrow.getXform().setXPos(this.posX);
+            this.limitSelection();
                 
             this.selectIndex--;
             
-            if(this.selectIndex<0){
-                this.selectIndex=this.elements.length-1;
-            }
-            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
-            
-            
-            this.selectedElement = this.elements[this.selectIndex];
+            this.setAnswer();
         }
 
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
-                gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
             
             this.limitSelection();
             
-            this.selectIndex++;
+            this.position--;
             
-            //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
-            
-            if(this.selectIndex>this.elements.length-1){
-                this.selectIndex=0;
+            if(this.position<0){
+                this.position=this.maxPosition;
             }
             
-            this.selectedElement = this.elements[this.selectIndex];
-        }
-        
-       /* // pick up fruit or put down
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)){
-            this.checkFruitCollision();      
-        }*/
-        
-        
+            this.selectionArrow.getXform().setYPos(this.posY1- this.offSet*this.position);
+            this.selectionArrow.getXform().setXPos(this.posX);
+            this.selectIndex++;
+            
+            this.setAnswer();
+        }  
+                
         //stop all object movement (testing only)
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Z)) {
 
@@ -504,27 +500,23 @@ BasketScene.prototype.processInput = function(){
                 }
             }
         }
-        
-        //further hero controls
-        //this.heroControls();
     
-            if (gEngine.Input.isKeyClicked(gEngine.Input.keys.k)) {
-                this.problemType++;
-                if(this.problemType>4){
-                    this.problemType=4;
-                }
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.K)) {
+            this.problemType++;
+            if(this.problemType>4){
+                this.problemType=4;
             }
+            this.setOperators();
+        }
             
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.j)) {
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.J)) {
                 this.problemType--;
                 if(this.problemType<0){
                     this.problemType=0;
                 }
-            }
-    
-    
-    }
-    
+            this.setOperators();
+        }
+    }    
 };
 
 
@@ -535,13 +527,11 @@ BasketScene.prototype.generateBat = function () {
         
         var yl = this.WCCenterY+ this.WCHeight/2 -20;
 
-        var type=this.problemType;
-        
+        var type=this.problemType;       
         //problem type
         //type = Math.round(Math.random()*this.maxType); 
                 
-        //type=1;
-        
+        //type=1;        
         //answer =  true or false.
         var ans = true;
         
@@ -550,7 +540,6 @@ BasketScene.prototype.generateBat = function () {
                 ans = false;
             }
         }
-
         var Bat1 = new Bat(this.kMinionSprite, xl, yl, false, type, ans);
 
         //drop speed
@@ -563,63 +552,6 @@ BasketScene.prototype.generateBat = function () {
 };
 
 
-BasketScene.prototype.generateFruit = function( num, pt0, ptmax) { 
-    
-    for(var i =0; i<num;i++){
-        var x = this.WCCenterX-this.WCWidth/2 + (i*this.WCWidth/num)+ (1/num)*Math.random()*(this.WCWidth - 10);
-        var y = this.groundLevel;
-        
-        var type = Math.round(Math.random()*(ptmax-pt0)) + pt0;
-        
-        var fruit = new Fruit(this.kArrow, x, y, type);
-        this.mAllObjs.addToSet(fruit);
-    }
-};
-
-/*
-BasketScene.prototype.checkFruitCollision = function( ) {
-      for (var i = 0; i < this.mAllObjs.size(); i++) {
-        var obj = this.mAllObjs.getObjectAt(i);
-        if(obj instanceof Fruit){
-            
-            if(obj.checkCollision(this.mHero)){
-                obj.terminate=true;
-                this.Operator=obj.operatorType;
-
-                this.mHero.attachObj(obj);
-            }
-        }  
-    }
-}
-*/
-BasketScene.prototype.startLevel = function( ) {
-    //this.generateBats(1);
-    //this.generatePlatforms(4);
-};
-
-
-//special controls for jumping and etc.
-//NOT USED
-BasketScene.prototype.heroControls = function( ) {
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up) && this.mHero.mRigidBody.mInvMass==0){
-        this.mHero.mRigidBody.setVelocity(0,30);
-        this.mHero.mRigidBody.mInvMass=100;
-        console.log("jump!");
-    }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)){
-        this.mHero.mRigidBody.setVelocity(0,-30);
-        //this.mHero.mRigidBody.mInvMass=100;
-        console.log("jump!");
-    }
-    
-    
-    if(this.mHero.getXform().getYPos()<= this.WCCenterY -this.WCHeight/2 + this.groundHeight){
-        console.log(this.groundHeight + "," + this.mHero.getXform().getYPos());
-        this.mHero.mRigidBody.mInvMass=0;
-        this.mHero.getXform().setYPos(this.WCCenterY -this.WCHeight/2 + this.groundHeight+1);
-    }
-};
 
 BasketScene.prototype.generatePlatforms = function (num) {
      
@@ -643,7 +575,6 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
       if(!fruit.attached && !fruit.onPlatform){
        // fruit.mRigidBody.mInvMass=1;
        fruit.mRigidBody.setMass(1);
-        //console.log("fall!");
       }
     }
     else{
@@ -653,8 +584,8 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
 };
 
 BasketScene.prototype.checkAnswer = function( ) {
-    console.log("selectIndex " + this.selectIndex + "mBatAnswer " + this.mBat.correctAnswer)
-    if (this.selectIndex == this.mBat.correctAnswer){
+    console.log("mAsnwer " + this.mAnswer + ".  mBatAnswer " + this.mBat.correctAnswer)
+    if (this.mAnswer == this.mBat.correctAnswer){
         this.incrementScore(true);
     }
     else{
@@ -663,35 +594,47 @@ BasketScene.prototype.checkAnswer = function( ) {
 }
 BasketScene.prototype.setOperators = function() {
     
-    var posY1 = 0;
-    var offSet = 1;
+   // console.log("Operators");
+    
+    var posY1 = -75;
+    var offSet = 10;
+    
+    this.offSet = offSet;
+    this.posY1 = posY1;
+    
     var posY2 = posY1 - offSet;
     var posY3 = posY1 - 2* offSet;
-    var posX = 0;
+    var posX = 100;
+    this.posX = posX -10;
     var textSize = 7.5;
     
-    var fontRenderable1 = new FontRenderable("1");
-    fontRenderable1.setColor([0, 0, 0, 1]);
-    fontRenderable1.getXform().setPosition(posX, posY1);
-    fontRenderable1.setTextHeight(textSize);
-    this.mAllObjs.addToSet(fontRenderable1);
+    this.selectionArrow.getXform().setPosition(this.posX, this.posY1);
     
-    var fontRenderable2 = new FontRenderable("2");
-    fontRenderable2.setColor([0, 0, 0, 1]);
-    fontRenderable2.getXform().setPosition(posX, posY2);
-    fontRenderable2.setTextHeight(textSize);
-    this.mAllObjs.addToSet(fontRenderable2);
+    this.fontRenderable1 = new FontRenderable("1");
+    this.fontRenderable1.setColor([0, 0, 0, 1]);
+    this.fontRenderable1.getXform().setPosition(posX, posY1);
+    this.fontRenderable1.setTextHeight(textSize);
+    
+    //this.mAllObjs.addToSet(this.fontRenderable1);
+    
+    this.fontRenderable2 = new FontRenderable("2");
+    this.fontRenderable2.setColor([0, 0, 0, 1]);
+    this.fontRenderable2.getXform().setPosition(posX, posY2);
+    this.fontRenderable2.setTextHeight(textSize);
+    
+    //this.mAllObjs.addToSet(this.fontRenderable2);
 
-    var fontRenderable3 = new FontRenderable("3");
-    fontRenderable3.setColor([0, 0, 0, 1]);
-    fontRenderable3.getXform().setPosition(posX, posY3);
-    fontRenderable3.setTextHeight(textSize);
-    this.mAllObjs.addToSet(fontRenderable3);
+    this.fontRenderable3 = new FontRenderable("3");
+    this.fontRenderable3.setColor([0, 0, 0, 1]);
+    this.fontRenderable3.getXform().setPosition(posX, posY3);
+    this.fontRenderable3.setTextHeight(textSize);
+    
+    //this.mAllObjs.addToSet(fontRenderable3);
     
     var msg1 = "";
     var msg2 = "";
     var msg3 = "";
-    
+    this.maxPosition=1;
      switch (this.problemType){
         case 0:
             msg1 = "==";
@@ -701,50 +644,116 @@ BasketScene.prototype.setOperators = function() {
             msg1 = ">";
             msg2 = "==";
             msg3 = "<";
+            this.maxPosition=2;
             break;
         case 2:
-            this.allowed[4]=true;
-            this.allowed[3]=true;
+            msg1 = ">=";
+            msg2 = "<";            
             break;
         case 3:
-            this.allowed[5]=true;
-            this.allowed[2]=true;            
+            msg1 = "<=";
+            msg2 = ">";           
             break;
         case 4:
-            this.allowed[6]=true;
-            this.allowed[7]=true;               
+            msg1 = "&&";
+            msg2 = "||";              
             break;
     }
-
- /*   var textSize = 7;
-    var textYpos = -this.WCHeight / 2 + this.groundHeight / 2 +15;
-    var textXPos = 120;
-    var textOffset = 10;
     
+    this.fontRenderable1.setText(msg1);
+    this.fontRenderable2.setText(msg2);
+    this.fontRenderable3.setText(msg3);
     
-    this.eqText = new MenuElement("==", textXPos, textYpos + textOffset * 4, textSize);
-    this.neqText = new MenuElement("!=", textXPos, textYpos + textOffset * 3, textSize);
-    this.moreText = new MenuElement(">", textXPos, textYpos + textOffset * 2, textSize);
-    this.lessText = new MenuElement("<", textXPos, textYpos + textOffset, textSize);
-    this.eqmoreText = new MenuElement(">=", textXPos, textYpos, textSize);
-    this.eqlessText = new MenuElement("<=", textXPos, textYpos - textOffset, textSize);
-    this.AndText = new MenuElement("&&", textXPos, textYpos - textOffset*2, textSize);
-    //this.OrText = new MenuElement("||", textXPos, textYpos - textOffset*3, textSize);
+    this.Operators=[this.fontRenderable1, this.fontRenderable2, this.fontRenderable3];
     
-    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
+    if(this.basketText==null){
+    this.basketText = new FontRenderable("msg1");
+    this.basketText.setColor([0, 0, 0, 1]);
+    this.basketText.getXform().setPosition(posX, posY3);
+    this.basketText.setTextHeight(textSize);
+    //this.mAllObjs.addToSet(this.basketText);
+    }
     
-    this.elements = [
-        this.eqText,
-        this.neqText,
-        this.moreText,
-        this.lessText,
-        this.eqmoreText,
-        this.eqlessText,
-        this.AndText,
-       // this.OrText
-    ];
+    this.position=0;
     
-    this.selectedElement = this.elements[0];
-    this.selectionArrow = new TextureRenderable(this.kArrow);
-    this.selectionArrow.getXform().setSize(3, 3);*/
+    this.setAnswer();
+   
  }
+
+// 
+     /*  const EQUAL = 0;
+        const NOT_EQUAL = 1;
+        const GREATER = 2;
+        const LESSER = 3;
+        const GREATER_OR_EQUAL = 4;
+        const LESSER_OR_EQUAL = 5;
+        const LOGICAL_AND = 6;
+        const LOGICAL_OR = 7;
+     */
+    
+    // Problem Types
+    //0 !=    ==
+    //1 <   ==   >
+    //2 >=   <
+    //3 <=   >
+    //4 && ||
+BasketScene.prototype.setAnswer = function() {
+    this.mAnswer=0;
+    var choices = [];
+    var msgs = [];
+         switch (this.problemType){
+        case 0:
+            choices = [0,1];
+            msgs = ["==", "!="];
+            break;
+        case 1:
+            choices = [2,0,3];
+            this.maxPosition=2;
+            msgs = [">", "==", "<"];
+            break;
+        case 2:
+            choices = [4,3];
+            msgs = [">=", "<"];
+            break;
+        case 3:
+            choices = [5,2]; 
+            msgs = ["<=", ">"];
+            break;
+        case 4:
+            choices = [6,7]; 
+            msgs = ["&&", "||"];
+            break;
+    }
+    this.basketText.setText(msgs[this.position]);
+    
+    
+//    this.basketText = new FontRenderable("lolol");
+//    this.basketText.setColor([0, 0, 0, 1]);
+//    this.basketText.getXform().setPosition(this.posX, this.posY1);
+//    this.basketText.setTextHeight(10);
+//    this.mAllObjs.addToSet(this.basketText);
+    
+    this.mAnswer = choices[this.position];
+    
+}
+
+BasketScene.prototype.checkNext = function() {
+     
+    this.successCount++;
+        //console.log("check next " + this.successCount);
+    
+    if(this.successCount >= this.THRESHOLD){
+        
+        //console.log("Problem Type " + this.ProblemType);
+        
+        if(this.problemType>=this.MAX_TYPE){
+            this.gameOver=true;
+            console.log("game won");
+        }else{
+            this.successCount = 0;
+            this.problemType++;
+            this.setOperators();
+        }   
+    }
+
+};
