@@ -90,7 +90,7 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     
     this.sprite = spriteTexture;
     
-    this.DROP_DELAY = 90;
+    this.DROP_DELAY = 60;
     
     this.timer = 0;
     
@@ -441,5 +441,5 @@ Bat.prototype.dropFruit =function (){
 
 
 Bat.prototype.flyAway =function (){
-    this.yv = 8;
+    this.yv = 4;
 };
