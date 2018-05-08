@@ -26,13 +26,19 @@ function Cannon(basetext, muzzletext) {
     //this.base.setElementPixelPositions(0, 217, 263, 422);
     */
    
+   
+   
+   
     this.base = new SpriteRenderable(basetext);
     this.base.getXform().setSize(40, 30);
     this.base.setElementPixelPositions(0, 217, 256 - 159, 256);
 
     this.cannon = new SpriteRenderable(muzzletext);
     this.cannon.getXform().setSize(15, 30);
-    this.cannon.setElementPixelPositions(0, 70, 256 - 127, 256);
+    this.cannon.setElementPixelPositions(0, 70, 0, 256 - 127);
+    
+    this.base.getXform().setPosition(1.75, -60);
+    this.cannon.getXform().setPosition(0, -42);
     
     GameObject.call(this, this.base);
     

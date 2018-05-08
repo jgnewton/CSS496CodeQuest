@@ -230,8 +230,8 @@ AsteroidScene.prototype.initialize = function () {
     */
     
     this.mCannon = new Cannon(this.mCannonBase, this.mCannonMuzzle);
-    this.mCannon.base.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
-    this.mCannon.cannon.getXform().setPosition(this.WCCenterX, this.WCCenterY-50);
+    //this.mCannon.base.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
+    //this.mCannon.cannon.getXform().setPosition(this.WCCenterX, this.WCCenterY-50);
     this.mAllObjs.addToSet(this.mCannon);
    
     
@@ -549,6 +549,8 @@ AsteroidScene.prototype.processInput = function(){
             
         }
         
+        
+        /*
         //debugging to display asteroid coordinates
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Y)) {
             for (var i = 0; i < this.mAllObjs.size(); i++) {
@@ -583,6 +585,7 @@ AsteroidScene.prototype.processInput = function(){
                 }
             }
         }
+        */
     }
     
 };
@@ -612,7 +615,7 @@ AsteroidScene.prototype.generateAsteroid = function () {
 //generating projectiles
 AsteroidScene.prototype.generateProjectile = function () {
             //get hero state info
-    var hxf = this.mCannon.base.getXform();
+    var hxf = this.mCannon.cannon.getXform();
     var xp = hxf.getXPos();
     var yp = hxf.getYPos();
 
@@ -706,7 +709,7 @@ AsteroidScene.prototype.rayCast = function (p) {
             var asty = axf.getYPos();
 
             //the Actual Rotation of the Hero.
-            var theta = this.mCannon.base.getXform().getRotationInRad();                              
+            var theta = this.mCannon.cannon.getXform().getRotationInRad();                              
 
             //ray to far bottom corner
             var thetaMax=0;

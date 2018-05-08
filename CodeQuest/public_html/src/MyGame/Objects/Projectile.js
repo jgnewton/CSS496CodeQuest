@@ -125,7 +125,7 @@ Projectile.prototype.draw = function (aCamera) {
     
     
             this.mRenderComponent.draw(aCamera);
-            console.log("drawing projectile");
+            //console.log("drawing projectile");
             this.mMinion.draw(aCamera);
             
             this.text.draw(aCamera);
