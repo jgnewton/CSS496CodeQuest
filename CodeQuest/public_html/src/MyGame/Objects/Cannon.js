@@ -67,6 +67,18 @@ Cannon.prototype.draw = function (aCamera) {
 }
 
 Cannon.prototype.intRotByDeg = function(inRot){
+    
+    
+    //var yd = Math.cos(inRot) * 30;
+    //this.cannon.getXform().setYPos(-42 - yd);
+    
+    //var hxf = this.cannon.getXform();
+    //var xp = hxf.getXPos();
+    //var yp = hxf.getYPos();
+    
+    //var xRot = this.cannon.getXform().getRotationInRad()
+
+    
     this.cannon.getXform().incRotationByDegree(inRot);
     
     if(this.cannon.getXform().getRotationInDegree()>100){
@@ -75,4 +87,30 @@ Cannon.prototype.intRotByDeg = function(inRot){
     if(this.cannon.getXform().getRotationInDegree()<-100){
         this.cannon.getXform().setRotationInDegree(-100);
     }
+    
+    var canRot = this.cannon.getXform().getRotationInRad()
+    
+    var xd = Math.sin(canRot) * 7.5;
+    var yd = Math.cos(canRot) * 15;
+    //this.cannon.getXform().setXPos(0 - xd);
+    //this.cannon.getXform().setYPos(-42 - yd);
+    
+    //var tX = 15 * Math.cos()
+    
+    this.cannon.getXform().setXPos(xd * Math.cos(canRot) - yd * Math.sin(canRot));
+    this.cannon.getXform().setYPos((yd * Math.cos(canRot) + xd * Math.sin(canRot)) - 42 - 7.5);
+    
+    //this.cannon.getXform().setPosition(0, -42);
+    
+    
+    //this.cannon.getXform().setYPos(-42);
+    
+    
+    
+    //p.getXform().setRotationInRad(rot);
+
+    //p.getXform().setSize(2,2000);
+
+    
+    
 }
