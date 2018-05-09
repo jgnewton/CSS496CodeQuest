@@ -20,6 +20,7 @@ function Projectile(spriteTexture, atX, atY, width, height, createCircle, type) 
     var w = width;
     var h = height;
     
+    /*
     this.mMinion = new SpriteAnimateRenderable(spriteTexture);
     this.mMinion.setColor([1, 1, 1, 0]);
     this.mMinion.getXform().setPosition(atX, atY);
@@ -31,7 +32,13 @@ function Projectile(spriteTexture, atX, atY, width, height, createCircle, type) 
     this.mMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateSwing);
     this.mMinion.setAnimationSpeed(30);
                                 // show each element for mAnimSpeed updates
-
+    */
+    
+    this.mMinion = new Renderable();
+    this.mMinion.getXform().setPosition(atX, atY);
+    this.mMinion.getXform().setSize(w, h);
+    
+    
     GameObject.call(this, this.mMinion);
     
     var r;
@@ -45,8 +52,8 @@ function Projectile(spriteTexture, atX, atY, width, height, createCircle, type) 
     r.setVelocity(vx * speed, vy * speed);
     this.setRigidBody(r);
     
-    this.toggleDrawRenderable();
-    this.toggleDrawRigidShape();
+    //this.toggleDrawRenderable();
+    //this.toggleDrawRigidShape();
     
     
     this.dataType=type;
@@ -110,7 +117,7 @@ Projectile.prototype.update = function () {
     
     
     // remember to update this.mMinion's animation
-    this.mMinion.updateAnimation();
+    //this.mMinion.updateAnimation();
     var x = mxf.getXPos();
     var y = mxf.getYPos();
     
@@ -118,22 +125,24 @@ Projectile.prototype.update = function () {
         
     //check for being outside camera bounds
     this.lifeTime--;
+
 };
 
 
 Projectile.prototype.draw = function (aCamera) {
     
     
-            this.mRenderComponent.draw(aCamera);
-            //console.log("drawing projectile");
-            this.mMinion.draw(aCamera);
-            
-            this.text.draw(aCamera);
-            
+    //this.mRenderComponent.draw(aCamera);
+    //console.log("drawing projectile");
+    this.mMinion.draw(aCamera);
+
+    this.text.draw(aCamera);
+    
+    /*
     if (this.isVisible()) {
         
         if (this.mDrawRenderable){
-            this.mRenderComponent.draw(aCamera);
+            //this.mRenderComponent.draw(aCamera);
             this.mMinion.draw(aCamera);
         }
         
@@ -141,6 +150,7 @@ Projectile.prototype.draw = function (aCamera) {
             this.mRigidBody.draw(aCamera);
         }
     }
+    */
     //this.text.draw(aCamera);
 };
 
@@ -167,6 +177,7 @@ Projectile.prototype.testTerminated = function (WB) {
         }
    }
    
+   //console.log(this.lifeTime);
    if(this.lifeTime<=0){
        this.terminate();
    }

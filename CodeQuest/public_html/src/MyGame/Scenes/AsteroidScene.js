@@ -232,7 +232,7 @@ AsteroidScene.prototype.initialize = function () {
     this.mCannon = new Cannon(this.mCannonBase, this.mCannonMuzzle);
     //this.mCannon.base.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
     //this.mCannon.cannon.getXform().setPosition(this.WCCenterX, this.WCCenterY-50);
-    this.mAllObjs.addToSet(this.mCannon);
+    //this.mAllObjs.addToSet(this.mCannon);
    
     
     // background init
@@ -319,6 +319,12 @@ AsteroidScene.prototype.draw = function () {
             //console.log(this.elements[i]);
             this.scoreMarksArray[i].draw(this.mCamera);
         }
+        
+        if(this.Ray!=null){
+            //this.Ray.draw(this.mCamera);
+        }
+
+        this.mCannon.draw(this.mCamera);
     }
     
     this.accuracyText.draw(this.mCamera);
@@ -329,11 +335,7 @@ AsteroidScene.prototype.draw = function () {
         }
     }
     
-    if(this.Ray!=null){
-        this.Ray.draw(this.mCamera);
-    }
     
-
 };
 
 AsteroidScene.prototype.update = function () {
@@ -364,7 +366,7 @@ AsteroidScene.prototype.update = function () {
         }
     }
 
-    
+    this.mCannon.update();
     this.revealTime--;
         
 };
@@ -411,8 +413,11 @@ AsteroidScene.prototype.updateObjects = function(){
         else if(obj instanceof Projectile){
             obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
             if (obj.terminated){
-                
+                if(obj.type == 2){
+                    this.Ray = null;
+                }
                 this.mAllObjs.removeFromSet(obj);
+                
             }
         }
     }
@@ -658,7 +663,7 @@ AsteroidScene.prototype.generateProjectile = function () {
         p.getXform().setXPos(xp - xd);
         p.getXform().setYPos(yp+yd);
 
-        p.lifeTime=30;
+        p.lifeTime=10;
 
         this.rayCast(p);
         
