@@ -22,6 +22,7 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     var w = 25;
     var h = 25;
     
+    /*
     this.mMinion = new SpriteAnimateRenderable(spriteTexture);
     this.mMinion.setColor([1, 1, 1, 0]);
     this.mMinion.getXform().setPosition(atX, atY);
@@ -33,7 +34,21 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     this.mMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateSwing);
     this.mMinion.setAnimationSpeed(30);
                                 // show each element for mAnimSpeed updates
+    
+    */
+   /*
+    * Meteor(falling) - (0,0),(211,0),(0,210),(211,210)
 
+    Meteor(Explosion 1) - (320,0),(441,0),(320,128),(441,128)
+
+    Meteor(Explosion 1) - (500,0),(869,0),(500,325),(869,325)
+    */
+    
+    this.mMinion = new SpriteRenderable(spriteTexture);
+    this.mMinion.setElementPixelPositions(0, 211, 1024, 1024 - 210);
+    this.mMinion.getXform().setPosition(atX, atY);
+    this.mMinion.getXform().setSize(w, h);
+   
     GameObject.call(this, this.mMinion);
     
     var r;
@@ -45,9 +60,11 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     var vy = (Math.random() - 0.5);
     var speed = 20 + Math.random() * 10;
     r.setVelocity(vx * speed, vy * speed);
+    
+    
     this.setRigidBody(r);
     //this.toggleDrawRenderable();
-    this.toggleDrawRigidShape();
+    //this.toggleDrawRigidShape();
     
     //not using physics
     // do not set mass to 0.
@@ -148,7 +165,7 @@ Asteroid.prototype.update = function () {
     // 2 = bad hit
     GameObject.prototype.update.call(this);
     // remember to update this.mMinion' s animation
-    this.mMinion.updateAnimation();
+    //this.mMinion.updateAnimation();
 
     //this.getXform().incXPosBy(this.xv);
     //this.getXform().incYPosBy(this.yv);
@@ -174,6 +191,9 @@ Asteroid.prototype.update = function () {
 
 //commented out draw render temporarily
 Asteroid.prototype.draw = function (aCamera) {
+    //GameObject.prototype.draw.call(this);
+    this.mMinion.draw(aCamera);
+    
     if (this.isVisible()) {
         if (this.mDrawRenderable)
            // this.mRenderComponent.draw(aCamera);

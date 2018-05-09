@@ -33,6 +33,7 @@ function AsteroidScene() {
     
     this.mCannonBase = "assets/MeteorGame/cannonbase.png";
     this.mCannonMuzzle = "assets/MeteorGame/cannonmuzzle.png";
+    this.mMeteorSprite = "assets/MeteorGame/meteorexplosion.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -152,6 +153,8 @@ AsteroidScene.prototype.loadScene = function () {
     
     gEngine.Textures.loadTexture(this.mCannonBase);
     gEngine.Textures.loadTexture(this.mCannonMuzzle);
+    
+    gEngine.Textures.loadTexture(this.mMeteorSprite);
 };
 
 AsteroidScene.prototype.unloadScene = function () {
@@ -175,6 +178,7 @@ AsteroidScene.prototype.unloadScene = function () {
     
     gEngine.Textures.unloadTexture(this.mCannonBase);
     gEngine.Textures.unloadTexture(this.mCannonMuzzle);
+    gEngine.Textures.unloadTexture(this.mMeteorSprite);
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -607,7 +611,7 @@ AsteroidScene.prototype.generateAsteroid = function () {
 
         type = Math.round(Math.random()*this.maxType);  
 
-        var Asteroid1 = new Asteroid(this.kMinionSprite, xl, yl, false, type);
+        var Asteroid1 = new Asteroid(this.mMeteorSprite, xl, yl, false, type);
 
         //drop speed
         Asteroid1.yv=-7;
