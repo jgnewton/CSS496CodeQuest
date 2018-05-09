@@ -67,17 +67,8 @@ Cannon.prototype.draw = function (aCamera) {
 }
 
 Cannon.prototype.intRotByDeg = function(inRot){
-    
-    
-    //var yd = Math.cos(inRot) * 30;
-    //this.cannon.getXform().setYPos(-42 - yd);
-    
-    var hxf = this.cannon.getXform();
     var xp = 0;
     var yp = -42;
-    
-    //var xRot = this.cannon.getXform().getRotationInRad()
-
     
     this.cannon.getXform().incRotationByDegree(inRot);
     
@@ -90,38 +81,10 @@ Cannon.prototype.intRotByDeg = function(inRot){
     
     var canRot = this.cannon.getXform().getRotationInRad()
     
-    var xd = Math.sin(canRot) * 5;
+    var xd = Math.sin(canRot) * 7.5;
     var yd = Math.cos(canRot) * 5;
-
-    //take original projectile position and adjust so end of laser starts at hero
-    //subtract because positive angles are to left (-x) 
+    
     this.cannon.getXform().setXPos(xp - xd);
     this.cannon.getXform().setYPos(yp+yd);
-    
-    /*
-    var canRot = this.cannon.getXform().getRotationInRad()
-    
-    var xd = Math.sin(canRot) * 7.5;
-    var yd = Math.cos(canRot) * 15;
-    //this.cannon.getXform().setXPos(0 - xd);
-    //this.cannon.getXform().setYPos(-42 - yd);
-    
-    //var tX = 15 * Math.cos()
-    
-    this.cannon.getXform().setXPos(xd * Math.cos(canRot) - yd * Math.sin(canRot));
-    this.cannon.getXform().setYPos((yd * Math.cos(canRot) + xd * Math.sin(canRot)) - 42 - 7.5);
-    */
-    //this.cannon.getXform().setPosition(0, -42);
-    
-    
-    //this.cannon.getXform().setYPos(-42);
-    
-    
-    
-    //p.getXform().setRotationInRad(rot);
-
-    //p.getXform().setSize(2,2000);
-
-    
     
 }
