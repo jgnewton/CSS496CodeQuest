@@ -85,7 +85,7 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     
     this.setText();
     
-    this.text.getXform().setPosition(atX-15, atY);
+    this.text.getXform().setPosition(atX-15, atY-25);
     
     
     this.sprite = spriteTexture;
