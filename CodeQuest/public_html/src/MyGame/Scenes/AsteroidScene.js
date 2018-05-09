@@ -286,6 +286,9 @@ AsteroidScene.prototype.initialize = function () {
     this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
     
     this.revealTime=0;
+    
+    
+    this.mCannon.intRotByDeg(0.01);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
