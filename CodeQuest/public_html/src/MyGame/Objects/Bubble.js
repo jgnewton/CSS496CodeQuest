@@ -150,7 +150,15 @@ Bubble.prototype.checkNeighbor = function (bubbleSet) {
 }
 
 Bubble.prototype.checkCollision = function (bubble) {
-    
+     var BBox = this.getBBox();
+    BBox.setBounds(this.getXform().getXPos(), this.getXform().getYPos(), this.w+1, this.h +1);
+
+       if(BBox.intersectsBound(bubble.getBBox())!=0){
+        return true;
+    }
+    else{
+        return false;
+    } 
 }
 
 Bubble.prototype.pop = function () {
