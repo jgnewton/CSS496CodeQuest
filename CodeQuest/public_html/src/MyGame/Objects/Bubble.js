@@ -137,7 +137,7 @@ Bubble.prototype.randString = function () {
 
 Bubble.prototype.checkNeighbor = function (bubbleSet) {
     for(var i=0; i < bubbleSet.size(); i++){
-        if(this.checkCollision(bubbleSet[i]))
+        if(this != bubbleSet[i] && this.checkCollision(bubbleSet[i]))
             if(this.color == bubbleSet[i].color){
                 this.simNeighbors.push(bubbleSet[i]);
                 bubbleSet[i].simNeighbors.push(this);
