@@ -130,6 +130,8 @@ function BubbleScene() {
     this.Ray=null;
     this.myBubbles = null;
     this.myFlyBubble=null;
+    
+    this.firing = false;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -299,6 +301,8 @@ BubbleScene.prototype.initialize = function () {
     this.initBubbles();
     
     this.nextColor=0;
+    
+    this.checkNeighbors();
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -387,9 +391,9 @@ BubbleScene.prototype.update = function () {
     this.mCannon.update();
     this.revealTime--;
     
-    if(this.mFlyBubble!=null){
-        //console.log("checking");
-        //this.checkCollisions();
+    if(this.firing){
+        //console.log("~~checking");
+        this.checkCollisions();
     }
         
 };
@@ -574,8 +578,9 @@ BubbleScene.prototype.processInput = function(){
         }
         
         //fire
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space)) {
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space) && !this.firing) {
             if(this.canFire){
+                this.firing=true;
                 this.fireTimer = 0;
                 this.generateProjectile();
             }
@@ -723,26 +728,34 @@ BubbleScene.prototype.procHit = function(obj, proj) {
 
 BubbleScene.prototype.checkCollisions = function() {   
     
+    // console.log("called check collision");
+    
     var hit = false;
+    var hitB = null;
+    
     for(var i =0; i < this.myBubbles.size();i++){
+        
         var b = this.myBubbles.getObjectAt(i);
         
         var result = false;
         
-        if(b!= null){
+        if(b!= null && b!=this.mFlyBubble){
             result = this.mFlyBubble.checkCollision(b);
         }
         
-        if(result && b!=this.mFlyBubble){
+        if(result){
             console.log("collision");
             //b.checkNeighbor(this.myBubbles);
-            hit = true;
-        }
-    }
-    
-    if(hit){
+            hitB = b;
+            
             this.mFlyBubble.velocity(0,0);
-            this.myBubbles.addToSet(this.mFlyBubble);
-            this.mFlyBubble=null;
+            this.firing=false;
+            var x = this.mFlyBubble.getXform().getXPos();
+            var y = this.mFlyBubble.getXform().getYPos(); 
+            this.setBubblePosition(b,x,y);
+            break;
+        }
+        result = false;
     }
+
 }

@@ -52,7 +52,7 @@ function Bubble(spriteTexture, atX, atY, createCircle, type, ) {
     this.color = type;
 
     //this will contain the random message to represent the data type;
-    var msg = "";
+    var msg = "X";
     
     var rn = Math.random()*200 -100;    
     rn=rn.toFixed(2);
@@ -99,6 +99,13 @@ Bubble.prototype.update = function () {
         this.text.setTextHeight(7.5);
     }
     
+    var n = this.simNeighbors.length;
+    
+    var msg = " " + n;
+    
+    this.text.setText(msg);
+   // this.text.setColor([0, 0, 0, 1]);
+   // this.text.setTextHeight(7.5);
     this.getXform().incXPosBy(this.xv);
     this.getXform().incYPosBy(this.yv);
     this.text.getXform().setPosition(x, y);
@@ -154,13 +161,13 @@ Bubble.prototype.checkCollision = function (bubble) {
     if(bubble != null){
         var BBox = this.getBBox();
      //  BBox.setBounds(this.getXform().getXPos(), this.getXform().getYPos(), this.w+1, this.h +1);
-       console.log("checkCollision");
+       //console.log("checkCollision");
           if(BBox.intersectsBound(bubble.getBBox())!=0){
               console.log("collide");
            return true;
        }
        else{
-           console.log("no collision");
+           //console.log("no collision");
            return false;
        } 
     }
