@@ -136,6 +136,7 @@ Bubble.prototype.randString = function () {
 
 
 Bubble.prototype.checkNeighbor = function (bubbleSet) {
+    console.log("checkNeighbor");
     for(var i=0; i < bubbleSet.size(); i++){
         if(this != bubbleSet[i] && this.checkCollision(bubbleSet[i]))
             if(this.color == bubbleSet[i].color){
@@ -150,15 +151,19 @@ Bubble.prototype.checkNeighbor = function (bubbleSet) {
 }
 
 Bubble.prototype.checkCollision = function (bubble) {
-     var BBox = this.getBBox();
-  //  BBox.setBounds(this.getXform().getXPos(), this.getXform().getYPos(), this.w+1, this.h +1);
-    console.log("checkCollision");
-       if(BBox.intersectsBound(bubble.getBBox())!=0){
-        return true;
+    if(bubble != null){
+        var BBox = this.getBBox();
+     //  BBox.setBounds(this.getXform().getXPos(), this.getXform().getYPos(), this.w+1, this.h +1);
+       console.log("checkCollision");
+          if(BBox.intersectsBound(bubble.getBBox())!=0){
+              console.log("collide");
+           return true;
+       }
+       else{
+           console.log("no collision");
+           return false;
+       } 
     }
-    else{
-        return false;
-    } 
 }
 
 Bubble.prototype.pop = function () {
