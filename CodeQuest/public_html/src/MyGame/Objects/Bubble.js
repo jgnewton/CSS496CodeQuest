@@ -99,7 +99,8 @@ Bubble.prototype.update = function () {
         this.text.setTextHeight(7.5);
     }
     
-
+    this.getXform().incXPosBy(this.xv);
+    this.getXform().incYPosBy(this.yv);
     this.text.getXform().setPosition(x, y);
 };
 
