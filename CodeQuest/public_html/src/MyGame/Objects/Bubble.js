@@ -37,8 +37,13 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
         r = new RigidRectangle(this.getXform(), w, h);
     var vx = (Math.random() - 0.5);
     var vy = (Math.random() - 0.5);
+    
     var speed = 20 + Math.random() * 10;
-    r.setVelocity(vx * speed, vy * speed);
+    
+    
+    r.setMass(0);
+    
+    //r.setVelocity(vx * speed, vy * speed);
     
     
     this.setRigidBody(r);
@@ -101,9 +106,8 @@ Bubble.prototype.draw = function (aCamera) {
     
     if (this.isVisible()) {
         if (this.mDrawRenderable)
-           // this.mRenderComponent.draw(aCamera);
-        if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
-            this.mRigidBody.draw(aCamera);
+            this.mRenderComponent.draw(aCamera);
+         this.mRigidBody.draw(aCamera);
     }
     this.text.draw(aCamera);
 };

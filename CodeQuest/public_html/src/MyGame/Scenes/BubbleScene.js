@@ -289,6 +289,10 @@ BubbleScene.prototype.initialize = function () {
     
     
     this.mCannon.intRotByDeg(0.01);
+    
+    this.mBubble = new Bubble(this.mMeteorSprite, 0, 0, false, 0);
+    
+    this.mAllObjs.addToSet((this.mBubble));
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
