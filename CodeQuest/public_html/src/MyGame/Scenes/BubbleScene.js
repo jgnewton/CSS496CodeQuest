@@ -388,7 +388,7 @@ BubbleScene.prototype.update = function () {
     this.revealTime--;
     
     if(this.mFlyBubble!=null){
-        console.log("checking");
+        //console.log("checking");
         this.checkCollisions();
     }
         
@@ -723,12 +723,17 @@ BubbleScene.prototype.checkCollisions = function() {
     for(var i =0; i < this.myBubbles.size();i++){
         var b = this.myBubbles.getObjectAt(i);
         
-        var result = this.mFlyBubble.checkCollision(b);
+        var result = false;
+        
+        if(b!= null){
+        result = this.mFlyBubble.checkCollision(b);
+        }
         
         if(result && b!=this.mFlyBubble){
             console.log("collision");
             this.mFlyBubble.velocity(0,0);
             this.mFlyBubble=null;
+            b.checkNeighbor(this.myBubbles);
         }
     }
 }
