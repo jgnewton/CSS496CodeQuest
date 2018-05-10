@@ -128,6 +128,7 @@ function BubbleScene() {
     this.burstCount = 0;
     
     this.Ray=null;
+    this.myBubbles = null;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -293,6 +294,8 @@ BubbleScene.prototype.initialize = function () {
     this.mBubble = new Bubble(this.mMeteorSprite, 0, 0, false, 0);
     
     this.mAllObjs.addToSet((this.mBubble));
+    
+    this.initBubbles();
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -313,6 +316,7 @@ BubbleScene.prototype.draw = function () {
         //this.gameOverText4.draw(this.mCamera);
     } else {
         this.mAllObjs.draw(this.mCamera);
+        this.myBubbles.draw(this.mCamera);
     
         for(var i = 0; i < this.elements.length; i++){
             //console.log(this.elements[i]);
@@ -383,6 +387,9 @@ BubbleScene.prototype.update = function () {
 };
 
 BubbleScene.prototype.updateObjects = function(){
+    
+    this.myBubbles.update();
+    
     //manually update all objects in the set
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
