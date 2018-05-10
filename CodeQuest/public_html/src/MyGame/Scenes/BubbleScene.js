@@ -556,11 +556,11 @@ BubbleScene.prototype.processInput = function(){
         
         //roate cannon firing cannon, clamped at 100 and -100
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
-            this.mCannon.intRotByDeg(1.5);
+            this.mCannon.intRotByDeg(0.5);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
-            this.mCannon.intRotByDeg(-1.5);
+            this.mCannon.intRotByDeg(-0.5);
         }
         
         //fire
@@ -644,76 +644,18 @@ BubbleScene.prototype.generateProjectile = function () {
 
     //get in radians for Math javascript func
     var rot = this.mCannon.cannon.getXform().getRotationInRad();
-
-    var w = 10;
-    var h = 10;
-    //create new projectile
-    //console.log("selection"+this.selection);
-    var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
-
-    //setting projectile velocity
-    this.maxV=100;
     
-    var v = 1;
     
-    if(this.selectIndex == 0){
-        // int
-        v = 3;
-        p.getXform().setSize(6, 6);
-        this.fireRate = 60;
-    } else if(this.selectIndex == 1){
-        //double
-        this.fireRate = 30;
-    } else if(this.selectIndex==2){
-        //bool
-        this.fireRate = 60;
-        
-        this.maxV=0;
-        p.getXform().setRotationInRad(rot);
-
-        p.getXform().setSize(2,2000);
-        
-        var xd = Math.sin(rot) * 1000;
-        var yd = Math.cos(rot) * 1000;
-        
-        //take original projectile position and adjust so end of laser starts at hero
-        //subtract because positive angles are to left (-x) 
-        p.getXform().setXPos(xp - xd);
-        p.getXform().setYPos(yp+yd);
-
-        p.lifeTime=10;
-
-        this.rayCast(p);
-        
-        this.Ray = p;
-    } else if(this.selectIndex == 3){
-        //char
-        this.fireRate = 30;
-        
-        v = .5;
-        p.getXform().setSize(15, 15);
-    } else if(this.selectIndex == 4){
-        //string
-        v = 1.25;
-        
-        this.burstCount++;
-        if(this.burstCount >= 4){
-            this.burstCount = 0;
-            this.fireRate = 45;
-        } else {
-            this.fireRate = 5;
-        }
-    }
-         
-
+    this.maxV = 7;
+    
     var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
     var yv = this.maxV*Math.cos(rot);
-
-    p.xv=xv * v;
-    p.yv=yv * v;
-
-    //adding projectile to set
-    this.mAllObjs.addToSet(p);  
+    
+    var b = new Bubble(this.mMeteorSprite, xp, yp, false, 0);
+       
+    //b.setVelocity(xv,yv); 
+    
+    this.myBubbles.addToSet(b);
 }
 
 
