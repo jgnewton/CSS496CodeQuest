@@ -389,7 +389,7 @@ BubbleScene.prototype.update = function () {
     
     if(this.mFlyBubble!=null){
         //console.log("checking");
-        this.checkCollisions();
+        //this.checkCollisions();
     }
         
 };
@@ -397,7 +397,9 @@ BubbleScene.prototype.update = function () {
 BubbleScene.prototype.updateObjects = function(){
     
     this.myBubbles.update();
-    
+    if(this.myFlyBubble!=null){
+        //this.myFlyBubble.update();
+    }
     //manually update all objects in the set
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
@@ -733,7 +735,7 @@ BubbleScene.prototype.checkCollisions = function() {
         
         if(result && b!=this.mFlyBubble){
             console.log("collision");
-            b.checkNeighbor(this.myBubbles);
+            //b.checkNeighbor(this.myBubbles);
             hit = true;
         }
     }
