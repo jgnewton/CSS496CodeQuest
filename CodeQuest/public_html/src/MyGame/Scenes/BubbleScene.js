@@ -725,8 +725,10 @@ BubbleScene.prototype.checkCollisions = function() {
         
         var result = this.mFlyBubble.checkCollision(b);
         
-        if(result){
+        if(result && b!=this.mFlyBubble){
             console.log("collision");
+            this.mFlyBubble.velocity(0,0);
+            this.mFlyBubble=null;
         }
     }
 }
