@@ -291,9 +291,9 @@ BubbleScene.prototype.initialize = function () {
     
     this.mCannon.intRotByDeg(0.01);
     
-    this.mBubble = new Bubble(this.mMeteorSprite, 0, 0, false, 0);
+    this.mNextBubble = new Bubble(this.mMeteorSprite, 0, -60, false, 0);
     
-    this.mAllObjs.addToSet((this.mBubble));
+    this.mAllObjs.addToSet((this.mNextBubble));
     
     this.initBubbles();
 };
@@ -646,14 +646,16 @@ BubbleScene.prototype.generateProjectile = function () {
     var rot = this.mCannon.cannon.getXform().getRotationInRad();
     
     
-    this.maxV = 7;
+    this.maxV = 3;
     
     var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
     var yv = this.maxV*Math.cos(rot);
     
+    
+    var color;
     var b = new Bubble(this.mMeteorSprite, xp, yp, false, 0);
        
-    //b.setVelocity(xv,yv); 
+    b.velocity(xv,yv); 
     
     this.myBubbles.addToSet(b);
 }
