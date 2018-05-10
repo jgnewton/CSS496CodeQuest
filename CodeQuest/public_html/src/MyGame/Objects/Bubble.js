@@ -19,8 +19,8 @@ var kMinionRandomSize = 0;
 
 function Bubble(spriteTexture, atX, atY, createCircle, type) {
         
-    var w = 12;
-    var h = 12;
+    var w = 16;
+    var h = 16;
     
     
     this.mMinion = new SpriteRenderable(spriteTexture);
