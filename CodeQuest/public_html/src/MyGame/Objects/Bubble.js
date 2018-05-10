@@ -49,10 +49,10 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     this.setRigidBody(r);
     
     
-    this.dataType=type;
+    this.color = type;
 
     //this will contain the random message to represent the data type;
-    var msg="";
+    var msg = "";
     
     var rn = Math.random()*200 -100;    
     rn=rn.toFixed(2);
@@ -73,6 +73,8 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     this.displayCoord = false;
     
     this.simNeighbors = [];
+    this.setColor();
+
     
 }
 gEngine.Core.inheritPrototype(Bubble, GameObject);
@@ -114,7 +116,7 @@ Bubble.prototype.draw = function (aCamera) {
     this.text.draw(aCamera);
 };
 
-Bubble.prototype.randString =function () {
+Bubble.prototype.randString = function () {
     
     var lib =[ "\"one\"", "\"two\"","\"three\"","\"four\"","\"five\"","\"six\"",
         "\"seven\"","\"eight\"","\"nine\"","\"zero\"",
@@ -132,15 +134,50 @@ Bubble.prototype.randString =function () {
 }
 
 
-Bubble.prototype.checkNeighbor =function (bubbleSet) {
+Bubble.prototype.checkNeighbor = function (bubbleSet) {
     for(var i=0; i < bubbleSet.size(); i++){
         if(this.checkCollision(bubbleSet[i]))
             if(this.color == bubbleSet[i].color){
-                
+                this.simNeighbors.push(bubbleSet[i]);
+                bubbleSet[i].simNeighbors.push(this);
+                bubbleSet[i].checkNeighbor(bubbleSet);
+                if(bubbleSet[i].simNeighbor.length >= 2){
+                    this.pop();
+                }
             }
     }
 }
 
-Bubble.prototype.checkCollision =function (bubble) {
+Bubble.prototype.checkCollision = function (bubble) {
     
+}
+
+Bubble.prototype.pop = function () {
+    
+    for(var i=0; i < this.simNeighbors.length; i++){
+    this.simNeighbors[i].pop();
+    }
+    //delet the bubble
+}
+
+Bubble.prototype.setColor = function () {
+   switch (this.color) {
+    case 0:
+        this.mMinion.setColor([1,0,0,1]);//red
+        break;
+    case 1:
+        this.mMinion.setColor([0,0,1,1]);//blue
+        break;
+    case 2:
+        this.mMinion.setColor([0,1,0,1]);//green
+        break;
+    case 3:
+        this.mMinion.setColor([1,1,0,1]);//yellow
+        break;
+    case 4:
+        this.mMinion.setColor([1,0,1,1]);//purple
+        break;
+    case 5:
+        this.mMinion.setColor([0,1,1,1]);//turiquise
+    }
 }
