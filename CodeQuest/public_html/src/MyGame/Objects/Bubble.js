@@ -164,6 +164,7 @@ Bubble.prototype.checkCollision = function (bubble) {
 Bubble.prototype.pop = function () {
     
     for(var i=0; i < this.simNeighbors.length; i++){
+      console.log("Pop neighbors!! :D");
     this.simNeighbors[i].pop();
     }
     //delet the bubble
