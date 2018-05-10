@@ -720,20 +720,27 @@ BubbleScene.prototype.procHit = function(obj, proj) {
 };
 
 BubbleScene.prototype.checkCollisions = function() {   
+    
+    var hit = false;
     for(var i =0; i < this.myBubbles.size();i++){
         var b = this.myBubbles.getObjectAt(i);
         
         var result = false;
         
         if(b!= null){
-        result = this.mFlyBubble.checkCollision(b);
+            result = this.mFlyBubble.checkCollision(b);
         }
         
         if(result && b!=this.mFlyBubble){
             console.log("collision");
-            this.mFlyBubble.velocity(0,0);
-            this.mFlyBubble=null;
             b.checkNeighbor(this.myBubbles);
+            hit = true;
         }
+    }
+    
+    if(hit){
+            this.mFlyBubble.velocity(0,0);
+            this.myBubbles.addToSet(this.mFlyBubble);
+            this.mFlyBubble=null;
     }
 }
