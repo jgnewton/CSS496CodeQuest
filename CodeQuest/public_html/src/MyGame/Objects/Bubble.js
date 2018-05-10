@@ -19,8 +19,8 @@ var kMinionRandomSize = 0;
 
 function Bubble(spriteTexture, atX, atY, createCircle, type) {
         
-    var w = 25;
-    var h = 25;
+    var w = 12;
+    var h = 12;
     
     
     this.mMinion = new SpriteRenderable(spriteTexture);
@@ -63,14 +63,16 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     this.text.getXform().setPosition(200, 200);
     this.text.setTextHeight(7.5);
     
-    this.xv=0;
-    this.yv=0;
+    this.xv = 0;
+    this.yv = 0;
     
-    this.mortal=true;
+    this.mortal = true;
     
     this.bound = this.getBBox();
     
-    this.displayCoord=false;
+    this.displayCoord = false;
+    
+    this.simNeighbors = [];
     
 }
 gEngine.Core.inheritPrototype(Bubble, GameObject);
@@ -130,3 +132,15 @@ Bubble.prototype.randString =function () {
 }
 
 
+Bubble.prototype.checkNeighbor =function (bubbleSet) {
+    for(var i=0; i < bubbleSet.size(); i++){
+        if(this.checkCollision(bubbleSet[i]))
+            if(this.color == bubbleSet[i].color){
+                
+            }
+    }
+}
+
+Bubble.prototype.checkCollision =function (bubble) {
+    
+}
