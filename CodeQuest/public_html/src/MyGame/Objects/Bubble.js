@@ -17,7 +17,7 @@ var kMinionHeight = 10;
 var kMinionRandomSize = 0;
 */
 
-function Bubble(spriteTexture, atX, atY, createCircle, type) {
+function Bubble(spriteTexture, atX, atY, createCircle, type, ) {
         
     var w = 16;
     var h = 16;
@@ -180,4 +180,10 @@ Bubble.prototype.setColor = function () {
     case 5:
         this.mMinion.setColor([0,1,1,1]);//turiquise
     }
+}
+
+Bubble.prototype.velocity = function (x, y) {
+    this.xv = x;
+    this.yv = y;
+
 }
