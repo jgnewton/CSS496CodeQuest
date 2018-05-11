@@ -125,7 +125,7 @@ Bubble.prototype.draw = function (aCamera) {
             this.mRenderComponent.draw(aCamera);
          this.mRigidBody.draw(aCamera);
     }
-    this.text.draw(aCamera);
+    //this.text.draw(aCamera);
 };
 
 Bubble.prototype.randString = function () {

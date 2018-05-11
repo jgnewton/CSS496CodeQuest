@@ -132,6 +132,8 @@ function BubbleScene() {
     this.mFlyBubble=null;
     
     this.firing = false;
+    
+    this.popTimer=0;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -395,6 +397,15 @@ BubbleScene.prototype.update = function () {
         //console.log("~~checking");
         this.checkCollisions();
     }
+    
+    if(this.popTimer>0){
+        this.popTimer--;
+        
+        if(this.popTimer==0){
+            this.startPopping();
+        }
+    }
+
         
 };
 
@@ -760,14 +771,7 @@ BubbleScene.prototype.checkCollisions = function() {
             
             //this.myBubbles.addToSet(this.mFlyBubble);
             
-            this.onHit();
-            
-            this.mFlyBubble.checkToPop(b);
-            
-            this.removeBubbles();
-            this.removeBubbles();
-            
-            this.mFlyBubble=null;
+            this.popTimer=60;
             
             break;
         }
@@ -776,14 +780,26 @@ BubbleScene.prototype.checkCollisions = function() {
 
 }
 
+BubbleScene.prototype.startPopping = function() {
+    this.onHit();
+
+    this.mFlyBubble.checkToPop();
+
+    this.removeBubbles();
+    //this.removeBubbles();
+
+    this.mFlyBubble=null;    
+}
+
+
 BubbleScene.prototype.removeBubbles = function() {
     for(var i =0 ; i<this.myBubbles.size();i++){
         var b = this.myBubbles.getObjectAt(i);
         
         if(b.poped){
             this.myBubbles.removeFromSet(b);
+            i--;
         }
-        this.myBubbles.update();
     }
     
 }

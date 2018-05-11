@@ -12,18 +12,25 @@ BubbleScene.prototype.initBubbles = function () {
   this.myBubbles= new GameObjectSet();
   
   var offset=0;
-
+    
+    //creating 65 bubbles
+    //rows
     for(var i =0; i<this.numRows; i++){
         if( i%2 ==0){
             offset = this.bubbleW/2;
         }else{
             offset=0;
         }
+        //each individual bubble
         for(var j =0; j < this.perRow; j++){
             
+            //color
             var color = Math.round(Math.random()*5);
             
             var b = new Bubble(this.mMeteorSprite, j*(this.bubbleW) -this.WCWidth/2 +40+offset, this.WCHeight/2-this.bubbleW/2- i*(this.bubbleW), false, color);
+            
+            
+            
             this.myBubbles.addToSet(b);
         }
     }
@@ -37,10 +44,10 @@ BubbleScene.prototype.setBubblePosition = function (b, currx, curry) {
     var y = b.mMinion.getXform().getYPos();
     
     var side =0;
-    if(currx>(x+this.bubbleW/3)){
+    if(currx>(x+this.bubbleW/6)){
         side=this.bubbleW/2;
     }
-    else if(currx<(x-this.bubbleW/3)){
+    else if(currx<(x-this.bubbleW/6)){
        side = -1*this.bubbleW/2; 
     }
     else{
