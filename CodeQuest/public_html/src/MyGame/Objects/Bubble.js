@@ -144,6 +144,7 @@ Bubble.prototype.randString = function () {
 
 Bubble.prototype.checkNeighbor = function (bubbleSet) {
     console.log("checkNeighbor");
+    this.simNeighbors=[];
     for(var i=0; i < bubbleSet.size(); i++){
         
         var b = bubbleSet.getObjectAt(i) 

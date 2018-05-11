@@ -753,6 +753,10 @@ BubbleScene.prototype.checkCollisions = function() {
             var x = this.mFlyBubble.getXform().getXPos();
             var y = this.mFlyBubble.getXform().getYPos(); 
             this.setBubblePosition(b,x,y);
+            
+            //this.myBubbles.addToSet(this.mFlyBubble);
+            
+            this.onHit();
             break;
         }
         result = false;

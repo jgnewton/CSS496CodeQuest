@@ -37,20 +37,29 @@ BubbleScene.prototype.setBubblePosition = function (b, currx, curry) {
     var y = b.mMinion.getXform().getYPos();
     
     var side =0;
-    if(currx>x+this.bubbleW/2){
-        side=1;
-    }else{
-        side = -1;
+    if(currx>(x+this.bubbleW/3)){
+        side=this.bubbleW/2;
+    }
+    else if(currx<(x-this.bubbleW/3)){
+       side = -1*this.bubbleW/2; 
+    }
+    else{
+        side =0;
     }
     
-    var h = 1;
+    var h = this.bubbleW;
+    
     if(curry > y){
        h = 0;
-       side*=2;
+       if(currx>x){
+        side = this.bubbleW;
+       }else{
+        side = -1*this.bubbleW;   
+       }
     }
 
-    this.mFlyBubble.getXform().setXPos(x + side*this.bubbleW/2);
-    this.mFlyBubble.getXform().setYPos(y-h*this.bubbleW);
+    this.mFlyBubble.getXform().setXPos(x + side+1);
+    this.mFlyBubble.getXform().setYPos(y-h+1);
 };
 
 
@@ -60,4 +69,8 @@ BubbleScene.prototype.checkNeighbors = function () {
         b.checkNeighbor(this.myBubbles);
     }
     
+};
+
+BubbleScene.prototype.onHit = function () {
+   this.checkNeighbors(); 
 };
