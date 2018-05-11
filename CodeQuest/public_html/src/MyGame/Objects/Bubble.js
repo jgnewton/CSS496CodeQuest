@@ -77,6 +77,9 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     
     this.poped = false;
     
+    this.w = w;
+    this.h= h;
+    
 }
 gEngine.Core.inheritPrototype(Bubble, GameObject);
 
@@ -165,6 +168,7 @@ Bubble.prototype.checkNeighbor = function (bubbleSet) {
 Bubble.prototype.checkCollision = function (bubble) {
     if(bubble != null){
         var BBox = this.getBBox();
+        BBox.setBounds([this.getXform().getXPos(), this.getXform().getYPos()], this.w+2, this.h+2);
      //  BBox.setBounds(this.getXform().getXPos(), this.getXform().getYPos(), this.w+1, this.h +1);
        //console.log("checkCollision");
           if(BBox.intersectsBound(bubble.getBBox())!=0){
@@ -178,7 +182,7 @@ Bubble.prototype.checkCollision = function (bubble) {
     }
 }
 
-Bubble.prototype.checkToPop = function (Shoot) {
+Bubble.prototype.checkToPop = function () {
     var startPop = false;
     if(this.simNeighbors.length >= 2){
         startPop = true;
@@ -198,7 +202,7 @@ Bubble.prototype.pop = function () {
     this.poped = true;
     for(var i=0; i < this.simNeighbors.length; i++){
       console.log("Pop neighbors!! :D");
-      if(!this.simNeighbors[i].popd)
+      if(!this.simNeighbors[i].poped)
         this.simNeighbors[i].pop();
     }
 }
@@ -221,7 +225,7 @@ Bubble.prototype.setColor = function () {
         this.mMinion.setColor([1,0,1,1]);//purple
         break;
     case 5:
-        this.mMinion.setColor([0,1,1,1]);//turiquise
+        this.mMinion.setColor([0,1,1,1]);//turquoise
     }
 }
 

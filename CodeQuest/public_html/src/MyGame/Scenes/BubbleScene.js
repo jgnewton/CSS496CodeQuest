@@ -748,19 +748,42 @@ BubbleScene.prototype.checkCollisions = function() {
             //b.checkNeighbor(this.myBubbles);
             hitB = b;
             
+            
             this.mFlyBubble.velocity(0,0);
+            
             this.firing=false;
+            
             var x = this.mFlyBubble.getXform().getXPos();
             var y = this.mFlyBubble.getXform().getYPos(); 
+            
             this.setBubblePosition(b,x,y);
             
             //this.myBubbles.addToSet(this.mFlyBubble);
             
             this.onHit();
+            
             this.mFlyBubble.checkToPop(b);
+            
+            this.removeBubbles();
+            this.removeBubbles();
+            
+            this.mFlyBubble=null;
+            
             break;
         }
         result = false;
     }
 
+}
+
+BubbleScene.prototype.removeBubbles = function() {
+    for(var i =0 ; i<this.myBubbles.size();i++){
+        var b = this.myBubbles.getObjectAt(i);
+        
+        if(b.poped){
+            this.myBubbles.removeFromSet(b);
+        }
+        this.myBubbles.update();
+    }
+    
 }

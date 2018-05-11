@@ -23,7 +23,7 @@ BubbleScene.prototype.initBubbles = function () {
             
             var color = Math.round(Math.random()*5);
             
-            var b = new Bubble(this.mMeteorSprite, j*(this.bubbleW-1) -this.WCWidth/2 +40+offset, this.WCHeight/2-this.bubbleW/2- i*(this.bubbleW-1), false, color);
+            var b = new Bubble(this.mMeteorSprite, j*(this.bubbleW) -this.WCWidth/2 +40+offset, this.WCHeight/2-this.bubbleW/2- i*(this.bubbleW), false, color);
             this.myBubbles.addToSet(b);
         }
     }
@@ -58,8 +58,8 @@ BubbleScene.prototype.setBubblePosition = function (b, currx, curry) {
        }
     }
 
-    this.mFlyBubble.getXform().setXPos(x + side+1);
-    this.mFlyBubble.getXform().setYPos(y-h+1);
+    this.mFlyBubble.getXform().setXPos(x + side);
+    this.mFlyBubble.getXform().setYPos(y-h);
 };
 
 
