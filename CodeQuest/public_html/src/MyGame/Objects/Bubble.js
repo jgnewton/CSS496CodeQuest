@@ -17,7 +17,7 @@ var kMinionHeight = 10;
 var kMinionRandomSize = 0;
 */
 
-function Bubble(spriteTexture, atX, atY, createCircle, type, ) {
+function Bubble(spriteTexture, atX, atY, createCircle, type) {
         
     var w = 16;
     var h = 16;
@@ -145,13 +145,16 @@ Bubble.prototype.randString = function () {
 Bubble.prototype.checkNeighbor = function (bubbleSet) {
     console.log("checkNeighbor");
     for(var i=0; i < bubbleSet.size(); i++){
-        if(this != bubbleSet[i] && this.checkCollision(bubbleSet[i]))
-            if(this.color == bubbleSet[i].color){
-                this.simNeighbors.push(bubbleSet[i]);
-                bubbleSet[i].simNeighbors.push(this);
-                bubbleSet[i].checkNeighbor(bubbleSet);
-                if(bubbleSet[i].simNeighbor.length >= 2){
-                    this.pop();
+        
+        var b = bubbleSet.getObjectAt(i) 
+        //console.log("test");
+        if(this!=b && this.checkCollision(b))
+            if(this.color == b.color){
+                this.simNeighbors.push(b);
+                //b.simNeighbors.push(this);
+                //b.checkNeighbor(bubbleSet);
+                if(b.simNeighbors.length >= 2){
+                    //this.pop();
                 }
             }
     }
