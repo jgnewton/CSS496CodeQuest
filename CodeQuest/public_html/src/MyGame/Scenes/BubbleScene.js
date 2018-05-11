@@ -129,7 +129,7 @@ function BubbleScene() {
     
     this.Ray=null;
     this.myBubbles = null;
-    this.myFlyBubble=null;
+    this.mFlyBubble=null;
     
     this.firing = false;
 }
@@ -257,11 +257,11 @@ BubbleScene.prototype.initialize = function () {
     var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
     var textXPos = 110;
     var textOffset = 10;
-    this.intText = new MenuElement("Int", textXPos, textYpos + textOffset * 4, textSize);
-    this.doubleText = new MenuElement("Double", textXPos, textYpos + textOffset * 3, textSize);
-    this.boolText = new MenuElement("Boolean", textXPos, textYpos + textOffset * 2, textSize);
-    this.charText = new MenuElement("Char", textXPos, textYpos + textOffset, textSize);
-    this.stringText = new MenuElement("String", textXPos, textYpos, textSize);
+    this.intText = new MenuElement("Int __ = 3;", textXPos, textYpos + textOffset * 4, textSize);
+    this.doubleText = new MenuElement("Int B = A __ 2;", textXPos, textYpos + textOffset * 3, textSize);
+    this.boolText = new MenuElement("System.print(A__;", textXPos, textYpos + textOffset * 2, textSize);
+    this.charText = new MenuElement("A= A/5__", textXPos, textYpos + textOffset, textSize);
+    this.stringText = new MenuElement("B __ A;", textXPos, textYpos, textSize);
     //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
     
     this.elements = [
@@ -349,7 +349,7 @@ BubbleScene.prototype.draw = function () {
         this.mCannon.draw(this.mCamera);
     }
     
-    this.accuracyText.draw(this.mCamera);
+    //this.accuracyText.draw(this.mCamera);
     
     if(this.revealMsg!=null){
         if(this.revealTime>0){
@@ -401,8 +401,8 @@ BubbleScene.prototype.update = function () {
 BubbleScene.prototype.updateObjects = function(){
     
     this.myBubbles.update();
-    if(this.myFlyBubble!=null){
-        //this.myFlyBubble.update();
+    if(this.mFlyBubble!=null){
+        this.checkBounce();
     }
     //manually update all objects in the set
     for (var i = 0; i < this.mAllObjs.size(); i++) {
@@ -757,6 +757,7 @@ BubbleScene.prototype.checkCollisions = function() {
             //this.myBubbles.addToSet(this.mFlyBubble);
             
             this.onHit();
+            this.mFlyBubble.checkToPop(b);
             break;
         }
         result = false;

@@ -74,3 +74,36 @@ BubbleScene.prototype.checkNeighbors = function () {
 BubbleScene.prototype.onHit = function () {
    this.checkNeighbors(); 
 };
+
+
+BubbleScene.prototype.checkBounce = function () {
+   if(this.mFlyBubble.getXform().getXPos()>this.WCCenterX+this.WCWidth/2 || this.mFlyBubble.getXform().getXPos()<this.WCCenterX-this.WCWidth/2){
+    this.mFlyBubble.xv = this.mFlyBubble.xv*-1;
+   }
+   
+   if(this.mFlyBubble.getXform().getYPos()>this.WCCenterY+this.WCHeight/2 || this.mFlyBubble.getXform().getYPos()<this.WCCenterY-this.WCHeight/2){
+    this.mFlyBubble.yv = this.mFlyBubble.yv*-1;
+   }
+   
+   
+};
+
+BubbleScene.prototype.initAnswerSet = function () {
+    
+    this.ans = [
+        "A",
+        "+",
+        "2",
+        ")",
+        ";",
+        "="
+        
+    ];
+       
+};
+
+BubbleScene.prototype.getRandAnswer = function () {
+    var r = Math.floor(Math.random()*this.ans.length);
+    return this.ans.pop(r);
+    
+};
