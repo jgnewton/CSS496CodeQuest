@@ -75,7 +75,7 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     this.simNeighbors = [];
     this.setColor();
     
-    this.pop = false;
+    this.poped = false;
     
 }
 gEngine.Core.inheritPrototype(Bubble, GameObject);
@@ -195,10 +195,10 @@ Bubble.prototype.checkToPop = function (Shoot) {
 }
 
 Bubble.prototype.pop = function () {
-    this.pop = true;
+    this.poped = true;
     for(var i=0; i < this.simNeighbors.length; i++){
       console.log("Pop neighbors!! :D");
-      if(!this.simNeighbors[i].pop)
+      if(!this.simNeighbors[i].popd)
         this.simNeighbors[i].pop();
     }
 }
