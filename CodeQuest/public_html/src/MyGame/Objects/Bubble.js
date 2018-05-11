@@ -184,8 +184,8 @@ Bubble.prototype.checkToPop = function (Shoot) {
         startPop = true;
     }
     else{
-        for(var i=0; i < simNeighbors.length; i++){
-            if(simNeighbors[i].simNeighbors.length >= 2){
+        for(var i=0; i < this.simNeighbors.length; i++){
+            if(this.simNeighbors[i].simNeighbors.length >= 2){
                 startPop = true;
             }
         }
