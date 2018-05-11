@@ -757,6 +757,7 @@ BubbleScene.prototype.checkCollisions = function() {
             //this.myBubbles.addToSet(this.mFlyBubble);
             
             this.onHit();
+            this.mFlyBubble.checkToPop(b);
             break;
         }
         result = false;
