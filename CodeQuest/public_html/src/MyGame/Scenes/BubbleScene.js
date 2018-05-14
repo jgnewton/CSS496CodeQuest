@@ -420,49 +420,7 @@ BubbleScene.prototype.updateObjects = function(){
         var obj = this.mAllObjs.getObjectAt(i);
         obj.update();
         // if asteroid, check for collision with projectils
-        if(obj instanceof Asteroid ){
-                        
-            //console.log(this.ground.getBBox());
-            //console.log(obj.bound);
-           
-            //var groundBound = ;
-            
-            // for some reason the Asteroid never collides with the ground... But
-            // the intersectsBound call does happen and returns false
-            //console.log(obj.bound.intersectsBound(this.ground.getBBox()));
-            //if(obj.bound.intersectsBound(this.ground.getBBox())!= 0){
-            //var groundHeight = this.WCHeight / 4.5;
-            //this.ground.getXform().setPosition(0, -this.WCHeight / 2 + groundHeight / 2);
-            if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
-                //console.log("asteroid collision with ground");
-                this.incrementScore(false);
-                this.mAllObjs.removeFromSet(obj);
-            }
-            
-            // check collision of this asteroid with all projectiles
-            for (var j = 0; j < this.mAllObjs.size(); j++) {                
-                var proj = this.mAllObjs.getObjectAt(j);
-                if(proj instanceof Projectile){
-                                       
-                    var projectileBound = proj.getBBox();
-                                       
-                    if(obj.bound.intersectsBound(projectileBound)!= 0){                     
-                        this.procHit(obj, proj);                        
-                    }   
-                }
-            }       
-        }
         //checking for projectile termination (upon leaving camera view)
-        else if(obj instanceof Projectile){
-            obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
-            if (obj.terminated){
-                if(obj.type == 2){
-                    this.Ray = null;
-                }
-                this.mAllObjs.removeFromSet(obj);
-                
-            }
-        }
     }
 };
 
@@ -590,7 +548,7 @@ BubbleScene.prototype.processInput = function(){
         
         //fire
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space) && !this.firing) {
-            if(this.canFire){
+            if(this.canFire && this.mFlyBubble == null){
                 this.firing=true;
                 this.fireTimer = 0;
                 this.generateProjectile();
@@ -640,25 +598,6 @@ BubbleScene.prototype.processInput = function(){
 };
 
 
-//Generate an asteroid at a random location at the top of the camera view
-BubbleScene.prototype.generateAsteroid = function () {
-     
-    if(this.GenerateOn){
-        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
-        var yl = 120;
-
-        var type=0;
-
-        type = Math.round(Math.random()*this.maxType);  
-
-        var Asteroid1 = new Asteroid(this.mMeteorSprite, xl, yl, false, type);
-
-        //drop speed
-        Asteroid1.yv=-7;
-
-        this.mAllObjs.addToSet(Asteroid1); 
-    }
-};
 
 
 //generating projectiles
@@ -692,53 +631,7 @@ BubbleScene.prototype.generateProjectile = function () {
 }
 
 
-
-BubbleScene.prototype.procHit = function(obj, proj) {   
-    //for making reveal message
-    var x = obj.getXform().getXPos();
-    var y = obj.getXform().getYPos();
-    var type = obj.dataType;
-    
-    if(obj.dataType == proj.dataType){
-        this.incrementScore(true);
-        this.mAllObjs.removeFromSet(obj);
-        this.mAllObjs.removeFromSet(proj);
-
-    }
-    else{
-        this.incrementScore(false);
-        this.mAllObjs.removeFromSet(obj);
-        this.mAllObjs.removeFromSet(proj);
-
-        // display a reveal message
-        var text="X ";
-        if(type==0){
-            text += "int";
-        }
-            if(type==1){
-            text += "double";
-        }
-            if(type==2){
-            text += "boolean";
-        }
-            if(type==3){
-            text += "char";
-        }
-            if(type==4){
-            text += "string";
-        }
-
-        this.revealMsg = new FontRenderable(text);
-        this.revealMsg.setColor([1, 0, 0, 1]);
-        this.revealMsg.getXform().setPosition(x, y);
-        this.revealMsg.setTextHeight(5);
-        this.revealTime=120;
-    }
-    
-};
-
 BubbleScene.prototype.checkCollisions = function() {   
-    
     // console.log("called check collision");
     
     var hit = false;
@@ -746,12 +639,11 @@ BubbleScene.prototype.checkCollisions = function() {
     
     for(var i =0; i < this.myBubbles.size();i++){
         
-        var b = this.myBubbles.getObjectAt(i);
-        
+        var b = this.myBubbles.getObjectAt(i);        
         var result = false;
         
         if(b!= null && b!=this.mFlyBubble){
-            result = this.mFlyBubble.checkCollision(b);
+            result = this.mFlyBubble.checkCollision(b, true);
         }
         
         if(result){
@@ -771,7 +663,7 @@ BubbleScene.prototype.checkCollisions = function() {
             
             //this.myBubbles.addToSet(this.mFlyBubble);
             
-            this.popTimer=60;
+            this.popTimer=30;
             
             break;
         }

@@ -85,34 +85,24 @@ gEngine.Core.inheritPrototype(Bubble, GameObject);
 
 Bubble.prototype.update = function () {
 
-    GameObject.prototype.update.call(this);
-
-    
+    GameObject.prototype.update.call(this);    
     this.mRigidBody.setVelocity(this.xv,this.yv);
-    
-    
-    this.bound = this.getBBox();
+       
+  //  this.bound = this.getBBox();
     
     var x = this.mMinion.getXform().getXPos();
     var y = this.mMinion.getXform().getYPos();
-    
-    if(this.displayCoord){
-        this.text = new FontRenderable("x:"+x.toPrecision(2)+" y:"+y.toPrecision(2));
-        this.text.setColor([0, 0, 0, 1]);
-        this.text.getXform().setPosition(x, y);
-        this.text.setTextHeight(7.5);
-    }
-    
+        
     var n = this.simNeighbors.length;
     
-    var msg = " " + n;
+   // var msg = " " + n;
     
-    this.text.setText(msg);
+    //this.text.setText(msg);
    // this.text.setColor([0, 0, 0, 1]);
    // this.text.setTextHeight(7.5);
     this.getXform().incXPosBy(this.xv);
     this.getXform().incYPosBy(this.yv);
-    this.text.getXform().setPosition(x, y);
+   // this.text.getXform().setPosition(x, y);
 };
 
 //commented out draw render temporarily
@@ -165,11 +155,20 @@ Bubble.prototype.checkNeighbor = function (bubbleSet) {
     }
 }
 
-Bubble.prototype.checkCollision = function (bubble) {
+
+
+Bubble.prototype.checkCollision = function (bubble, shrink) {
     if(bubble != null){
         var BBox = this.getBBox();
         BBox.setBounds([this.getXform().getXPos(), this.getXform().getYPos()], this.w+2, this.h+2);
-     //  BBox.setBounds(this.getXform().getXPos(), this.getXform().getYPos(), this.w+1, this.h +1);
+        
+        var sFactor = 3/4;
+        
+        if(shrink){
+        BBox.setBounds([this.getXform().getXPos() + (1-sFactor)/2, this.getXform().getYPos()+ (1-sFactor)/2], this.w*sFactor, this.h*sFactor);    
+        }
+        //  
+ //  BBox.setBounds(this.getXform().getXPos(), this.getXform().getYPos(), this.w+1, this.h +1);
        //console.log("checkCollision");
           if(BBox.intersectsBound(bubble.getBBox())!=0){
               console.log("collide");
