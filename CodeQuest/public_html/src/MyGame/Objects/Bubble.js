@@ -60,7 +60,7 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
         
     this.text = new FontRenderable(msg);
     this.text.setColor([0, 0, 0, 1]);
-    this.text.getXform().setPosition(200, 200);
+    this.text.getXform().setPosition(atX, atY);
     this.text.setTextHeight(7.5);
     
     this.xv = 0;
@@ -79,6 +79,8 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     
     this.w = w;
     this.h= h;
+    
+    this.drawText = false;
     
 }
 gEngine.Core.inheritPrototype(Bubble, GameObject);
@@ -110,11 +112,19 @@ Bubble.prototype.draw = function (aCamera) {
     //GameObject.prototype.draw.call(this);
     this.mMinion.draw(aCamera);
     
+    
     if (this.isVisible()) {
         if (this.mDrawRenderable)
             this.mRenderComponent.draw(aCamera);
          this.mRigidBody.draw(aCamera);
     }
+    
+    if(this.drawText){
+        //console.log("Drawing Tesxt");
+        this.text.draw(aCamera);
+    }
+    
+    
     //this.text.draw(aCamera);
 };
 
@@ -137,7 +147,7 @@ Bubble.prototype.randString = function () {
 
 
 Bubble.prototype.checkNeighbor = function (bubbleSet) {
-    console.log("checkNeighbor");
+    //console.log("checkNeighbor");
     this.simNeighbors=[];
     for(var i=0; i < bubbleSet.size(); i++){
         
@@ -171,7 +181,7 @@ Bubble.prototype.checkCollision = function (bubble, shrink) {
  //  BBox.setBounds(this.getXform().getXPos(), this.getXform().getYPos(), this.w+1, this.h +1);
        //console.log("checkCollision");
           if(BBox.intersectsBound(bubble.getBBox())!=0){
-              console.log("collide");
+              //console.log("collide");
            return true;
        }
        else{
@@ -233,3 +243,11 @@ Bubble.prototype.velocity = function (x, y) {
     this.yv = y;
 
 }
+
+Bubble.prototype.assignValue = function (string, answer) {
+    console.log("assigned" +string);
+    this.drawText= true;
+    this.text.setText(string);
+    
+    this.mAnswer = answer;
+};

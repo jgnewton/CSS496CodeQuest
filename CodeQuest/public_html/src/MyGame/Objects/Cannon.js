@@ -72,11 +72,11 @@ Cannon.prototype.intRotByDeg = function(inRot){
     
     this.cannon.getXform().incRotationByDegree(inRot);
     
-    if(this.cannon.getXform().getRotationInDegree()>100){
-        this.cannon.getXform().setRotationInDegree(100);
+    if(this.cannon.getXform().getRotationInDegree()>170){
+        this.cannon.getXform().setRotationInDegree(170);
     }
-    if(this.cannon.getXform().getRotationInDegree()<-100){
-        this.cannon.getXform().setRotationInDegree(-100);
+    if(this.cannon.getXform().getRotationInDegree()<-170){
+        this.cannon.getXform().setRotationInDegree(-170);
     }
     
     var canRot = this.cannon.getXform().getRotationInRad()

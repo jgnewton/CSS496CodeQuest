@@ -255,26 +255,33 @@ BubbleScene.prototype.initialize = function () {
 
     // initialize the text that represents data types
     
-    var textSize = 5;
+    var textSize = 7.5;
     var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
-    var textXPos = 110;
-    var textOffset = 10;
-    this.intText = new MenuElement("Int __ = 3;", textXPos, textYpos + textOffset * 4, textSize);
-    this.doubleText = new MenuElement("Int B = A __ 2;", textXPos, textYpos + textOffset * 3, textSize);
-    this.boolText = new MenuElement("System.print(A__;", textXPos, textYpos + textOffset * 2, textSize);
-    this.charText = new MenuElement("A= A/5__", textXPos, textYpos + textOffset, textSize);
-    this.stringText = new MenuElement("B __ A;", textXPos, textYpos, textSize);
+    var textXPos = 90;
+    var textOffset = 15;
+    
+    this.initAnswerStrings();
+    
+    this.delete=new MenuElement(this.deletes, textXPos, textYpos + textOffset * 6, textSize);
+    this.q1 = new MenuElement(this.q1s, textXPos, textYpos + textOffset * 5, textSize);
+    this.q2 = new MenuElement(this.q2s, textXPos, textYpos + textOffset * 4, textSize);
+    this.q3 = new MenuElement(this.q3s, textXPos, textYpos + textOffset * 3, textSize);
+    this.q4 = new MenuElement(this.q4s, textXPos, textYpos + textOffset * 2, textSize);
+    this.q5 = new MenuElement(this.q5s, textXPos, textYpos + textOffset, textSize);
+    this.q6 = new MenuElement(this.q6s, textXPos, textYpos, textSize);
     //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
     
     this.elements = [
-        this.intText,
-        this.doubleText,
-        this.boolText,
-        this.charText,
-        this.stringText
+        this.delete,
+        this.q1,
+        this.q2,
+        this.q3,
+        this.q4,
+        this.q5,
+        this.q6
     ];
     
-    this.selectedElement = this.intText;
+    this.selectedElement = this.delete;
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
@@ -556,43 +563,6 @@ BubbleScene.prototype.processInput = function(){
             
         }
         
-        
-        /*
-        //debugging to display asteroid coordinates
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Y)) {
-            for (var i = 0; i < this.mAllObjs.size(); i++) {
-                var obj = this.mAllObjs.getObjectAt(i);
-
-                //written like this because displayCoord is not defined in all objects
-                if(obj.displayCoord){
-                    obj.displayCoord=false;
-                }else{
-                   obj.displayCoord=true;   
-                }
-            }
-        }
-        
-        //turn off or on asteroid generation
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
-            this.GenerateOn=!this.GenerateOn; 
-            console.log("generating Asteroids: " + this.GenerateOn);
-        }
-        
-        //stop or start asteroid movement
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) {
-
-            for (var i = 0; i < this.mAllObjs.size(); i++) {
-                var obj = this.mAllObjs.getObjectAt(i);
-
-                if(obj.yv==0){
-                    obj.yv=-7;
-                }
-                else{
-                    obj.yv=0;
-                }
-            }
-        }
-        */
     }
     
 };
@@ -691,7 +661,15 @@ BubbleScene.prototype.removeBubbles = function() {
         if(b.poped){
             this.myBubbles.removeFromSet(b);
             i--;
+            if(b.drawText){
+               console.log("Answer popped");
+               this.updateQuestions(b);
+            }
         }
     }
     
 }
+
+BubbleScene.prototype.updateQuestions = function() {
+    this.selectedElement.setText(this.questions[this.selectIndex]+"Test");
+};
