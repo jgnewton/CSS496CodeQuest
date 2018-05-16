@@ -26,13 +26,19 @@ function Cannon(basetext, muzzletext) {
     //this.base.setElementPixelPositions(0, 217, 263, 422);
     */
    
+   
+   
+   
     this.base = new SpriteRenderable(basetext);
     this.base.getXform().setSize(40, 30);
     this.base.setElementPixelPositions(0, 217, 256 - 159, 256);
 
     this.cannon = new SpriteRenderable(muzzletext);
     this.cannon.getXform().setSize(15, 30);
-    this.cannon.setElementPixelPositions(0, 70, 256 - 127, 256);
+    this.cannon.setElementPixelPositions(0, 70, 0, 256 - 127);
+    
+    this.base.getXform().setPosition(1.75, -60);
+    this.cannon.getXform().setPosition(0, -42);
     
     GameObject.call(this, this.base);
     
@@ -61,12 +67,24 @@ Cannon.prototype.draw = function (aCamera) {
 }
 
 Cannon.prototype.intRotByDeg = function(inRot){
+    var xp = 0;
+    var yp = -42;
+    
     this.cannon.getXform().incRotationByDegree(inRot);
     
-    if(this.cannon.getXform().getRotationInDegree()>100){
-        this.cannon.getXform().setRotationInDegree(100);
+    if(this.cannon.getXform().getRotationInDegree()>170){
+        this.cannon.getXform().setRotationInDegree(170);
     }
-    if(this.cannon.getXform().getRotationInDegree()<-100){
-        this.cannon.getXform().setRotationInDegree(-100);
+    if(this.cannon.getXform().getRotationInDegree()<-170){
+        this.cannon.getXform().setRotationInDegree(-170);
     }
+    
+    var canRot = this.cannon.getXform().getRotationInRad()
+    
+    var xd = Math.sin(canRot) * 7.5;
+    var yd = Math.cos(canRot) * 5;
+    
+    this.cannon.getXform().setXPos(xp - xd);
+    this.cannon.getXform().setYPos(yp+yd);
+    
 }

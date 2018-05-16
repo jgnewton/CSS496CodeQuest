@@ -524,7 +524,7 @@ BasketScene.prototype.processInput = function(){
 BasketScene.prototype.generateBat = function () {
         
         // -20 to keep bat text on the screen.
-        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth-20);
+        var xl = this.WCCenterX-this.WCWidth/2 +20+ Math.random()*(this.WCWidth-70);
         
         var yl = this.WCCenterY+ this.WCHeight/2 -20;
 

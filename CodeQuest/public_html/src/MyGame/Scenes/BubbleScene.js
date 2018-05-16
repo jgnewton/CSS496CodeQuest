@@ -1,5 +1,5 @@
 /*
- * File: AsteroidScene.js 
+ * File: BubbleScene.js 
  * This is the logic of our game. 
  */
 
@@ -11,7 +11,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function AsteroidScene() {
+function BubbleScene() {
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kPlatformTexture = "assets/platform.png";
     this.kWallTexture = "assets/wall.png";
@@ -128,11 +128,17 @@ function AsteroidScene() {
     this.burstCount = 0;
     
     this.Ray=null;
+    this.myBubbles = null;
+    this.mFlyBubble=null;
+    
+    this.firing = false;
+    
+    this.popTimer=0;
 }
-gEngine.Core.inheritPrototype(AsteroidScene, Scene);
+gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
 
-AsteroidScene.prototype.loadScene = function () {
+BubbleScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kPlatformTexture);
     gEngine.Textures.loadTexture(this.kWallTexture);
@@ -157,7 +163,7 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.mMeteorSprite);
 };
 
-AsteroidScene.prototype.unloadScene = function () {
+BubbleScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kPlatformTexture);
     gEngine.Textures.unloadTexture(this.kWallTexture);
@@ -184,7 +190,7 @@ AsteroidScene.prototype.unloadScene = function () {
     gEngine.Core.startScene(MG); 
 };
 
-AsteroidScene.prototype.initialize = function () {
+BubbleScene.prototype.initialize = function () {
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera
@@ -249,26 +255,33 @@ AsteroidScene.prototype.initialize = function () {
 
     // initialize the text that represents data types
     
-    var textSize = 5;
+    var textSize = 7.5;
     var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
-    var textXPos = 110;
-    var textOffset = 10;
-    this.intText = new MenuElement("Int", textXPos, textYpos + textOffset * 4, textSize);
-    this.doubleText = new MenuElement("Double", textXPos, textYpos + textOffset * 3, textSize);
-    this.boolText = new MenuElement("Boolean", textXPos, textYpos + textOffset * 2, textSize);
-    this.charText = new MenuElement("Char", textXPos, textYpos + textOffset, textSize);
-    this.stringText = new MenuElement("String", textXPos, textYpos, textSize);
+    var textXPos = 90;
+    var textOffset = 15;
+    
+    this.initAnswerStrings();
+    
+    this.delete=new MenuElement(this.deletes, textXPos, textYpos + textOffset * 6, textSize);
+    this.q1 = new MenuElement(this.q1s, textXPos, textYpos + textOffset * 5, textSize);
+    this.q2 = new MenuElement(this.q2s, textXPos, textYpos + textOffset * 4, textSize);
+    this.q3 = new MenuElement(this.q3s, textXPos, textYpos + textOffset * 3, textSize);
+    this.q4 = new MenuElement(this.q4s, textXPos, textYpos + textOffset * 2, textSize);
+    this.q5 = new MenuElement(this.q5s, textXPos, textYpos + textOffset, textSize);
+    this.q6 = new MenuElement(this.q6s, textXPos, textYpos, textSize);
     //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
     
     this.elements = [
-        this.intText,
-        this.doubleText,
-        this.boolText,
-        this.charText,
-        this.stringText
+        this.delete,
+        this.q1,
+        this.q2,
+        this.q3,
+        this.q4,
+        this.q5,
+        this.q6
     ];
     
-    this.selectedElement = this.intText;
+    this.selectedElement = this.delete;
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
@@ -289,11 +302,21 @@ AsteroidScene.prototype.initialize = function () {
     
     
     this.mCannon.intRotByDeg(0.01);
+    
+    this.mNextBubble = new Bubble(this.mMeteorSprite, 0, -100, false, 0);
+    
+    this.mAllObjs.addToSet((this.mNextBubble));
+    
+    this.initBubbles();
+    
+    this.nextColor=0;
+    
+    this.checkNeighbors();
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-AsteroidScene.prototype.draw = function () {
+BubbleScene.prototype.draw = function () {
     // Step A: clear the canvas
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
@@ -309,6 +332,7 @@ AsteroidScene.prototype.draw = function () {
         //this.gameOverText4.draw(this.mCamera);
     } else {
         this.mAllObjs.draw(this.mCamera);
+        this.myBubbles.draw(this.mCamera);
     
         for(var i = 0; i < this.elements.length; i++){
             //console.log(this.elements[i]);
@@ -334,7 +358,7 @@ AsteroidScene.prototype.draw = function () {
         this.mCannon.draw(this.mCamera);
     }
     
-    this.accuracyText.draw(this.mCamera);
+    //this.accuracyText.draw(this.mCamera);
     
     if(this.revealMsg!=null){
         if(this.revealTime>0){
@@ -345,7 +369,7 @@ AsteroidScene.prototype.draw = function () {
     
 };
 
-AsteroidScene.prototype.update = function () {
+BubbleScene.prototype.update = function () {
     this.processInput();
     
     if(!this.gameOver){
@@ -359,7 +383,7 @@ AsteroidScene.prototype.update = function () {
         //updating the generating of asteroids
         this.genTimer++;
         if(this.genTimer>=350){
-            this.generateAsteroid();
+            //this.generateAsteroid();
             this.genTimer=0;
         }
         
@@ -375,62 +399,39 @@ AsteroidScene.prototype.update = function () {
 
     this.mCannon.update();
     this.revealTime--;
+    
+    if(this.firing){
+        //console.log("~~checking");
+        this.checkCollisions();
+    }
+    
+    if(this.popTimer>0){
+        this.popTimer--;
+        
+        if(this.popTimer==0){
+            this.startPopping();
+        }
+    }
+
         
 };
 
-AsteroidScene.prototype.updateObjects = function(){
+BubbleScene.prototype.updateObjects = function(){
+    
+    this.myBubbles.update();
+    if(this.mFlyBubble!=null){
+        this.checkBounce();
+    }
     //manually update all objects in the set
     for (var i = 0; i < this.mAllObjs.size(); i++) {
         var obj = this.mAllObjs.getObjectAt(i);
         obj.update();
         // if asteroid, check for collision with projectils
-        if(obj instanceof Asteroid ){
-                        
-            //console.log(this.ground.getBBox());
-            //console.log(obj.bound);
-           
-            //var groundBound = ;
-            
-            // for some reason the Asteroid never collides with the ground... But
-            // the intersectsBound call does happen and returns false
-            //console.log(obj.bound.intersectsBound(this.ground.getBBox()));
-            //if(obj.bound.intersectsBound(this.ground.getBBox())!= 0){
-            //var groundHeight = this.WCHeight / 4.5;
-            //this.ground.getXform().setPosition(0, -this.WCHeight / 2 + groundHeight / 2);
-            if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
-                //console.log("asteroid collision with ground");
-                this.incrementScore(false);
-                this.mAllObjs.removeFromSet(obj);
-            }
-            
-            // check collision of this asteroid with all projectiles
-            for (var j = 0; j < this.mAllObjs.size(); j++) {                
-                var proj = this.mAllObjs.getObjectAt(j);
-                if(proj instanceof Projectile){
-                                       
-                    var projectileBound = proj.getBBox();
-                                       
-                    if(obj.bound.intersectsBound(projectileBound)!= 0){                     
-                        this.procHit(obj, proj);                        
-                    }   
-                }
-            }       
-        }
         //checking for projectile termination (upon leaving camera view)
-        else if(obj instanceof Projectile){
-            obj.testTerminated([this.WCCenterX, this.WCCenterY, this.WCWidth, this.WCHeight]);
-            if (obj.terminated){
-                if(obj.type == 2){
-                    this.Ray = null;
-                }
-                this.mAllObjs.removeFromSet(obj);
-                
-            }
-        }
     }
 };
 
-AsteroidScene.prototype.incrementScore = function(hit){
+BubbleScene.prototype.incrementScore = function(hit){
     //console.log("score incremented");
     //this.mAllObjs.addToSet(new ScoreMark(this.scoreMarks, this.nextMarkX, this.nextMarkY, hit));
     //this.nextMarkX += this.markOffset;
@@ -476,7 +477,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
     this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
 };
 
-AsteroidScene.prototype.processInput = function(){
+BubbleScene.prototype.processInput = function(){
         //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
          gEngine.GameLoop.stop();  
@@ -545,87 +546,32 @@ AsteroidScene.prototype.processInput = function(){
         
         //roate cannon firing cannon, clamped at 100 and -100
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
-            this.mCannon.intRotByDeg(1.5);
+            this.mCannon.intRotByDeg(0.5);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
-            this.mCannon.intRotByDeg(-1.5);
+            this.mCannon.intRotByDeg(-0.5);
         }
         
         //fire
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space)) {
-            if(this.canFire){
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space) && !this.firing) {
+            if(this.canFire && this.mFlyBubble == null){
+                this.firing=true;
                 this.fireTimer = 0;
                 this.generateProjectile();
             }
             
         }
         
-        
-        /*
-        //debugging to display asteroid coordinates
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Y)) {
-            for (var i = 0; i < this.mAllObjs.size(); i++) {
-                var obj = this.mAllObjs.getObjectAt(i);
-
-                //written like this because displayCoord is not defined in all objects
-                if(obj.displayCoord){
-                    obj.displayCoord=false;
-                }else{
-                   obj.displayCoord=true;   
-                }
-            }
-        }
-        
-        //turn off or on asteroid generation
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
-            this.GenerateOn=!this.GenerateOn; 
-            console.log("generating Asteroids: " + this.GenerateOn);
-        }
-        
-        //stop or start asteroid movement
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) {
-
-            for (var i = 0; i < this.mAllObjs.size(); i++) {
-                var obj = this.mAllObjs.getObjectAt(i);
-
-                if(obj.yv==0){
-                    obj.yv=-7;
-                }
-                else{
-                    obj.yv=0;
-                }
-            }
-        }
-        */
     }
     
 };
 
 
-//Generate an asteroid at a random location at the top of the camera view
-AsteroidScene.prototype.generateAsteroid = function () {
-     
-    if(this.GenerateOn){
-        var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
-        var yl = 120;
-
-        var type=0;
-
-        type = Math.round(Math.random()*this.maxType);  
-
-        var Asteroid1 = new Asteroid(this.mMeteorSprite, xl, yl, false, type);
-
-        //drop speed
-        Asteroid1.yv=-7;
-
-        this.mAllObjs.addToSet(Asteroid1); 
-    }
-};
 
 
 //generating projectiles
-AsteroidScene.prototype.generateProjectile = function () {
+BubbleScene.prototype.generateProjectile = function () {
             //get hero state info
     var hxf = this.mCannon.cannon.getXform();
     var xp = hxf.getXPos();
@@ -633,237 +579,97 @@ AsteroidScene.prototype.generateProjectile = function () {
 
     //get in radians for Math javascript func
     var rot = this.mCannon.cannon.getXform().getRotationInRad();
-
-    var w = 10;
-    var h = 10;
-    //create new projectile
-    //console.log("selection"+this.selection);
-    var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
-
-    //setting projectile velocity
-    this.maxV=100;
     
-    var v = 1;
     
-    if(this.selectIndex == 0){
-        // int
-        v = 3;
-        p.getXform().setSize(6, 6);
-        this.fireRate = 60;
-    } else if(this.selectIndex == 1){
-        //double
-        this.fireRate = 30;
-    } else if(this.selectIndex==2){
-        //bool
-        this.fireRate = 60;
-        
-        this.maxV=0;
-        p.getXform().setRotationInRad(rot);
-
-        p.getXform().setSize(2,2000);
-        
-        var xd = Math.sin(rot) * 1000;
-        var yd = Math.cos(rot) * 1000;
-        
-        //take original projectile position and adjust so end of laser starts at hero
-        //subtract because positive angles are to left (-x) 
-        p.getXform().setXPos(xp - xd);
-        p.getXform().setYPos(yp+yd);
-
-        p.lifeTime=10;
-
-        this.rayCast(p);
-        
-        this.Ray = p;
-    } else if(this.selectIndex == 3){
-        //char
-        this.fireRate = 30;
-        
-        v = .5;
-        p.getXform().setSize(15, 15);
-    } else if(this.selectIndex == 4){
-        //string
-        v = 1.25;
-        
-        this.burstCount++;
-        if(this.burstCount >= 4){
-            this.burstCount = 0;
-            this.fireRate = 45;
-        } else {
-            this.fireRate = 5;
-        }
-    }
-         
-
+    this.maxV = 3;
+    
     var xv = this.maxV*Math.sin(rot) *-1 ; //for some reason 2d game engine rotates one way in practice...
     var yv = this.maxV*Math.cos(rot);
-
-    p.xv=xv * v;
-    p.yv=yv * v;
-
-    //adding projectile to set
-    this.mAllObjs.addToSet(p);  
+    
+    
+    var b = new Bubble(this.mMeteorSprite, xp, yp, false, this.nextColor);
+    this.nextColor = Math.round(Math.random()*5);
+    
+    this.mNextBubble.color = this.nextColor;
+    this.mNextBubble.setColor();
+       
+    b.velocity(xv,yv); 
+    
+    this.mFlyBubble=b;
+    
+    this.myBubbles.addToSet(b);
 }
 
 
-//checking for raycast collisions
-AsteroidScene.prototype.rayCast = function (p) {
-    console.log("raycast");
+BubbleScene.prototype.checkCollisions = function() {   
+    // console.log("called check collision");
     
-    for (var i = 0; i < this.mAllObjs.size(); i++) {
-      
-        var ast= this.mAllObjs.getObjectAt(i);
+    var hit = false;
+    var hitB = null;
+    
+    for(var i =0; i < this.myBubbles.size();i++){
         
-        if(ast instanceof Asteroid){
-
-            var axf = ast.getXform();
-            var astx = axf.getXPos();
-            var asty = axf.getYPos();
-
-            //the Actual Rotation of the Hero.
-            var theta = this.mCannon.cannon.getXform().getRotationInRad();                              
-
-            //ray to far bottom corner
-            var thetaMax=0;
-
-            //ray to near top corner
-            var thetaMin=0;
-
-            //case 1: Asteroid to left  (0 degrees is straight up, horizontal left is 90, horizontal right in -90...don't Ask... ask Kelvin              
-            if(astx<=0){
-                //top right
-                thetaMin= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mCannon.base.getXform().getYPos()+axf.getHeight()/2)));
-
-             //bottom left
-                thetaMax= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mCannon.base.getXform().getYPos()-axf.getHeight()/2)));
-            }
-
-            //asteroid on right
-            else{
-                //top left corner
-                thetaMin= -1*(Math.atan((astx - axf.getWidth()/2) / (asty-this.mCannon.base.getXform().getYPos()+axf.getHeight()/2)));
-
-                //bottom right corner
-                thetaMax= -1*(Math.atan((astx + axf.getWidth()/2) / (asty-this.mCannon.base.getXform().getYPos()-axf.getHeight()/2)));
-            }                  
-            //console.log(" theta: "+theta*180/Math.PI + " thetaMAx:"+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
+        var b = this.myBubbles.getObjectAt(i);        
+        var result = false;
+        
+        if(b!= null && b!=this.mFlyBubble){
+            result = this.mFlyBubble.checkCollision(b, true);
+        }
+        
+        if(result){
+            console.log("collision");
+            //b.checkNeighbor(this.myBubbles);
+            hitB = b;
             
             
-            // displaying Boundary rays
+            this.mFlyBubble.velocity(0,0);
+            
+            this.firing=false;
+            
+            var x = this.mFlyBubble.getXform().getXPos();
+            var y = this.mFlyBubble.getXform().getYPos(); 
+            
+            this.setBubblePosition(b,x,y);
+            
+            //this.myBubbles.addToSet(this.mFlyBubble);
+            
+            this.popTimer=30;
+            
+            break;
+        }
+        result = false;
+    }
 
-                if(astx<=0){
-                    var rend = new Renderable();
-                    rend.setColor([1,0,0,1]);
-                    
-                    var toprx = astx + axf.getWidth()/2;
-                    var topry = asty + axf.getHeight()/2;
-                    
-                    
-                    rend.getXform().setPosition(toprx/2, topry/2 -30);
-                    rend.getXform().setSize(1,Math.sqrt(toprx*toprx+(topry+60)*(topry+60)));
-                    rend.getXform().setRotationInRad(thetaMin);
-                    
-                    //this.mAllObjs.addToSet(rend);
-                    
-                var rend2 = new Renderable();
-                    rend2.setColor([1,0,0,1]);  
-                    var blx = astx - axf.getWidth()/2;
-                    var bly = asty - axf.getHeight()/2;
-                    rend2.getXform().setPosition(blx/2, bly/2 -30);
-                    rend2.getXform().setSize(1,Math.sqrt(blx*blx+(bly+60)*(bly+60)));
-                    rend2.getXform().setRotationInRad(thetaMax);
-                    
-                    //this.mAllObjs.addToSet(rend2);
-                }
-                else{
-                    var rend = new Renderable();
-                    rend.setColor([1,0,0,1]);
-                    
-                    var tlx = astx - axf.getWidth()/2;
-                    var tly = asty + axf.getHeight()/2;
-                    
-                    rend.getXform().setPosition(tlx/2, tly/2 -30);
-                    rend.getXform().setSize(1,Math.sqrt(tlx*tlx+(tly+60)*(tly+60)));
-                    rend.getXform().setRotationInRad(thetaMin);
-                    
-                    //this.mAllObjs.addToSet(rend);
-                    
-                    var rend2 = new Renderable();
-                    rend2.setColor([1,0,0,1]);
-                    
-                    var brx = astx + axf.getWidth()/2;
-                    var bry = asty - axf.getHeight()/2;
-                                        
-                    rend2.getXform().setPosition(brx/2, bry/2 -30);
-                    rend2.getXform().setSize(1,Math.sqrt(brx*brx+(bry+60)*(bry+60)));
-                    rend2.getXform().setRotationInRad(thetaMax);
-                    
-                    //this.mAllObjs.addToSet(rend2);  
-                }
-            
-            
-            //check if in possible theta range for collision
-            if(theta>0){
-                if(theta>=thetaMin && theta <=thetaMax){
-                  console.log("Ray Hit! SelectionIndex:"+this.selectIndex+" asteroidDataType:"+ast.dataType);
-                  console.log(" theta: "+theta*180/Math.PI + " thetaMAx:"+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
-                  this.procHit(ast, p);
-                }
-            }
-            else{
-                
-                if(theta<=thetaMin && theta >=thetaMax){
-                  console.log("Ray Hit! SelectionIndex:"+this.selectIndex+" asteroidDataType:"+ast.dataType);
-                  console.log(" theta: "+theta*180/Math.PI + "  thetaMAx: "+thetaMax*180/Math.PI + " thetaMin"+thetaMin*180/Math.PI);
-                  this.procHit(ast, p);
-                }
-            }
-            
-            
-          }
-    }  
 }
 
-AsteroidScene.prototype.procHit = function(obj, proj) {   
-    //for making reveal message
-    var x = obj.getXform().getXPos();
-    var y = obj.getXform().getYPos();
-    var type = obj.dataType;
-    
-    if(obj.dataType == proj.dataType){
-        this.incrementScore(true);
-        this.mAllObjs.removeFromSet(obj);
-        this.mAllObjs.removeFromSet(proj);
+BubbleScene.prototype.startPopping = function() {
+    this.onHit();
 
-    }
-    else{
-        this.incrementScore(false);
-        this.mAllObjs.removeFromSet(obj);
-        this.mAllObjs.removeFromSet(proj);
+    this.mFlyBubble.checkToPop();
 
-        // display a reveal message
-        var text="X ";
-        if(type==0){
-            text += "int";
-        }
-            if(type==1){
-            text += "double";
-        }
-            if(type==2){
-            text += "boolean";
-        }
-            if(type==3){
-            text += "char";
-        }
-            if(type==4){
-            text += "string";
-        }
+    this.removeBubbles();
+    //this.removeBubbles();
 
-        this.revealMsg = new FontRenderable(text);
-        this.revealMsg.setColor([1, 0, 0, 1]);
-        this.revealMsg.getXform().setPosition(x, y);
-        this.revealMsg.setTextHeight(5);
-        this.revealTime=120;
+    this.mFlyBubble=null;    
+}
+
+
+BubbleScene.prototype.removeBubbles = function() {
+    for(var i =0 ; i<this.myBubbles.size();i++){
+        var b = this.myBubbles.getObjectAt(i);
+        
+        if(b.poped){
+            this.myBubbles.removeFromSet(b);
+            i--;
+            if(b.drawText){
+               console.log("Answer popped");
+               this.updateQuestions(b);
+            }
+        }
     }
     
+}
+
+BubbleScene.prototype.updateQuestions = function() {
+    this.selectedElement.setText(this.questions[this.selectIndex]+"Test");
 };

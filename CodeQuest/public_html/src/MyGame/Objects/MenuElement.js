@@ -27,3 +27,7 @@ MenuElement.prototype.ToggleSelected = function(){
 MenuElement.prototype.draw = function(aCamera){
     this.mFontRenderable.draw(aCamera);
 }
+
+MenuElement.prototype.setText = function(string){
+    this.mFontRenderable.setText(string);
+};

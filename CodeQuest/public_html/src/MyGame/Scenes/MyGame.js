@@ -43,6 +43,7 @@ function MyGame() {
     
     this.meteorWin = false;
     this.basketWin = false;
+    this.bubbleWin = false;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -91,6 +92,10 @@ MyGame.prototype.unloadScene = function () {
         gEngine.Core.startScene(new BasketScene());
     }
     
+    else if(this.nextScene==4){
+        gEngine.Core.startScene(new BubbleScene());
+    }
+    
     
     //gEngine.Core.startScene(SceneObject);  
         
@@ -121,6 +126,12 @@ MyGame.prototype.initialize = function () {
     this.sz2 = new SceneZone(this.kMinionSprite,50,0, this.basketWin);
     this.sz2.scene = 3;
     this.mAllObjs.addToSet(this.sz2);
+    
+    this.sz3 = new SceneZone(this.kMinionSprite,0,50, this.bubbleWin);
+    this.sz3.scene = 4;
+    this.mAllObjs.addToSet(this.sz3);
+    
+    
     
     this.mHelper = new Helper(this.kMinionSprite);
     this.mAllObjs.addToSet(this.mHelper);
@@ -155,6 +166,7 @@ MyGame.prototype.initialize = function () {
     this.zones=[];
     this.zones.push(this.sz1);
     this.zones.push(this.sz2);
+    this.zones.push(this.sz3);
 };
 
 
