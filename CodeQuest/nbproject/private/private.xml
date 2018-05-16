@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
-        <file>
-            <url>public_html/src/MyGame/Scenes/BasketScene.js</url>
-            <bookmark id="1">
-                <name/>
-                <line>749</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="CSS490Shared">
             <file>file:/C:/Users/Kelvin/Dropbox/2.Classes/490/CSS490Shared/Source/MPSolutions/MP7.KelvinSolution/public_html/src/Engine/RigidShapes/CollisionInfo.js</file>
@@ -34,24 +25,15 @@
             <file>file:/C:/Users/jgn2/Documents/GitHub/CSS496CodeQuest22222/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
         </group>
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Fruit.js</file>
-            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BasketScene.js</file>
-            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/AsteroidScene.js</file>
-            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Hero.js</file>
-            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BasketScene_1.js</file>
-            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bat.js</file>
-=======
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Projectile.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BubbleScene.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/AsteroidScene.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Asteroid.js</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Extras/ExtraCodeSnips.js</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BasketScene_1.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bat.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/MyGame.js</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BasketScene.js</file>
->>>>>>> fdbe7deecf64abd244e64119b1387ee071cee243
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BubbleScene_1.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bubble.js</file>
         </group>
     </open-files>
 </project-private>
