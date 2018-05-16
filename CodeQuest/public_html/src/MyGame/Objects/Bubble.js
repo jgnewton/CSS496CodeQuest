@@ -52,13 +52,13 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     this.color = type;
 
     //this will contain the random message to represent the data type;
-    var msg = "X";
+    this.msg = "X";
     
     var rn = Math.random()*200 -100;    
     rn=rn.toFixed(2);
 
         
-    this.text = new FontRenderable(msg);
+    this.text = new FontRenderable(this.msg);
     this.text.setColor([0, 0, 0, 1]);
     this.text.getXform().setPosition(atX, atY);
     this.text.setTextHeight(7.5);
@@ -247,6 +247,7 @@ Bubble.prototype.velocity = function (x, y) {
 Bubble.prototype.assignValue = function (string, answer) {
     console.log("assigned" +string);
     this.drawText= true;
+    this.msg= string;
     this.text.setText(string);
     
     this.mAnswer = answer;

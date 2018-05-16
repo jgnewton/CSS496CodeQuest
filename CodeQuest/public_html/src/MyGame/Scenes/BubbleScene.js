@@ -255,33 +255,10 @@ BubbleScene.prototype.initialize = function () {
 
     // initialize the text that represents data types
     
-    var textSize = 7.5;
-    var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
-    var textXPos = 90;
-    var textOffset = 15;
-    
     this.initAnswerStrings();
-    
-    this.delete=new MenuElement(this.deletes, textXPos, textYpos + textOffset * 6, textSize);
-    this.q1 = new MenuElement(this.q1s, textXPos, textYpos + textOffset * 5, textSize);
-    this.q2 = new MenuElement(this.q2s, textXPos, textYpos + textOffset * 4, textSize);
-    this.q3 = new MenuElement(this.q3s, textXPos, textYpos + textOffset * 3, textSize);
-    this.q4 = new MenuElement(this.q4s, textXPos, textYpos + textOffset * 2, textSize);
-    this.q5 = new MenuElement(this.q5s, textXPos, textYpos + textOffset, textSize);
-    this.q6 = new MenuElement(this.q6s, textXPos, textYpos, textSize);
-    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
-    
-    this.elements = [
-        this.delete,
-        this.q1,
-        this.q2,
-        this.q3,
-        this.q4,
-        this.q5,
-        this.q6
-    ];
-    
+    this.setElements();
     this.selectedElement = this.delete;
+    
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
@@ -663,13 +640,22 @@ BubbleScene.prototype.removeBubbles = function() {
             i--;
             if(b.drawText){
                console.log("Answer popped");
-               this.updateQuestions(b);
+               this.updateQuestions(b.msg);
             }
         }
     }
     
 }
 
-BubbleScene.prototype.updateQuestions = function() {
-    this.selectedElement.setText(this.questions[this.selectIndex]+"Test");
+BubbleScene.prototype.updateQuestions = function(msg) {
+    console.log(this.questions);
+    console.log(this.selectIndex);
+    console.log(this.questions[this.selectIndex]);
+        
+    var string ="";
+    
+    var num = parseInt(this.questions[this.selectIndex][0]);
+    var space = parseInt(this.questions[this.selectIndex][1]);
+    this.questions[this.selectIndex][space+1]=msg;
+    this.setElements();
 };

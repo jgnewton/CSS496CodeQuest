@@ -117,15 +117,15 @@ BubbleScene.prototype.getRandAnswer = function () {
 };
 
 BubbleScene.prototype.initAnswerStrings = function () {
-   this.deletes= "delete";
-   this.q1s= "__ C = 3;";
-   this.q2s= "Int __ = 3;";
-   this.q3s= "Int B = A __ 2;";
-   this.q4s= "System.print(A__;";
-   this.q5s= "A= A/5__";
-   this.q6s= "B __ A;";
+   this.deletes= ["1","1","delete"];
+   this.q1s= ["2","1","__", " C = 3;"];
+   this.q2s= ["3","2","Int ", "__", " = 3;"];
+   this.q3s= ["3","2","Int B = A", "__", "2;"];
+   this.q4s= ["2","2","System.print(A", "__;"];
+   this.q5s= ["2","2", "A = A / 5", "__"];
+   this.q6s= ["3","2", "B ", "__",  " A;"];
    
-   this.questions = [this.deletes,this.q1,this.q2,this.q3,this.q4,this.q5,this.q6];
+   this.questions = [this.deletes, this.q1s,this.q2s,this.q3s,this.q4s,this.q5s,this.q6s];
 
 };
 
@@ -167,5 +167,49 @@ BubbleScene.prototype.assignAnswers = function () {
         }
         
     }
+    
+};
+
+BubbleScene.prototype.setElements = function () {
+    
+        
+    var textSize = 7.5;
+    var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
+    var textXPos = 70;
+    var textOffset = 15;
+    
+    
+    var qs ="";
+    var qStrings=[];
+    
+    for(var i =0; i <this.questions.length;i++){
+        var num = parseInt(this.questions[i][0]);
+        var space = parseInt(this.questions[i][1]);
+        
+        for(var j =0; j<num; j++){
+            qs+=this.questions[i][j+2];
+        }
+        qStrings[i] =qs;
+        qs="";
+    }
+    
+    this.delete=new MenuElement(qStrings[0], textXPos, textYpos + textOffset * 6, textSize);
+    this.q1 = new MenuElement(qStrings[1], textXPos, textYpos + textOffset * 5, textSize);
+    this.q2 = new MenuElement(qStrings[2], textXPos, textYpos + textOffset * 4, textSize);
+    this.q3 = new MenuElement(qStrings[3], textXPos, textYpos + textOffset * 3, textSize);
+    this.q4 = new MenuElement(qStrings[4], textXPos, textYpos + textOffset * 2, textSize);
+    this.q5 = new MenuElement(qStrings[5], textXPos, textYpos + textOffset, textSize);
+    this.q6 = new MenuElement(qStrings[6], textXPos, textYpos, textSize);
+    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
+    
+    this.elements = [
+        this.delete,
+        this.q1,
+        this.q2,
+        this.q3,
+        this.q4,
+        this.q5,
+        this.q6
+    ];
     
 };
