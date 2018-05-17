@@ -28,8 +28,9 @@ function BasketScene() {
     this.kMW = "assets/MW2.jpg";
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
-    this.helpTable = "assets/AsteroidHelp.PNG";
+    this.helpTable = "assets/BasketHelp.PNG";
     this.kbats ="assets/bats.png";
+    this.friend = "assets/squirralR.PNG";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -138,7 +139,8 @@ function BasketScene() {
     this.MAX_TYPE=4;
     
     this.successCount = 0;
-        
+    this.friendObject = null;
+    this.friendVisible = false;
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -155,6 +157,7 @@ BasketScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kArrow); 
     gEngine.Textures.loadTexture(this.helpTable);
     gEngine.Textures.loadTexture(this.kbats); 
+    gEngine.Textures.loadTexture(this.friend);
 };
 
 BasketScene.prototype.unloadScene = function () {
@@ -169,7 +172,7 @@ BasketScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kArrow); 
     gEngine.Textures.unloadTexture(this.helpTable);
     gEngine.Textures.unloadTexture(this.kbats); 
-    
+    gEngine.Textures.unloadTexture(this.friend);
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
 };
@@ -217,7 +220,7 @@ BasketScene.prototype.initialize = function () {
     this.groundLevel = this.WCCenterY - (this.WCHeight/2) + this.groundHeight;
     
     this.helpTableObject = new TextureRenderable(this.helpTable);
-    this.helpTableObject.getXform().setSize(180, 80);
+    this.helpTableObject.getXform().setSize(250, 100);
     
     this.gameOverText = new MenuElement("Game Over", -15, 30, 10);
     this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -25, 0, 10);
@@ -253,6 +256,8 @@ BasketScene.prototype.initialize = function () {
     
     this.setOperators();
     
+    this.friendObject = new TextureRenderable(this.helpTable);
+    this.friendObject.getXform().setSize(50, 20);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -298,6 +303,10 @@ BasketScene.prototype.draw = function () {
         if(this.revealTime>0){
            this.revealMsg.draw(this.mCamera);
         }
+    }
+    if(this.friendVisible){
+        //draw Friend
+        this.friendObject.draw(this.mCamera);
     }
 
 };
@@ -592,6 +601,8 @@ BasketScene.prototype.checkAnswer = function( ) {
     }
     else{
         this.incrementScore(false);
+        //helper speaks
+        this.callHelper();
     }
 }
 BasketScene.prototype.setOperators = function() {
@@ -759,3 +770,7 @@ BasketScene.prototype.checkNext = function() {
     }
 
 };
+
+BasketScene.prototype.callHelper = function() {
+    this.freindVisible = true;
+}
