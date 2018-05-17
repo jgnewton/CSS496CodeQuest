@@ -31,3 +31,7 @@ MenuElement.prototype.draw = function(aCamera){
 MenuElement.prototype.setText = function(string){
     this.mFontRenderable.setText(string);
 };
+
+MenuElement.prototype.setColor = function(color){
+   this.mFontRenderable.setColor(color); 
+}

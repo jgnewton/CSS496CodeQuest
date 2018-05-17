@@ -280,7 +280,7 @@ BubbleScene.prototype.initialize = function () {
     
     this.mCannon.intRotByDeg(0.01);
     
-    this.mNextBubble = new Bubble(this.mMeteorSprite, 0, -100, false, 0);
+    this.mNextBubble = new Bubble(this.mMeteorSprite, 0, -100, false, Math.round(Math.random()*5));
     
     this.mAllObjs.addToSet((this.mNextBubble));
     
@@ -497,30 +497,8 @@ BubbleScene.prototype.processInput = function(){
             
             this.selectedElement = this.elements[this.selectIndex];
         }    
-        /*
-        var heroXF = this.mHero.getXform();
-        
-        
-        //roate hero firing cannon, clamped at 100 and -100
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
-            heroXF.incRotationByDegree(1.5);
-            
-            if(heroXF.getRotationInDegree()>100){
-               heroXF.setRotationInDegree(100);
-            }
-        }
-
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
-            heroXF.incRotationByDegree(-1.5);
-            
-            if(heroXF.getRotationInDegree()<-100){
-               heroXF.setRotationInDegree(-100);
-            }
-        }
-        */
-       //var heroXF = this.mHero.getXform();
-        
-        
+    
+   
         //roate cannon firing cannon, clamped at 100 and -100
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
             this.mCannon.intRotByDeg(0.5);
@@ -529,6 +507,11 @@ BubbleScene.prototype.processInput = function(){
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
             this.mCannon.intRotByDeg(-0.5);
         }
+        
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.R)) {
+            this.refresh();
+        }
+        
         
         //fire
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space) && !this.firing) {
@@ -565,9 +548,16 @@ BubbleScene.prototype.generateProjectile = function () {
     
     
     var b = new Bubble(this.mMeteorSprite, xp, yp, false, this.nextColor);
-    this.nextColor = Math.round(Math.random()*5);
+    
+    this.nextColor = Math.round(Math.random()*6);
+    
+    //for creating black bubble
+    if(this.nextColor==6){
+        this.nextColor=99;
+    }
     
     this.mNextBubble.color = this.nextColor;
+    
     this.mNextBubble.setColor();
        
     b.velocity(xv,yv); 
@@ -595,6 +585,13 @@ BubbleScene.prototype.checkCollisions = function() {
         
         if(result){
             console.log("collision");
+            
+            if(this.mFlyBubble.color == 99){
+                b.poped=true;
+                this.mFlyBubble.poped=true;
+           }
+            
+            
             //b.checkNeighbor(this.myBubbles);
             hitB = b;
             
@@ -640,14 +637,16 @@ BubbleScene.prototype.removeBubbles = function() {
             i--;
             if(b.drawText){
                console.log("Answer popped");
-               this.updateQuestions(b.msg);
+               if(this.selectIndex!=0){
+                   this.updateQuestions(b);
+                }
             }
         }
     }
     
 }
 
-BubbleScene.prototype.updateQuestions = function(msg) {
+BubbleScene.prototype.updateQuestions = function(b) {
     console.log(this.questions);
     console.log(this.selectIndex);
     console.log(this.questions[this.selectIndex]);
@@ -656,6 +655,37 @@ BubbleScene.prototype.updateQuestions = function(msg) {
     
     var num = parseInt(this.questions[this.selectIndex][0]);
     var space = parseInt(this.questions[this.selectIndex][1]);
-    this.questions[this.selectIndex][space+1]=msg;
+    this.questions[this.selectIndex][space+1]=b.msg;
+    
+    this.proposed[this.selectIndex]= b.answerKey;
+    
+    console.log(this.proposed[this.selectIndex]);
+    console.log(this.correctAnswers[this.selectIndex]);
+     
     this.setElements();
+    
+    this.updateElementStatus();
+
+};
+
+BubbleScene.prototype.updateElementStatus = function() {
+    for(var i =0; i< this.elements.length;i++){
+        var elem = this.elements[i];
+        
+        if(this.proposed[i]!= 0){
+            
+            if(this.proposed[i]==this.correctAnswers[i]){
+            elem.setColor([0,1,0,1]); //green
+            }else{ 
+                elem.setColor([1,0,0,1]); //red
+            }
+        }
+    }
+};
+
+BubbleScene.prototype.refresh = function() {
+    this.myBubbles =null;
+    this.initBubbles();
+    this.checkNeighbors();
+    
 };

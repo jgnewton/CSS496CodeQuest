@@ -140,25 +140,33 @@ BubbleScene.prototype.assignAnswers = function () {
     
     //add to array the index in bubble set to be used as a Value.
     for(var i =1; i <=numAnswers; i++){
-       var idx = Math.round(1/numAnswers * this.myBubbles.size()*Math.random())+Math.round((i-1)/numAnswers * this.myBubbles.size());
+       var idx = Math.round(1/numAnswers * this.myBubbles.size()*Math.random())+Math.round((i-1)/numAnswers * (this.myBubbles.size()-i))+i;
        
         if(idx>this.myBubbles.size()-1){
             idx = this.myBubbles.size()-1;
         }
-            
+       
+       if(used[i-2]==idx){
+           idx+=1;
+       } 
        used.push(idx);
        console.log(idx);
     }
         
     var counter = 0;
      
-    this.answers = ["1","2","3","4","5","6","7","8","9","10","11","12"];
+    this.answers = ["int","string","A","C","+","&&",")","(",";",".","=","=="];
+    var answerKey = [1,-1,2,-1,3,-1,4,-1,5,-1,6,-1];
+    
+    this.correctAnswers=[0,1,2,3,4,5,6];
+    this.proposed = [0,0,0,0,0,0,0];
             
     for(var i =0; i< this.myBubbles.size(); i++){
         var b = this.myBubbles.getObjectAt(i);
         
         if(i == used[counter]){
             b.assignValue(this.answers[counter]);
+            b.answerKey=answerKey[counter];
             counter++;
             if(counter>numAnswers){
                 break;

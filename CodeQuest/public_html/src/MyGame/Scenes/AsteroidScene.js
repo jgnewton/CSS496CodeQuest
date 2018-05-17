@@ -272,7 +272,7 @@ AsteroidScene.prototype.initialize = function () {
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
-    this.helpTableObject.getXform().setSize(180, 80);
+    this.helpTableObject.getXform().setSize(210, 80);
     
     this.gameOverText = new MenuElement("Game Over", -15, 30, 10);
     this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -25, 0, 10);
@@ -317,10 +317,6 @@ AsteroidScene.prototype.draw = function () {
 
         this.selectionArrow.draw(this.mCamera);
 
-        if (this.helpTableVisible)
-        {
-           this.helpTableObject.draw(this.mCamera);
-        }
         
         for(var i = 0; i < this.scoreMarksArray.length; i++){
             //console.log(this.elements[i]);
@@ -342,6 +338,10 @@ AsteroidScene.prototype.draw = function () {
         }
     }
     
+            if (this.helpTableVisible)
+            {
+               this.helpTableObject.draw(this.mCamera);
+            }
     
 };
 
