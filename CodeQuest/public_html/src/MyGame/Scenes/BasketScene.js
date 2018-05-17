@@ -256,7 +256,7 @@ BasketScene.prototype.initialize = function () {
     
     this.setOperators();
     
-    this.friendObject = new TextureRenderable(this.helpTable);
+    this.friendObject = new TextureRenderable(this.friend);
     this.friendObject.getXform().setSize(50, 20);
 };
 
@@ -772,5 +772,5 @@ BasketScene.prototype.checkNext = function() {
 };
 
 BasketScene.prototype.callHelper = function() {
-    this.freindVisible = true;
+    this.friendVisible = true;
 }
