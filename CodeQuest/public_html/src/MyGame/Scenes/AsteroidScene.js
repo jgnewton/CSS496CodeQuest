@@ -328,20 +328,21 @@ AsteroidScene.prototype.draw = function () {
         }
 
         this.mCannon.draw(this.mCamera);
-    }
     
-    this.accuracyText.draw(this.mCamera);
     
-    if(this.revealMsg!=null){
-        if(this.revealTime>0){
-           this.revealMsg.draw(this.mCamera);
-        }
-    }
-    
-            if (this.helpTableVisible)
-            {
-               this.helpTableObject.draw(this.mCamera);
+        if(this.revealMsg!=null){
+            if(this.revealTime>0){
+               this.revealMsg.draw(this.mCamera);
             }
+        }
+
+        if (this.helpTableVisible)
+        {
+           this.helpTableObject.draw(this.mCamera);
+        }
+    
+    }
+     this.accuracyText.draw(this.mCamera);
     
 };
 

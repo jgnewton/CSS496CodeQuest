@@ -134,6 +134,11 @@ function BubbleScene() {
     this.firing = false;
     
     this.popTimer=0;
+    
+    this.proposed = [0,0,0,0,0,0,0];
+    
+    this.numRefresh=3;
+    this.numBlackHole=3;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -280,13 +285,15 @@ BubbleScene.prototype.initialize = function () {
     
     this.mCannon.intRotByDeg(0.01);
     
-    this.mNextBubble = new Bubble(this.mMeteorSprite, 0, -100, false, Math.round(Math.random()*5));
+    var initColor=Math.round(Math.random()*5);
+    
+    this.mNextBubble = new Bubble(this.mMeteorSprite, 0, -100, false, initColor);
     
     this.mAllObjs.addToSet((this.mNextBubble));
     
     this.initBubbles();
     
-    this.nextColor=0;
+    this.nextColor=initColor;
     
     this.checkNeighbors();
 };
@@ -508,8 +515,21 @@ BubbleScene.prototype.processInput = function(){
             this.mCannon.intRotByDeg(-0.5);
         }
         
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.R)) {
+        //roate cannon firing cannon, clamped at 100 and -100
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Z)) {
+            this.mCannon.intRotByDeg(2.5);
+        }
+
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.C)) {
+            this.mCannon.intRotByDeg(-2.5);
+        }        
+        
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R)) {
             this.refresh();
+        }
+        
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
+            this.useBlackHole();
         }
         
         
@@ -684,8 +704,21 @@ BubbleScene.prototype.updateElementStatus = function() {
 };
 
 BubbleScene.prototype.refresh = function() {
-    this.myBubbles =null;
-    this.initBubbles();
-    this.checkNeighbors();
-    
+    if(this.numRefresh>0){
+        this.myBubbles =null;
+        this.initBubbles();
+        this.checkNeighbors();
+        this.numRefresh--;
+    }   
 };
+
+BubbleScene.prototype.useBlackHole = function() {
+    if(this.numBlackHole>0){
+        this.numBlackHole--;
+    
+    this.nextColor=99;
+    this.mNextBubble.color = this.nextColor;
+    this.mNextBubble.setColor();
+    }
+    
+}

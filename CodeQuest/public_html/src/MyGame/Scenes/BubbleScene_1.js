@@ -28,8 +28,7 @@ BubbleScene.prototype.initBubbles = function () {
             var color = Math.round(Math.random()*5);
             
             var b = new Bubble(this.mMeteorSprite, j*(this.bubbleW) -this.WCWidth/2 +40+offset, this.WCHeight/2-this.bubbleW/2- i*(this.bubbleW), false, color);
-             
-            
+ 
             this.myBubbles.addToSet(b);
         }
     }
@@ -152,14 +151,18 @@ BubbleScene.prototype.assignAnswers = function () {
        used.push(idx);
        console.log(idx);
     }
-        
+    //used = this.shuffle(used);
     var counter = 0;
      
-    this.answers = ["int","string","A","C","+","&&",")","(",";",".","=","=="];
+    this.answers = ["int","for","A","C","+","&&",")","(",";",".","=","=="];
     var answerKey = [1,-1,2,-1,3,-1,4,-1,5,-1,6,-1];
     
+    var twoArrays = this.biShuffle(this.answers, answerKey);
+    
+    this.answers = twoArrays[0];
+    answerKey = twoArrays[1];
+    
     this.correctAnswers=[0,1,2,3,4,5,6];
-    this.proposed = [0,0,0,0,0,0,0];
             
     for(var i =0; i< this.myBubbles.size(); i++){
         var b = this.myBubbles.getObjectAt(i);
@@ -221,3 +224,29 @@ BubbleScene.prototype.setElements = function () {
     ];
     
 };
+
+BubbleScene.prototype.biShuffle = function (array1, array2) {
+    console.log(array1);
+    var ret=[];
+    
+    var na1 = [];
+    var na2= [];
+    var rn = 0;
+    
+    while(array1.length>0){        
+       
+        rn = Math.floor(Math.random()*array1.length);        
+        //console.log(rn);
+        
+        var i1 = ""+array1.splice(rn,1);
+        var i2 = ""+array2.splice(rn,1);
+        
+        na1.push(i1);    
+        na2.push(i2);
+    }
+    console.log("output:"+na1);
+    ret = [na1, na2];
+    return ret;
+ 
+};
+
