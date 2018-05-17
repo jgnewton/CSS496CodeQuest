@@ -139,6 +139,8 @@ function BubbleScene() {
     
     this.numRefresh=3;
     this.numBlackHole=3;
+    
+    //this.mBar = new Renderable();
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -722,3 +724,7 @@ BubbleScene.prototype.useBlackHole = function() {
     }
     
 }
+
+BubbleScene.prototype.progress = function() {
+    
+};

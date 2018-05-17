@@ -22,6 +22,8 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     var w = 25;
     var h = 25;
     
+    this.w=w;
+    
     /*
     this.mMinion = new SpriteAnimateRenderable(spriteTexture);
     this.mMinion.setColor([1, 1, 1, 0]);
@@ -142,7 +144,7 @@ function Asteroid(spriteTexture, atX, atY, createCircle, type) {
     
     
     this.text = new FontRenderable(msg);
-    this.text.setColor([0, 0, 0, 1]);
+    this.text.setColor([1, 0, .5, 1]);
     this.text.getXform().setPosition(200, 200);
     this.text.setTextHeight(7.5);
     
@@ -180,13 +182,13 @@ Asteroid.prototype.update = function () {
     
     if(this.displayCoord){
         this.text = new FontRenderable("x:"+x.toPrecision(2)+" y:"+y.toPrecision(2));
-        this.text.setColor([0, 0, 0, 1]);
+        this.text.setColor([1, 0, .5, 1]);
         this.text.getXform().setPosition(x, y);
         this.text.setTextHeight(7.5);
     }
     
 
-    this.text.getXform().setPosition(x, y);
+    this.text.getXform().setPosition(x-(this.w/3), y);
 };
 
 //commented out draw render temporarily
