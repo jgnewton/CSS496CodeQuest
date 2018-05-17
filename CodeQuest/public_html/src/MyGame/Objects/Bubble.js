@@ -82,6 +82,8 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     
     this.drawText = false;
     
+    this.answerKey=-1;
+    
 }
 gEngine.Core.inheritPrototype(Bubble, GameObject);
 
@@ -121,6 +123,7 @@ Bubble.prototype.draw = function (aCamera) {
     
     if(this.drawText){
         //console.log("Drawing Tesxt");
+        //console.log(this.msg);
         this.text.draw(aCamera);
     }
     
@@ -219,23 +222,28 @@ Bubble.prototype.pop = function () {
 Bubble.prototype.setColor = function () {
    switch (this.color) {
     case 0:
-        this.mMinion.setColor([1,0,0,1]);//red
+        this.mMinion.setColor([1,.2,.1,1]);//red
         break;
     case 1:
-        this.mMinion.setColor([0,0,1,1]);//blue
+        this.mMinion.setColor([.3,.3,1,1]);//blue
         break;
     case 2:
-        this.mMinion.setColor([0,1,0,1]);//green
+        this.mMinion.setColor([.1,.9,.1,1]);//green
         break;
     case 3:
-        this.mMinion.setColor([1,1,0,1]);//yellow
+        this.mMinion.setColor([1,.9,.2,1]);//yellow
         break;
     case 4:
-        this.mMinion.setColor([1,0,1,1]);//purple
+        this.mMinion.setColor([.8,.1,.9,1]);//purple
         break;
     case 5:
-        this.mMinion.setColor([0,1,1,1]);//turquoise
+        this.mMinion.setColor([.1,1,1,1]);//turquoise
+        break;
+    case 99:
+        this.mMinion.setColor([0,0,0,1]);//Black
     }
+
+    
 }
 
 Bubble.prototype.velocity = function (x, y) {
@@ -249,6 +257,15 @@ Bubble.prototype.assignValue = function (string, answer) {
     this.drawText= true;
     this.msg= string;
     this.text.setText(string);
+    
+    if(string.length>2){
+        this.text.getXform().incXPosBy(-1*this.w/3);
+    }
+    
+    if(this.color == 1){
+        this.text.setColor([0,0,0,1]);
+    }
+    
     
     this.mAnswer = answer;
 };

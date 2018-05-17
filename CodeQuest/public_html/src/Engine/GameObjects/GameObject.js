@@ -93,11 +93,13 @@ GameObject.prototype.update = function () {
         this.toggleDrawRenderable();
     }
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
-        if (this.mRigidBody !== null)
-            this.mRigidBody.toggleDrawBound();
+        if (this.mRigidBody !== null){
+            
+        }
+            //this.mRigidBody.toggleDrawBound();
     }
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R)) {
-        this.toggleDrawRigidShape();
+        //this.toggleDrawRigidShape();
     }
 };
 

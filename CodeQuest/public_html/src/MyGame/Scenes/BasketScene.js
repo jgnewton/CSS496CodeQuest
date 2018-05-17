@@ -399,6 +399,7 @@ BasketScene.prototype.incrementScore = function(hit){
     // incorrect/missed asteroids
     if(!hit){
         this.numIncorrect++;
+        
     } else {
         this.numCorrect++;
         this.Hits++;
