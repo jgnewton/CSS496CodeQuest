@@ -26,8 +26,8 @@ const GREATER = 2;
 const LESSER = 3;
 const GREATER_OR_EQUAL = 4;
 const LESSER_OR_EQUAL = 5;
-const LOGICAL_AND = 6;
-const LOGICAL_OR = 7;
+const TRUE = 6;
+const FALSE = 7;
 
 function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
         
@@ -408,11 +408,11 @@ Bat.prototype.boolBank =function (){
     var bank = [
     
     //    ||    
-    "True __ False",
-    "False __ True", 
+    "True || False",
+    "False || True", 
     
-    "!(True __ False)",
-    "!(False __ True)",  
+    "True && False",
+    "False && True",  
         
     ];
     
@@ -422,10 +422,10 @@ Bat.prototype.boolBank =function (){
     
     var cutoff = 2;
     if(idx<cutoff){
-        this.correctAnswer=LOGICAL_OR;
+        this.correctAnswer=TRUE;
     }
     else{
-        this.correctAnswer=LOGICAL_AND;
+        this.correctAnswer=FALSE;
     }
     
     return bank[idx];

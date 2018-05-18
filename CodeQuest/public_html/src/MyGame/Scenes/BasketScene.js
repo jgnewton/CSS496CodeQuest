@@ -564,21 +564,6 @@ BasketScene.prototype.generateBat = function () {
 
 
 
-BasketScene.prototype.generatePlatforms = function (num) {
-     
-    for(var i =0; i<num; i++){
-        var xl = this.WCCenterX-this.WCWidth/2 + 20 + i*(this.WCWidth/num);
-        var yl = this.groundLevel;
-        
-        var Platform1 = new Platform(this.kMinionSprite, xl, yl, 10, 20 );
-
-//        //drop speed
-//        Bat1.yv=-14;
-
-        this.mAllObjs.addToSet(Platform1); 
-    }
-};
-
 BasketScene.prototype.fruitGravity = function( fruit ) {
     
     if (fruit.getXform().getYPos() > this.groundLevel){
@@ -668,8 +653,8 @@ BasketScene.prototype.setOperators = function() {
             msg2 = ">";           
             break;
         case 4:
-            msg1 = "&&";
-            msg2 = "||";              
+            msg1 = "true";
+            msg2 = "false";              
             break;
     }
     
@@ -734,7 +719,7 @@ BasketScene.prototype.setAnswer = function() {
             break;
         case 4:
             choices = [6,7]; 
-            msgs = ["&&", "||"];
+            msgs = ["true", "false"];
             break;
     }
     this.basketText.setText(msgs[this.position]);
@@ -765,7 +750,9 @@ BasketScene.prototype.checkNext = function() {
         }else{
             this.successCount = 0;
             this.problemType++;
+            
             this.setOperators();
+            this.timer= 2*this.SPAWN_INTERVAL;
         }   
     }
 
