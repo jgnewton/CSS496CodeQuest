@@ -780,7 +780,7 @@ BasketScene.prototype.callHelper = function() {
     this.friendVisible = true;
     this.helpTimer = 0;
    // this.mbat.correctAnswer;
-    var solution = this.mBat.text.getText();
+    var solution = "Oops! " + this.mBat.text.getText();
     var answer = "";
         switch (this.mBat.correctAnswer){
             case 0:
