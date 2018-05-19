@@ -480,8 +480,7 @@ BubbleScene.prototype.processInput = function(){
 
 
         //selecting Projectile type:
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left) ||
-                gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
 
             this.selectIndex--;
             
@@ -494,8 +493,7 @@ BubbleScene.prototype.processInput = function(){
             this.selectedElement = this.elements[this.selectIndex];
         }
 
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right) ||
-                gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) {
             this.selectIndex++;
             
             //this.selectIndex = clamp(this.selectIndex, 0, this.elements.length - 1);
@@ -509,11 +507,11 @@ BubbleScene.prototype.processInput = function(){
     
    
         //roate cannon firing cannon, clamped at 100 and -100
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left)) {
             this.mCannon.intRotByDeg(0.5);
         }
 
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right)) {
             this.mCannon.intRotByDeg(-0.5);
         }
         
