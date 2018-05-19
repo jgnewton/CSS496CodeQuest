@@ -18,8 +18,8 @@ function MyGame() {
     this.kTargetTexture = "assets/target.png";
     this.kForest = "assets/Forest2.png";
     this.kEarth = "assets/Earth.png";
-    this.friendr = "assets/squirralR.PNG";
-    this.friendl = "assets/squirralL.PNG";
+    this.friendr = "assets/squirralR.png";
+    this.friendl = "assets/squirralL.png";
     // The camera to view the scene
     this.mCamera = null;
 

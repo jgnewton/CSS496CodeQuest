@@ -28,9 +28,9 @@ function BasketScene() {
     this.kMW = "assets/MW2.jpg";
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
-    this.helpTable = "assets/BasketHelp.PNG";
+    this.helpTable = "assets/BasketHelp.png";
     this.kbats ="assets/bats.png";
-    this.friend = "assets/squirralR.PNG";
+    this.friend = "assets/squirralR.png";
     
     // The camera to view the scene
     this.mCamera = null;
