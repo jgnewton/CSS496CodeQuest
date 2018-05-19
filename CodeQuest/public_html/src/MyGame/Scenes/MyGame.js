@@ -96,12 +96,17 @@ MyGame.prototype.unloadScene = function () {
         gEngine.Core.startScene(new BubbleScene());
     }
     
+    else if(this.nextScene == 5){
+        gEngine.Core.startScene(new MainMenuScene());
+    }
+    
     
     //gEngine.Core.startScene(SceneObject);  
         
 };
 
 MyGame.prototype.initialize = function () {
+    setControlText("MyGame");
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(50, 40), // position of the camera
@@ -217,24 +222,14 @@ MyGame.prototype.draw = function () {
     this.sceneZone2Text.draw(this.mCamera);
 };
 
-MyGame.prototype.increasShapeSize = function(obj, delta) {
-    var s = obj.getRigidBody();
-    var r = s.incShapeSizeBy(delta);
-};
-
-// The Update function, updates the application state. Make sure to _NOT_ draw
-// anything from this function!
-MyGame.kBoundDelta = 0.1;
-
-
 MyGame.prototype.update = function () {
-    var msg = "";   
+    //var msg = "";   
     this.mHero.update();
     
     this.mHelper.follow(this.mHero);
     
     
-    this.mHero.keyControl();
+    //this.mHero.keyControl();
     
     this.mAllObjs.update(this.mCamera);
     this.updateCamera();
@@ -242,6 +237,7 @@ MyGame.prototype.update = function () {
     //to make a conflict
     //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
+        this.nextScene = 5;
          gEngine.GameLoop.stop();  
     }
     

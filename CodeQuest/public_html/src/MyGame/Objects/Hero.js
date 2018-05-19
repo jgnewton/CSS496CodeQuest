@@ -33,7 +33,8 @@ function Hero(spriteTexture) {
     this.firing=false;
     this.carryHeight=2;
 }
-gEngine.Core.inheritPrototype(Hero, WASDObj);
+gEngine.Core.inheritPrototype(Hero, GameObject);
+
 
 Hero.prototype.update = function () {
     GameObject.prototype.update.call(this);
@@ -46,6 +47,20 @@ Hero.prototype.update = function () {
         oxf.setXPos(hxf.getXPos());
         oxf.setYPos(hxf.getYPos()); + this.carryHeight;
     }*/
+    var kWASDDelta = .5;
+    var xform = this.getXform();
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.W)) {
+        xform.incYPosBy(kWASDDelta);
+    }
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.S)) {
+        xform.incYPosBy(-kWASDDelta);
+    }
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
+        xform.incXPosBy(-kWASDDelta);
+    }
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
+        xform.incXPosBy(kWASDDelta);
+    }
     
     
 }

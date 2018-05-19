@@ -189,6 +189,7 @@ AsteroidScene.prototype.unloadScene = function () {
 };
 
 AsteroidScene.prototype.initialize = function () {
+    setControlText("Meteors");
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera

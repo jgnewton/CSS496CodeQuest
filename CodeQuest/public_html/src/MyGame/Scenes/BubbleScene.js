@@ -198,6 +198,7 @@ BubbleScene.prototype.unloadScene = function () {
 };
 
 BubbleScene.prototype.initialize = function () {
+    setControlText("Bubbles");
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera

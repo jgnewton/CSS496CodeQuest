@@ -178,6 +178,7 @@ BasketScene.prototype.unloadScene = function () {
 };
 
 BasketScene.prototype.initialize = function () {
+    setControlText("Baskets");
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera
