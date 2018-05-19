@@ -18,7 +18,8 @@ function MyGame() {
     this.kTargetTexture = "assets/target.png";
     this.kForest = "assets/Forest2.png";
     this.kEarth = "assets/Earth.png";
-    
+    this.friendr = "assets/squirralR.PNG";
+    this.friendl = "assets/squirralL.PNG";
     // The camera to view the scene
     this.mCamera = null;
 
@@ -54,7 +55,9 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kWallTexture);
     gEngine.Textures.loadTexture(this.kTargetTexture);
     gEngine.Textures.loadTexture(this.kForest);  
-    gEngine.Textures.loadTexture(this.kEarth); 
+    gEngine.Textures.loadTexture(this.kEarth);
+    gEngine.Textures.loadTexture(this.friendr); 
+    gEngine.Textures.loadTexture(this.friendl); 
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -64,7 +67,9 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kWallTexture);
     gEngine.Textures.unloadTexture(this.kTargetTexture);
     gEngine.Textures.unloadTexture(this.kForest);
-    gEngine.Textures.unloadTexture(this.kEarth); 
+    gEngine.Textures.unloadTexture(this.kEarth);
+    gEngine.Textures.unloadTexture(this.friendr); 
+    gEngine.Textures.unloadTexture(this.friendl); 
     
     
     // start the next scene
@@ -138,7 +143,7 @@ MyGame.prototype.initialize = function () {
     
     
     
-    this.mHelper = new Helper(this.kMinionSprite);
+    this.mHelper = new Helper(this.friendr, this.friendl);
     this.mAllObjs.addToSet(this.mHelper);
     
     /*

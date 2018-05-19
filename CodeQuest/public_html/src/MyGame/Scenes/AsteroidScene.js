@@ -263,7 +263,8 @@ AsteroidScene.prototype.initialize = function () {
     this.boolText = new MenuElement("Boolean", textXPos, textYpos + textOffset * 2, textSize);
     this.charText = new MenuElement("Char", textXPos, textYpos + textOffset, textSize);
     this.stringText = new MenuElement("String", textXPos, textYpos, textSize);
-    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3);
+    //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3)
+    
     
     this.elements = [
         this.intText,
@@ -272,6 +273,11 @@ AsteroidScene.prototype.initialize = function () {
         this.charText,
         this.stringText
     ];
+    
+    for(var i =0; i< this.elements.length; i++){
+        var e = this.elements[i];
+        e.setColor([0,1,1,1]);
+    }
     
     this.selectedElement = this.intText;
     this.selectionArrow = new TextureRenderable(this.kArrow);
@@ -289,6 +295,7 @@ AsteroidScene.prototype.initialize = function () {
     this.Shots=0;
     
     this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
+    this.accuracyText.setColor([0,1,1,1]);
     
     this.revealTime=0;
     
@@ -612,6 +619,11 @@ AsteroidScene.prototype.generateAsteroid = function () {
      
     if(this.GenerateOn){
         var xl = this.WCCenterX-this.WCWidth/2 + Math.random()*(this.WCWidth - 20);
+        
+        if(xl<this.WCCenterX-this.WCWidth/2+15){
+            xl =this.WCCenterX-this.WCWidth/2+15; 
+        }
+        
         var yl = 120;
 
         var type=0;

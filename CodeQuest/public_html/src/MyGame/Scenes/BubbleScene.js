@@ -313,6 +313,11 @@ BubbleScene.prototype.initialize = function () {
         this.refreshText.setColor([0, 0, 0, 1]);
         this.refreshText.getXform().setPosition(-135, -100);
         this.refreshText.setTextHeight(6.5);
+        
+    this.rendy = new Renderable();
+    this.rendy.getXform().setSize(100, 150);
+    this.rendy.setColor([1, 1, 1, 1]);
+    this.rendy.getXform().setPosition(110, -80);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -332,7 +337,10 @@ BubbleScene.prototype.draw = function () {
         this.gameOverText3.draw(this.mCamera);
         //this.gameOverText4.draw(this.mCamera);
     } else {
+        
         this.mAllObjs.draw(this.mCamera);
+        
+         this.rendy.draw(this.mCamera);
         this.myBubbles.draw(this.mCamera);
     
         for(var i = 0; i < this.elements.length; i++){
@@ -357,6 +365,7 @@ BubbleScene.prototype.draw = function () {
         }
 
         this.mCannon.draw(this.mCamera);
+        
     }
     
     //this.accuracyText.draw(this.mCamera);
@@ -572,8 +581,6 @@ BubbleScene.prototype.processInput = function(){
     }
     
 };
-
-
 
 
 //generating projectiles
