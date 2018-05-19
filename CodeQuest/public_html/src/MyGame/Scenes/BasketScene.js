@@ -28,9 +28,9 @@ function BasketScene() {
     this.kMW = "assets/MW2.jpg";
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
-    this.helpTable = "assets/BasketHelp.PNG";
+    this.helpTable = "assets/BasketHelp.png";
     this.kbats ="assets/bats.png";
-    this.friend = "assets/squirralR.PNG";
+    this.friend = "assets/squirralR.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -467,11 +467,15 @@ BasketScene.prototype.processInput = function(){
                 
         //moving basket
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)){ 
-                heroXF.incXPosBy(-1*deltax);
+                if(heroXF.getXPos()>this.WCCenterX-this.WCWidth/2){
+                    heroXF.incXPosBy(-1*deltax);    
+                }
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)){
-            heroXF.incXPosBy(deltax);
+               if(heroXF.getXPos()<this.WCCenterX+this.WCWidth/2){
+                    heroXF.incXPosBy(deltax);    
+                }
         }    
         
                 
