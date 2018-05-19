@@ -316,7 +316,7 @@ BubbleScene.prototype.initialize = function () {
         
     this.rendy = new Renderable();
     this.rendy.getXform().setSize(100, 150);
-    this.rendy.setColor([1, 1, 1, 1]);
+    this.rendy.setColor([.8, .8, .8, 1]);
     this.rendy.getXform().setPosition(110, -80);
 };
 
@@ -728,9 +728,9 @@ BubbleScene.prototype.updateElementStatus = function() {
         if(this.proposed[i]!= 0){
             
             if(this.proposed[i]==this.correctAnswers[i]){
-            elem.setColor([0,1,0,1]); //green
+            elem.setColor([0,1,.2,1]); //green
             }else{ 
-                elem.setColor([1,0,0,1]); //red
+                elem.setColor([1,.2,0,1]); //red
             }
         }
     }
