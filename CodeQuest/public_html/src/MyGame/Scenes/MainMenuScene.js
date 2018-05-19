@@ -5,22 +5,46 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MainMenuScene() {
-    this.kMinionSprite = "assets/minion_sprite.png";
+    this.bg = "assets/Menu/titlescreen.png";
+    this.playButton = "assets/Menu/playbtn.png";
+    this.creditsButton = "assets/Menu/creditsbtn.png";
+    
+    this.mCamera = null;
+    this.mAllObjs = null;
+    this.nextScene = null;
+    this.titlescreen = null;
 
     this.mAllObjs = null;
     this.nextScene = null;
+    
+        //width of world within camera view
+    this.WCWidth=300;
+    
+    this.VPWidth=800;
+    this.VPHeight=600;
+    
+    //height derived from width
+    this.WCHeight=this.VPHeight/this.VPWidth*this.WCWidth;
+    
+    //center x coordinate of camera
+    this.WCCenterX=0;
+    //y coord
+    this.WCCenterY=0;
 }
 gEngine.Core.inheritPrototype(MainMenuScene, Scene);
 
 
 MainMenuScene.prototype.loadScene = function () {
-    gEngine.Textures.loadTexture(this.kMinionSprite);
- 
+    gEngine.Textures.loadTexture(this.bg);
+    gEngine.Textures.loadTexture(this.playButton);
+    gEngine.Textures.loadTexture(this.creditsButton);
 };
 
 MainMenuScene.prototype.unloadScene = function () {
     // unload textures
-    gEngine.Textures.unloadTexture(this.kMinionSprite);
+    gEngine.Textures.unloadTexture(this.bg);
+    gEngine.Textures.unloadTexture(this.playButton);
+    gEngine.Textures.unloadTexture(this.creditsButton);
 
     if(this.nextScene==0){
         gEngine.Core.startScene(new MyGame());
@@ -36,15 +60,34 @@ MainMenuScene.prototype.initialize = function () {
     setControlText("MainMenu");
     // Step A: set up the cameras
     this.mCamera = new Camera(
-        vec2.fromValues(50, 40), // position of the camera
-        100,                     // width of camera
-        [0, 0, 800, 600]         // viewport (orgX, orgY, width, height)
+        vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera
+        this.WCWidth,                     // width of camera
+        [0, 0, this.VPWidth, this.VPHeight]         // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
 
     this.mAllObjs = new GameObjectSet();   
+    
+    
+    this.titlescreen = new TextureRenderable(this.bg);
+    this.titlescreen.getXform().setPosition(0, 0);
+    this.titlescreen.getXform().setRotationInDegree(0); // In Degree
+    this.titlescreen.getXform().setSize(this.WCWidth, this.WCHeight);
+    this.mAllObjs.addToSet(this.titlescreen);
+    
+    this.play = new TextureRenderable(this.playButton);
+    this.play.getXform().setPosition(0, -35);
+    this.play.getXform().setRotationInDegree(0); // In Degree
+    this.play.getXform().setSize(this.WCWidth / 4, this.WCHeight / 4);
+    this.mAllObjs.addToSet(this.play);
+    
+    this.credits = new TextureRenderable(this.creditsButton);
+    this.credits.getXform().setPosition(7, -75);
+    this.credits.getXform().setRotationInDegree(0); // In Degree
+    this.credits.getXform().setSize(this.WCWidth / 4, this.WCHeight / 4);
+    this.mAllObjs.addToSet(this.credits);
 
 };
 
@@ -57,7 +100,7 @@ MainMenuScene.prototype.draw = function () {
 
     this.mCamera.setupViewProjection();
     this.mAllObjs.draw(this.mCamera);
-    this.mCollisionInfos = []; 
+    //this.mCollisionInfos = []; 
 
 };
 
@@ -71,5 +114,10 @@ MainMenuScene.prototype.update = function () {
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.C)) {
         this.nextScene = 1;
         gEngine.GameLoop.stop();  
+    }
+    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Q)) {
+        localStorage.clear();
+        document.location.reload();
     }
 };

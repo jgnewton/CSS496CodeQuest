@@ -5,22 +5,37 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function CreditScene() {
-    this.kMinionSprite = "assets/minion_sprite.png";
-
+    this.credits = "assets/Menu/credits.png";
+    this.mCamera = null;
     this.mAllObjs = null;
     this.nextScene = null;
+    this.creditObj = null;
+    
+        //width of world within camera view
+    this.WCWidth=300;
+    
+    this.VPWidth=800;
+    this.VPHeight=600;
+    
+    //height derived from width
+    this.WCHeight=this.VPHeight/this.VPWidth*this.WCWidth;
+    
+    //center x coordinate of camera
+    this.WCCenterX=0;
+    //y coord
+    this.WCCenterY=0;
 }
 gEngine.Core.inheritPrototype(CreditScene, Scene);
 
 
 CreditScene.prototype.loadScene = function () {
-    gEngine.Textures.loadTexture(this.kMinionSprite);
+    gEngine.Textures.loadTexture(this.credits);
  
 };
 
 CreditScene.prototype.unloadScene = function () {
     // unload textures
-    gEngine.Textures.unloadTexture(this.kMinionSprite);
+    gEngine.Textures.unloadTexture(this.credits);
 
     if(this.nextScene==0){
         gEngine.Core.startScene(new MainMenuScene());
@@ -32,15 +47,21 @@ CreditScene.prototype.initialize = function () {
     setControlText("Credits");
     // Step A: set up the cameras
     this.mCamera = new Camera(
-        vec2.fromValues(50, 40), // position of the camera
-        100,                     // width of camera
-        [0, 0, 800, 600]         // viewport (orgX, orgY, width, height)
+        vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera
+        this.WCWidth,                     // width of camera
+        [0, 0, this.VPWidth, this.VPHeight]         // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
 
-    this.mAllObjs = new GameObjectSet();   
+    this.mAllObjs = new GameObjectSet(); 
+    
+    this.creditObj = new TextureRenderable(this.credits);
+    this.creditObj.getXform().setPosition(0, 0);
+    this.creditObj.getXform().setRotationInDegree(0); // In Degree
+    this.creditObj.getXform().setSize(this.WCWidth, this.WCHeight);
+    this.mAllObjs.addToSet(this.creditObj);
 
 };
 
@@ -52,8 +73,11 @@ CreditScene.prototype.draw = function () {
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
     this.mCamera.setupViewProjection();
+    
+    //console.log("test");
     this.mAllObjs.draw(this.mCamera);
-    this.mCollisionInfos = []; 
+    this.creditObj.draw(this.mCamera);
+    //this.mCollisionInfos = []; 
 
 };
 

@@ -26,6 +26,7 @@ MyGame.prototype.updateCamera = function () {
     
     this.mCamera.update();
     
+    /*
     //zooms
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.One)) {
         this.mCamera.zoomBy(1-ZOOM);
@@ -60,6 +61,7 @@ MyGame.prototype.updateCamera = function () {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Zero)) {
         //this.mCameraFollow ^= 1; // toggles camera following the target
     }
+    */
     
     // follow the target if there is one
     if(this.mCameraFollow && this.mCameraTarget != null)
