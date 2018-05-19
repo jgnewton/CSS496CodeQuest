@@ -141,6 +141,10 @@ function BubbleScene() {
     this.numBlackHole=3;
     
     //this.mBar = new Renderable();
+    
+    this.blackHoleText=null;
+    this.refreshText=null;
+    this.bounceTimer=0;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -299,6 +303,16 @@ BubbleScene.prototype.initialize = function () {
     this.nextColor=initColor;
     
     this.checkNeighbors();
+    
+    this.blackHoleText=new FontRenderable("Num Black Holes left: " + this.numBlackHole);
+        this.blackHoleText.setColor([0, 0, 0, 1]);
+        this.blackHoleText.getXform().setPosition(-135, -85);
+        this.blackHoleText.setTextHeight(6.5);
+        
+    this.refreshText=new FontRenderable("Num Refreshes left: "+ this.numRefresh);
+        this.refreshText.setColor([0, 0, 0, 1]);
+        this.refreshText.getXform().setPosition(-135, -100);
+        this.refreshText.setTextHeight(6.5);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -353,6 +367,8 @@ BubbleScene.prototype.draw = function () {
         }
     }
     
+    this.blackHoleText.draw(this.mCamera);
+    this.refreshText.draw(this.mCamera);
     
 };
 
@@ -390,6 +406,7 @@ BubbleScene.prototype.update = function () {
     if(this.firing){
         //console.log("~~checking");
         this.checkCollisions();
+        this.bounceTimer++;
     }
     
     if(this.popTimer>0){
@@ -533,13 +550,21 @@ BubbleScene.prototype.processInput = function(){
             this.useBlackHole();
         }
         
-        
+        console.log(this.bounceTimer);
         //fire
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space) && !this.firing) {
-            if(this.canFire && this.mFlyBubble == null){
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space)) {
+            if(this.canFire && this.mFlyBubble == null && !this.firing){
                 this.firing=true;
                 this.fireTimer = 0;
                 this.generateProjectile();
+            }
+            else if(this.bounceTimer>240){
+                this.myBubbles.removeFromSet(this.mFlyBubble);
+                this.mFlyBubble=null;
+                this.firing=true;
+                this.fireTimer = 0;
+                this.generateProjectile();
+                this.bounceTimer=0;
             }
             
         }
@@ -710,13 +735,14 @@ BubbleScene.prototype.refresh = function() {
         this.initBubbles();
         this.checkNeighbors();
         this.numRefresh--;
+        this.refreshText.setText("Num Refreshes left: "+ this.numRefresh);
     }   
 };
 
 BubbleScene.prototype.useBlackHole = function() {
     if(this.numBlackHole>0){
         this.numBlackHole--;
-    
+        this.blackHoleText.setText("Num Black Holes left: "+ this.numBlackHole);
     this.nextColor=99;
     this.mNextBubble.color = this.nextColor;
     this.mNextBubble.setColor();

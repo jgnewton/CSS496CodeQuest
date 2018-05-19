@@ -225,6 +225,7 @@ MyGame.prototype.draw = function () {
 MyGame.prototype.update = function () {
     //var msg = "";   
     this.mHero.update();
+    this.mHero.heroControls();
     
     this.mHelper.follow(this.mHero);
     

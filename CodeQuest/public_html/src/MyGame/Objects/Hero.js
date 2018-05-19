@@ -47,6 +47,10 @@ Hero.prototype.update = function () {
         oxf.setXPos(hxf.getXPos());
         oxf.setYPos(hxf.getYPos()); + this.carryHeight;
     }*/
+       
+}
+
+Hero.prototype.heroControls = function () {
     var kWASDDelta = .5;
     var xform = this.getXform();
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.W)) {
@@ -60,9 +64,7 @@ Hero.prototype.update = function () {
     }
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
         xform.incXPosBy(kWASDDelta);
-    }
-    
-    
+    }    
 }
 
 //pickup or drop an object

@@ -454,11 +454,15 @@ BasketScene.prototype.processInput = function(){
                 
         //moving basket
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)){ 
-                heroXF.incXPosBy(-1*deltax);
+                if(heroXF.getXPos()>this.WCCenterX-this.WCWidth/2){
+                    heroXF.incXPosBy(-1*deltax);    
+                }
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)){
-            heroXF.incXPosBy(deltax);
+               if(heroXF.getXPos()<this.WCCenterX+this.WCWidth/2){
+                    heroXF.incXPosBy(deltax);    
+                }
         }    
         
                 
