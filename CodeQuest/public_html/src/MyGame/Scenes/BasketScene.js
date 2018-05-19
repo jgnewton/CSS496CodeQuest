@@ -141,6 +141,7 @@ function BasketScene() {
     this.successCount = 0;
     this.friendObject = null;
     this.friendVisible = false;
+    this.helpTimer = 0;
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -258,7 +259,10 @@ BasketScene.prototype.initialize = function () {
     this.setOperators();
     
     this.friendObject = new TextureRenderable(this.friend);
-    this.friendObject.getXform().setSize(50, 20);
+    this.friendObject.getXform().setSize(16, 18);
+    //this.friendObject.getXform().setPosition(-100,  this.WCCenterY-60);
+    
+     this.showAnswer = new FontRenderable("");
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -295,6 +299,13 @@ BasketScene.prototype.draw = function () {
         for(var i = 0; i < this.scoreMarksArray.length; i++){
             this.scoreMarksArray[i].draw(this.mCamera);
         }   
+        if(this.friendVisible){
+            //draw Friend
+            if(this.helpTimer < 120){
+                this.friendObject.draw(this.mCamera);
+                this.showAnswer.draw(this.mCamera);
+            }
+        }
     
     }
 
@@ -304,10 +315,6 @@ BasketScene.prototype.draw = function () {
         if(this.revealTime>0){
            this.revealMsg.draw(this.mCamera);
         }
-    }
-    if(this.friendVisible){
-        //draw Friend
-        this.friendObject.draw(this.mCamera);
     }
 
 };
@@ -342,6 +349,12 @@ BasketScene.prototype.update = function () {
     }
     
    this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos());
+   
+   if(this.helpTimer <= 120){
+       this.helpTimer++;
+       this.friendObject.getXform().setPosition(this.mHero.getXform().getXPos()-30,  this.WCCenterY-60);
+        this.showAnswer.getXform().setPosition(this.mHero.getXform().getXPos()-20, this.WCCenterY-40);
+   }
     
  };
 
@@ -761,4 +774,42 @@ BasketScene.prototype.checkNext = function() {
 
 BasketScene.prototype.callHelper = function() {
     this.friendVisible = true;
+    this.helpTimer = 0;
+   // this.mbat.correctAnswer;
+    var solution = this.mBat.text.getText();
+    var answer = "";
+        switch (this.mBat.correctAnswer){
+            case 0:
+                answer = "==";
+                break;
+            case 1:
+                answer = "!=";
+                break;
+            case 2:
+                answer = ">";
+                break;
+            case 3:
+                answer = "<";
+                break;
+            case 4:
+                answer = ">=";
+                break;
+            case 5:
+                answer = "<=";
+                break;
+            case 6:
+                answer = "true";
+                break;
+            case 7:
+                answer = "false";
+                break;
+        }
+    solution = solution.replace("__", answer);
+    //console.log(solution);
+    
+   
+    this.showAnswer.setColor([0, .5, 1, 1]);
+    this.showAnswer.setText(solution);
+    this.showAnswer.setTextHeight(10);
+    
 }
