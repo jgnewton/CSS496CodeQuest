@@ -236,7 +236,7 @@ MyGame.prototype.update = function () {
 
     //to make a conflict
     //debug Scene Change
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.X)) {
         this.nextScene = 5;
          gEngine.GameLoop.stop();  
     }

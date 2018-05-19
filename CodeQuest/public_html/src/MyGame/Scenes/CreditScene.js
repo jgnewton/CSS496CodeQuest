@@ -1,39 +1,35 @@
 /*
- * File: MainMenuScene.js
+ * File: CreditScene.js
 */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function MainMenuScene() {
+function CreditScene() {
     this.kMinionSprite = "assets/minion_sprite.png";
 
     this.mAllObjs = null;
     this.nextScene = null;
 }
-gEngine.Core.inheritPrototype(MainMenuScene, Scene);
+gEngine.Core.inheritPrototype(CreditScene, Scene);
 
 
-MainMenuScene.prototype.loadScene = function () {
+CreditScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
  
 };
 
-MainMenuScene.prototype.unloadScene = function () {
+CreditScene.prototype.unloadScene = function () {
     // unload textures
     gEngine.Textures.unloadTexture(this.kMinionSprite);
 
     if(this.nextScene==0){
-        gEngine.Core.startScene(new MyGame());
-        
-    } else if(this.nextScene==1){
-        gEngine.Core.startScene(new CreditScene());
-        
-    } 
+        gEngine.Core.startScene(new MainMenuScene());
+    }
         
 };
 
-MainMenuScene.prototype.initialize = function () {
-    setControlText("MainMenu");
+CreditScene.prototype.initialize = function () {
+    setControlText("Credits");
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(50, 40), // position of the camera
@@ -51,7 +47,7 @@ MainMenuScene.prototype.initialize = function () {
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-MainMenuScene.prototype.draw = function () {
+CreditScene.prototype.draw = function () {
     // Step A: clear the canvas
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
@@ -61,15 +57,9 @@ MainMenuScene.prototype.draw = function () {
 
 };
 
-MainMenuScene.prototype.update = function () {
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.P)) {
+CreditScene.prototype.update = function () {
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
         this.nextScene = 0;
-        gEngine.GameLoop.stop();  
-    }
-    
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.C)) {
-        this.nextScene = 1;
         gEngine.GameLoop.stop();  
     }
 };
