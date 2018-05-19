@@ -26,14 +26,14 @@ function AsteroidScene() {
     this.helpTable = "assets/AsteroidHelp.PNG";
     
     // new assets
-    this.mGrass = "assets/MeteorGame/grass.png";
-    this.mMountain = "assets/MeteorGame/mountain.png";
+    this.mGrass = "assets/MeteorGame/grassyellow.png";
+    this.mMountain = "assets/MeteorGame/mountainyellow.png";
     this.mBg1 = "assets/MeteorGame/sunset.png";
     this.mBg2 = "assets/MeteorGame/sunnyday.png";
     this.mCloud = "assets/MeteorGame/clouds.png";
     this.mCannonSprite = "assets/MeteorGame/cannon.png";
     
-    this.mCannonBase = "assets/MeteorGame/cannonbase.png";
+    this.mCannonBase = "assets/MeteorGame/cannonbaseyellow.png";
     this.mCannonMuzzle = "assets/MeteorGame/cannonmuzzle.png";
     this.mMeteorSprite = "assets/MeteorGame/meteorexplosion.png";
     
@@ -198,7 +198,7 @@ AsteroidScene.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
-    gEngine.DefaultResources.setGlobalAmbientIntensity(3);
+    gEngine.DefaultResources.setGlobalAmbientIntensity(2.6);
           
     //object Set
     this.mAllObjs = new GameObjectSet();   
@@ -210,11 +210,11 @@ AsteroidScene.prototype.initialize = function () {
     this.background.getXform().setSize(this.WCWidth, this.WCHeight);
     this.mAllObjs.addToSet(this.background);
     
-    this.mountain = new TextureRenderable(this.mMountain);
-    this.mountain.getXform().setPosition(0, 0);
-    this.mountain.getXform().setRotationInDegree(0); // In Degree
-    this.mountain.getXform().setSize(this.WCWidth, this.WCHeight);
-    this.mAllObjs.addToSet(this.mountain);
+    this.mountainyellow = new TextureRenderable(this.mMountain);
+    this.mountainyellow.getXform().setPosition(0, 0);
+    this.mountainyellow.getXform().setRotationInDegree(0); // In Degree
+    this.mountainyellow.getXform().setSize(this.WCWidth, this.WCHeight);
+    this.mAllObjs.addToSet(this.mountainyellow);
     
     //configure ground (currently a solid color green)
     // in the future it should be a texture renderable
