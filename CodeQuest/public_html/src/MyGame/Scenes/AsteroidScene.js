@@ -12,6 +12,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function AsteroidScene() {
+    
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kPlatformTexture = "assets/platform.png";
     this.kWallTexture = "assets/wall.png";
@@ -19,6 +20,7 @@ function AsteroidScene() {
     this.kForest = "assets/Forest2.png";
     this.kEarth = "assets/Earth.png";
     this.kMW = "assets/MW2.jpg";
+    
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
     this.helpTable = "assets/AsteroidHelp.PNG";
@@ -133,6 +135,7 @@ gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
 
 AsteroidScene.prototype.loadScene = function () {
+    
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kPlatformTexture);
     gEngine.Textures.loadTexture(this.kWallTexture);
@@ -140,6 +143,7 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kForest);
     gEngine.Textures.loadTexture(this.kEarth);
     gEngine.Textures.loadTexture(this.kMW); 
+    
     gEngine.Textures.loadTexture(this.scoreMarks); 
     gEngine.Textures.loadTexture(this.kArrow); 
     gEngine.Textures.loadTexture(this.helpTable); 
@@ -199,7 +203,7 @@ AsteroidScene.prototype.initialize = function () {
     this.mAllObjs = new GameObjectSet();   
        
     //this.background = new TextureRenderable(this.mBg1);
-    this.background = new TextureRenderable(this.mBg2);
+    this.background = new TextureRenderable(this.mBg1);
     this.background.getXform().setPosition(0, 0);
     this.background.getXform().setRotationInDegree(0); // In Degree
     this.background.getXform().setSize(this.WCWidth, this.WCHeight);
