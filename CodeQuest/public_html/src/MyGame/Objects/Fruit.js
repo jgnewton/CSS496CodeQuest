@@ -61,11 +61,12 @@ function Fruit(spriteTexture, atX, atY, answer) {
      * 7 ||
      * 
      */
-    this.setText();
+    //this.setText();
     
     var r = new RigidRectangle(this.fruit.getXform(), this.w, this.h);
     r.setAngularVelocity(Math.random()*2 - 1);
-    //r.setMass(40);
+    r.setMass(0.1);
+    //r.setInertia(0.01);
     //r.setInertia(.01);
     this.setRigidBody(r);
     //this.mRigidBody.mInvMass=0;
@@ -76,9 +77,9 @@ gEngine.Core.inheritPrototype(Fruit, GameObject);
 
 Fruit.prototype.update = function (objset) {
     GameObject.prototype.update.call(this);
-    this.text.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
-    this.fruit.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
-    this.fruit.getXform().incYPosBy(.6);
+    //this.text.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
+    //this.fruit.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
+    this.fruit.getXform().incYPosBy(.4);
 };
 
 
@@ -98,6 +99,8 @@ Fruit.prototype.checkCollision = function (obj){
     
 } ;
 */
+
+
 Fruit.prototype.Transition = function (){
 }
 
@@ -146,3 +149,4 @@ Fruit.prototype.setText = function (){
     this.text.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
     this.text.setTextHeight(7.5);
 };
+

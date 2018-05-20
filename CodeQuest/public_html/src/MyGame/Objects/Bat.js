@@ -45,7 +45,7 @@ function Bat(spriteTexture, fruitTexture, atX, atY, createCircle, type, ans) {
     this.mMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateSwing);
     this.mMinion.setAnimationSpeed(45);
                                 // show each element for mAnimSpeed updates
-
+    //this.mMinion.updateAnimation();
     GameObject.call(this, this.mMinion);
     
     var r;
@@ -78,7 +78,9 @@ function Bat(spriteTexture, fruitTexture, atX, atY, createCircle, type, ans) {
     
     this.displayCoord=false;
     
+    
     this.answer=ans;
+    console.log(this.answer);
     
     this.correctOType=0;
     this.correctAnswer=0;
@@ -140,7 +142,7 @@ Bat.prototype.draw = function (aCamera) {
         //if (this.mDrawRenderable)
             this.mRenderComponent.draw(aCamera);
         //if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
-            this.mRigidBody.draw(aCamera);
+            //this.mRigidBody.draw(aCamera);
     }
     this.text.draw(aCamera);
 };
@@ -441,5 +443,5 @@ Bat.prototype.dropFruit =function (){
 
 
 Bat.prototype.flyAway =function (){
-    this.yv = 4;
+    this.yv = 3;
 };

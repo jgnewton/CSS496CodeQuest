@@ -428,7 +428,7 @@ BasketScene.prototype.updateObjects = function(){
         var obj = this.mAllObjs.getObjectAt(i);
         if(obj instanceof Fruit){
             obj.update();
-            this.fruitGravity(obj);
+            //this.fruitGravity(obj);
             if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
@@ -632,6 +632,8 @@ BasketScene.prototype.generateBat = function () {
                 ans = false;
             }
         }
+        //console.log(ans);
+        
         var Bat1 = new Bat(this.seagull, this.fish, xl, yl, false, type, ans);
 
         //drop speed
@@ -651,7 +653,8 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
       //  fruit.mRigidBody.setVelocity(0,50);
       if(!fruit.attached && !fruit.onPlatform){
        // fruit.mRigidBody.mInvMass=1;
-       fruit.mRigidBody.setMass(1);
+       //console.log(fruit.mRigidBody);
+       //fruit.mRigidBody.setMass(0.01);
       }
     }
     else{
@@ -661,6 +664,9 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
 };
 
 BasketScene.prototype.checkAnswer = function( ) {
+    console.log(this.mBat);
+    console.log(this.mBat.answer);
+    console.log(this.mBat.correctAnswer);
     console.log("mAsnwer " + this.mAnswer + ".  mBatAnswer " + this.mBat.correctAnswer)
     if (this.mAnswer == this.mBat.correctAnswer){
         this.incrementScore(true);
