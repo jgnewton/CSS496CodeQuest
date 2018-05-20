@@ -339,7 +339,7 @@ AsteroidScene.prototype.draw = function () {
             //this.Ray.draw(this.mCamera);
         }
 
-        //this.mCannon.draw(this.mCamera);
+        this.mCannon.draw(this.mCamera);
     
     
         if(this.revealMsg!=null){
@@ -657,7 +657,7 @@ AsteroidScene.prototype.generateProjectile = function () {
     var p = new Projectile(this.kPlatformTexture, xp, yp, w, h, false, this.selectIndex);
 
     //setting projectile velocity
-    this.maxV=0;
+    this.maxV=100;
     
     var v = 1;
     
@@ -724,7 +724,9 @@ AsteroidScene.prototype.generateProjectile = function () {
 
 //checking for raycast collisions
 AsteroidScene.prototype.rayCast = function (p) {
-    console.log("raycast");
+    //the Actual Rotation of the Hero.
+     var theta = this.mCannon.cannon.getXform().getRotationInRad();
+    console.log("raycast: "+(theta*180/Math.PI));
     
     for (var i = 0; i < this.mAllObjs.size(); i++) {
       
@@ -735,23 +737,65 @@ AsteroidScene.prototype.rayCast = function (p) {
             var axf = ast.getXform();
             var astx = axf.getXPos();
             var asty = axf.getYPos();
-
-            //the Actual Rotation of the Hero.
-            var theta = this.mCannon.cannon.getXform().getRotationInRad();                              
+                              
 
             //ray to far bottom corner
             var thetaMax=0;
 
             //ray to near top corner
             var thetaMin=0;
+            
+            var theta1=0;
+            var theta2=0
+            var theta3=0;
+            var theta4=0;
+
+            //top right
+                theta1= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mCannon.cannon.getXform().getYPos()+axf.getHeight()/2)));
+                //bottom left
+                theta2= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mCannon.cannon.getXform().getYPos()-axf.getHeight()/2)));              
+                //bottom right
+                theta3= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mCannon.cannon.getXform().getYPos()-axf.getHeight()/2)));
+                //top left
+                theta4= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mCannon.cannon.getXform().getYPos()+axf.getHeight()/2)));
+                
+                if(asty<this.mCannon.cannon.getXform().getYPos()){
+                    theta1= (Math.PI/2)+ Math.abs(1/(Math.atan((astx + axf.getWidth()/2)) *(asty-this.mCannon.cannon.getXform().getYPos()+axf.getHeight()/2)));
+                //bottom left
+                    theta2= (Math.PI/2)+Math.abs(1/(Math.atan((astx - axf.getWidth()/2)) *(asty-this.mCannon.cannon.getXform().getYPos()-axf.getHeight()/2)));              
+                //bottom right
+                    theta3= (Math.PI/2)+Math.abs(1/(Math.atan((astx + axf.getWidth()/2)) *(asty-this.mCannon.cannon.getXform().getYPos()-axf.getHeight()/2)));
+                //top left
+                    theta4= (Math.PI/2)+Math.abs(1/(Math.atan((astx - axf.getWidth()/2)) *(asty-this.mCannon.cannon.getXform().getYPos()+axf.getHeight()/2)));   
+                }
+                
 
             //case 1: Asteroid to left  (0 degrees is straight up, horizontal left is 90, horizontal right in -90...don't Ask... ask Kelvin              
-            if(astx<=0){
-                //top right
-                thetaMin= Math.abs(Math.atan((astx + axf.getWidth()/2) / (asty-this.mCannon.cannon.getXform().getYPos()+axf.getHeight()/2)));
-
-             //bottom left
-                thetaMax= Math.abs(Math.atan((astx - axf.getWidth()/2) / (asty-this.mCannon.cannon.getXform().getYPos()-axf.getHeight()/2)));
+            if(theta>=0){
+                if(theta1>=theta2 && theta1>=theta3 && theta1>=theta4){
+                    thetaMax = theta1;
+                }
+                else if (theta2>=theta1 && theta2>=theta3 && theta2>=theta4){
+                    thetaMax = theta2;
+                }
+                else if (theta3>=theta1 && theta3>=theta2 && theta3>=theta4){
+                    thetaMax = theta3;
+                }else{
+                    thetaMax=theta4;
+                }
+                
+                if(theta1<=theta2 && theta1<=theta3 && theta1<=theta4){
+                    thetaMin = theta1;
+                }
+                else if (theta2<=theta1 && theta2<=theta3 && theta2<=theta4){
+                    thetaMin = theta2;
+                }
+                else if (theta3<=theta1 && theta3<=theta2 && theta3<=theta4){
+                    thetaMin = theta3;
+                }else{
+                    thetaMin=theta4;
+                }
+            
             }
 
             //asteroid on right
@@ -766,17 +810,18 @@ AsteroidScene.prototype.rayCast = function (p) {
             
             
             // displaying Boundary rays
-
+                    var bx = this.mCannon.cannon.getXform().getXPos();
+                    var by = this.mCannon.cannon.getXform().getYPos();
+                    
                 if(astx<=0){
                     var rend = new Renderable();
                     rend.setColor([1,1,0,1]);
                     
                     var toprx = astx + axf.getWidth()/2;
                     var topry = asty + axf.getHeight()/2;
-                    
-                    
-                    rend.getXform().setPosition(toprx/2, topry/2 -30);
-                    rend.getXform().setSize(1,Math.sqrt(toprx*toprx+(topry+60)*(topry+60)));
+                                
+                    rend.getXform().setPosition(bx,by);
+                    rend.getXform().setSize(1,2000);
                     rend.getXform().setRotationInRad(thetaMin);
                     
                     this.mAllObjs.addToSet(rend);
@@ -785,8 +830,8 @@ AsteroidScene.prototype.rayCast = function (p) {
                     rend2.setColor([1,0,1,1]);  
                     var blx = astx - axf.getWidth()/2;
                     var bly = asty - axf.getHeight()/2;
-                    rend2.getXform().setPosition(blx/2, bly/2 -30);
-                    rend2.getXform().setSize(1,Math.sqrt(blx*blx+(bly+60)*(bly+60)));
+                    rend2.getXform().setPosition(bx,by);
+                    rend2.getXform().setSize(1,2000);
                     rend2.getXform().setRotationInRad(thetaMax);
                     
                     this.mAllObjs.addToSet(rend2);
