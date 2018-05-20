@@ -24,7 +24,7 @@ function Bubble(spriteTexture, atX, atY, createCircle, type) {
     
     
     this.mMinion = new SpriteRenderable(spriteTexture);
-    this.mMinion.setElementPixelPositions(0, 211, 1024, 1024 - 210);
+    this.mMinion.setElementPixelPositions(15, 497, 487, 25);
     this.mMinion.getXform().setPosition(atX, atY);
     this.mMinion.getXform().setSize(w, h);
    
@@ -118,7 +118,7 @@ Bubble.prototype.draw = function (aCamera) {
     if (this.isVisible()) {
         if (this.mDrawRenderable)
             this.mRenderComponent.draw(aCamera);
-         this.mRigidBody.draw(aCamera);
+         //htis.mRigidBody.draw(aCamera);
     }
     
     if(this.drawText){
@@ -222,25 +222,25 @@ Bubble.prototype.pop = function () {
 Bubble.prototype.setColor = function () {
    switch (this.color) {
     case 0:
-        this.mMinion.setColor([1,.2,.1,1]);//red
+        this.mMinion.setColor([1,.2,.1,.5]);//red
         break;
     case 1:
-        this.mMinion.setColor([.3,.3,1,1]);//blue
+        this.mMinion.setColor([.2,.2,1,.5]);//blue
         break;
     case 2:
-        this.mMinion.setColor([.1,.9,.1,1]);//green
+        this.mMinion.setColor([.1,.9,.1,.5]);//green
         break;
     case 3:
-        this.mMinion.setColor([1,.9,.2,1]);//yellow
+        this.mMinion.setColor([1,.9,.2,.5]);//yellow
         break;
     case 4:
-        this.mMinion.setColor([.8,.1,.9,1]);//purple
+        this.mMinion.setColor([.9,.1,.9,.5]);//purple
         break;
     case 5:
-        this.mMinion.setColor([.1,1,1,1]);//turquoise
+        this.mMinion.setColor([.1,1,1,.5]);//turquoise
         break;
     case 99:
-        this.mMinion.setColor([0,0,0,1]);//Black
+        this.mMinion.setColor([0,0,0,.5]);//Black
     }
 
     

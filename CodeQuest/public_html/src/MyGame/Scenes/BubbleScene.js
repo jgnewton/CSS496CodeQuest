@@ -34,6 +34,7 @@ function BubbleScene() {
     this.mCannonBase = "assets/MeteorGame/cannonbase.png";
     this.mCannonMuzzle = "assets/MeteorGame/cannonmuzzle.png";
     this.mMeteorSprite = "assets/MeteorGame/meteorexplosion.png";
+    this.mCloudSprite = "assets/cloud9.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -136,6 +137,7 @@ function BubbleScene() {
     this.popTimer=0;
     
     this.proposed = [0,0,0,0,0,0,0];
+    this.correctAnswers=null;
     
     this.numRefresh=3;
     this.numBlackHole=3;
@@ -172,6 +174,7 @@ BubbleScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.mCannonMuzzle);
     
     gEngine.Textures.loadTexture(this.mMeteorSprite);
+    gEngine.Textures.loadTexture(this.mCloudSprite);
 };
 
 BubbleScene.prototype.unloadScene = function () {
@@ -196,6 +199,7 @@ BubbleScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.mCannonBase);
     gEngine.Textures.unloadTexture(this.mCannonMuzzle);
     gEngine.Textures.unloadTexture(this.mMeteorSprite);
+    gEngine.Textures.unloadTexture(this.mCloudSprite);
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -294,7 +298,7 @@ BubbleScene.prototype.initialize = function () {
     
     var initColor=Math.round(Math.random()*5);
     
-    this.mNextBubble = new Bubble(this.mMeteorSprite, 0, -100, false, initColor);
+    this.mNextBubble = new Bubble(this.mCloudSprite, 0, -100, false, initColor);
     
     this.mAllObjs.addToSet((this.mNextBubble));
     
@@ -412,7 +416,7 @@ BubbleScene.prototype.update = function () {
     this.mCannon.update();
     this.revealTime--;
     
-    if(this.firing){
+    if(this.firing && this.mFlyBubble!=null){
         //console.log("~~checking");
         this.checkCollisions();
         this.bounceTimer++;
@@ -559,7 +563,7 @@ BubbleScene.prototype.processInput = function(){
             this.useBlackHole();
         }
         
-        console.log(this.bounceTimer);
+        //console.log(this.bounceTimer);
         //fire
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space)) {
             if(this.canFire && this.mFlyBubble == null && !this.firing){
@@ -600,7 +604,8 @@ BubbleScene.prototype.generateProjectile = function () {
     var yv = this.maxV*Math.cos(rot);
     
     
-    var b = new Bubble(this.mMeteorSprite, xp, yp, false, this.nextColor);
+    var b = new Bubble(this.mCloudSprite, xp, yp, false, this.nextColor);
+    b.setColor();
     
     this.nextColor = Math.round(Math.random()*6);
     
@@ -618,6 +623,7 @@ BubbleScene.prototype.generateProjectile = function () {
     this.mFlyBubble=b;
     
     this.myBubbles.addToSet(b);
+    this.bounceTimer=0;
 }
 
 
@@ -689,7 +695,7 @@ BubbleScene.prototype.removeBubbles = function() {
             this.myBubbles.removeFromSet(b);
             i--;
             if(b.drawText){
-               console.log("Answer popped");
+               //console.log("Answer popped");
                if(this.selectIndex!=0){
                    this.updateQuestions(b);
                 }
