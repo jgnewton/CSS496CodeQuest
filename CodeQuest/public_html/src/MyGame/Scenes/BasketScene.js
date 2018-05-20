@@ -277,7 +277,7 @@ BasketScene.prototype.initialize = function () {
     this.Hits=0;
     this.Shots=0;
     
-    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
+    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-100,5);
     
    // this.fruit1 = new Fruit(this.kArrow, 0, 0);
     //this.mAllObjs.addToSet(this.fruit1);
@@ -514,7 +514,7 @@ BasketScene.prototype.incrementScore = function(hit){
     if(this.Shots!=0){
         this.Accuracy= this.Hits/ this.Shots * 100;
     }    
-    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
+    this.accuracyText = new MenuElement("Accuracy: "+ this.Accuracy.toPrecision(3) + "%", 0,-100,5);    
 };
 
 BasketScene.prototype.processInput = function(){
