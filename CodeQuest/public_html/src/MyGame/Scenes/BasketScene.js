@@ -38,7 +38,7 @@ function BasketScene() {
     this.oceanBG = "assets/BasketGame/oceanbackground.png";
     this.seagull = "assets/BasketGame/seagull.png";
     this.boatcharacter = "assets/BasketGame/boatcharacter.png";
-    
+    this.chipmunk = "assets/squirrel.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -175,6 +175,7 @@ BasketScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.seagull);
     
     gEngine.Textures.loadTexture(this.boatcharacter);
+    gEngine.Textures.loadTexture(this.chipmunk);
 };
 
 BasketScene.prototype.unloadScene = function () {
@@ -197,6 +198,8 @@ BasketScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.oceanBG);
     gEngine.Textures.unloadTexture(this.seagull);
     gEngine.Textures.unloadTexture(this.boatcharacter);
+    
+    gEngine.Textures.unloadTexture(this.chipmunk);
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -302,8 +305,9 @@ BasketScene.prototype.initialize = function () {
     
     this.setOperators();
     
-    this.friendObject = new TextureRenderable(this.friend);
-    this.friendObject.getXform().setSize(16, 18);
+    this.friendObject = new SpriteRenderable(this.chipmunk);
+    this.friendObject.setElementPixelPositions(0, 421, 1024 - 523, 1024);
+    this.friendObject.getXform().setSize(12, 15);
     //this.friendObject.getXform().setPosition(-100,  this.WCCenterY-60);
     
      this.showAnswer = new FontRenderable("");
