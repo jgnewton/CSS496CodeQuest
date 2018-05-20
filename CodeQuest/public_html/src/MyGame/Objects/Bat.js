@@ -29,7 +29,7 @@ const LESSER_OR_EQUAL = 5;
 const TRUE = 6;
 const FALSE = 7;
 
-function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
+function Bat(spriteTexture, fruitTexture, atX, atY, createCircle, type, ans) {
         
     var w = 25;
     var h = 25;
@@ -88,7 +88,7 @@ function Bat(spriteTexture, atX, atY, createCircle, type, ans) {
     this.text.getXform().setPosition(atX-15, atY-25);
     
     
-    this.sprite = spriteTexture;
+    this.fruitSprite = fruitTexture;
     
     this.DROP_DELAY = 60;
     
@@ -435,7 +435,7 @@ Bat.prototype.boolBank =function (){
 
 Bat.prototype.dropFruit =function (){    
     //console.log("bat dropping fruit");
-    var fruit = new Fruit (this.sprite, this.getXform().getXPos(), this.getXform().getYPos(), this.answer);    
+    var fruit = new Fruit (this.fruitSprite, this.getXform().getXPos(), this.getXform().getYPos(), this.answer);    
     return fruit;
 };
 

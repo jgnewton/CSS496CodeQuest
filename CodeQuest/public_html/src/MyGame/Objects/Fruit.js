@@ -7,34 +7,38 @@
 
 function Fruit(spriteTexture, atX, atY, answer) {
     
-    this.w=10;
-    this.h=10;
+    this.w=20;
+    this.h=20;
     
     this.answer = answer;
     
-    this.placeHolder = new Renderable();
-    this.placeHolder.setColor([1, 0, 0, 1]);
+    /*
+    this.fruit = new Renderable();
+    this.fruit.setColor([1, 0, 0, 1]);
     
     if(this.answer){
-        this.placeHolder.setColor([0, 0, 1, 1]);   
+        this.fruit.setColor([0, 0, 1, 1]);   
     }else{
-        this.placeHolder.setColor([1, 0, 0, 1]);    
+        this.fruit.setColor([1, 0, 0, 1]);    
     }
+    */
+   
+    this.fruit = new TextureRenderable(spriteTexture);
     
-    var xf = this.placeHolder.getXform();
+    var xf = this.fruit.getXform();
     
     xf.setPosition(atX, atY);
     xf.setSize(this.w, this.h);
     
-    
+    /*
     this.mDye = new SpriteRenderable(spriteTexture);
     this.mDye.setColor([1, 1, 1, 0]);
     this.mDye.getXform().setPosition(atX, atY);
     this.mDye.getXform().setSize(this.w, this.h);
     this.mDye.setElementPixelPositions(0, 120, 0, 180);
+    */
     
-    
-    GameObject.call(this, this.mDye);
+    GameObject.call(this, this.fruit);
     
     this.scene=0; //which scene to go to
     
@@ -56,24 +60,24 @@ function Fruit(spriteTexture, atX, atY, answer) {
      */
     this.setText();
     
-     var r = new RigidRectangle(this.getXform(), this.w, this.h);
+    var r = new RigidRectangle(this.fruit.getXform(), this.w, this.h);
     this.setRigidBody(r);
     this.mRigidBody.mInvMass=0;
     this.attached = false;
     this.onPlatform = false;
 }
-gEngine.Core.inheritPrototype(Fruit, WASDObj);
+gEngine.Core.inheritPrototype(Fruit, GameObject);
 
 Fruit.prototype.update = function (objset) {
     GameObject.prototype.update.call(this);
-    this.text.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
-    this.placeHolder.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
-    this.getXform().incYPosBy(.6);
+    this.text.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
+    this.fruit.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
+    this.fruit.getXform().incYPosBy(.6);
 };
 
 
 Fruit.prototype.draw = function (aCamera) {
-    this.placeHolder.draw(aCamera);
+    this.fruit.draw(aCamera);
     //this.text.draw(aCamera);
 };
 /*

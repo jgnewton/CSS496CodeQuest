@@ -32,6 +32,13 @@ function BasketScene() {
     this.kbats ="assets/bats.png";
     this.friend = "assets/squirralR.png";
     
+    this.boat = "assets/BasketGame/boat.png";
+    this.fish = "assets/BasketGame/fish.png";
+    this.ocean = "assets/BasketGame/ocean.png";
+    this.oceanBG = "assets/BasketGame/oceanbackground.png";
+    this.seagull = "assets/BasketGame/seagull.png";
+    
+    
     // The camera to view the scene
     this.mCamera = null;
 
@@ -159,6 +166,12 @@ BasketScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.helpTable);
     gEngine.Textures.loadTexture(this.kbats); 
     gEngine.Textures.loadTexture(this.friend);
+    
+    gEngine.Textures.loadTexture(this.boat);
+    gEngine.Textures.loadTexture(this.fish);
+    gEngine.Textures.loadTexture(this.ocean);
+    gEngine.Textures.loadTexture(this.oceanBG);
+    gEngine.Textures.loadTexture(this.seagull);
 };
 
 BasketScene.prototype.unloadScene = function () {
@@ -174,6 +187,13 @@ BasketScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.helpTable);
     gEngine.Textures.unloadTexture(this.kbats); 
     gEngine.Textures.unloadTexture(this.friend);
+    
+    gEngine.Textures.unloadTexture(this.boat);
+    gEngine.Textures.unloadTexture(this.fish);
+    gEngine.Textures.unloadTexture(this.ocean);
+    gEngine.Textures.unloadTexture(this.oceanBG);
+    gEngine.Textures.unloadTexture(this.seagull);
+    
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
 };
@@ -194,14 +214,25 @@ BasketScene.prototype.initialize = function () {
     //object Set
     this.mAllObjs = new GameObjectSet();   
     
-    //create hero and add to set
-    this.mHero = new Hero(this.kMinionSprite);
-    this.mHero.mDye.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
-    this.mAllObjs.addToSet(this.mHero);
+    // background init
+    this.mBackground = new TextureRenderable(this.oceanBG);
+    this.mBackground.getXform().setPosition(0, 0);
+    this.mBackground.getXform().setRotationInDegree(0); // In Degree
+    this.mBackground.getXform().setSize(this.WCWidth, this.WCHeight);
+    this.mAllObjs.addToSet(this.mBackground);
+    //this.mBackground.setColor.call(this, [1, 0, 0, 1]);
+    /*
+    var bxf=this.mBackground.getXform();
+    bxf.setPosition(50,40);
+    bxf.setWidth(500);
+    bxf.setHeight(500);
+    */
     
     
     //configure ground (currently a solid color green)
     // in the future it should be a texture renderable
+    
+    /*
     this.ground = new Renderable(gEngine.DefaultResources.getConstColorShader());
     this.ground.setColor([0, 1, 0, 1]);
     // bottom of the viewport = -WCHeight / 2
@@ -209,15 +240,21 @@ BasketScene.prototype.initialize = function () {
     this.ground.getXform().setPosition(0, -this.WCHeight / 2 + this.groundHeight / 2);
     this.ground.getXform().setRotationInDegree(0); // In Degree
     this.ground.getXform().setSize(this.WCWidth, this.groundHeight);
+    */
+   
+    this.ground = new TextureRenderable(this.ocean);
+    this.groundHeight = this.WCHeight / 4.5;   
+    this.ground.getXform().setPosition(0, 0);
+    this.ground.getXform().setRotationInDegree(0); // In Degree
+    this.ground.getXform().setSize(this.WCWidth, this.WCHeight);
     this.mAllObjs.addToSet(this.ground);
     
-    // background init
-    this.mBackground = new TextureRenderable(this.kMW);
-    this.mBackground.setColor.call(this, [1, 0, 0, 1]);
-    var bxf=this.mBackground.getXform();
-    bxf.setPosition(50,40);
-    bxf.setWidth(500);
-    bxf.setHeight(500);
+    //create hero and add to set
+    this.mHero = new Hero(this.kMinionSprite);
+    this.mHero.mDye.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
+    this.mAllObjs.addToSet(this.mHero);
+    
+    
     
     this.groundLevel = this.WCCenterY - (this.WCHeight/2) + this.groundHeight;
     
@@ -595,7 +632,7 @@ BasketScene.prototype.generateBat = function () {
                 ans = false;
             }
         }
-        var Bat1 = new Bat(this.kMinionSprite, xl, yl, false, type, ans);
+        var Bat1 = new Bat(this.kMinionSprite, this.fish, xl, yl, false, type, ans);
 
         //drop speed
         //Bat1.yv=-14;
