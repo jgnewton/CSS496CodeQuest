@@ -27,7 +27,7 @@ function Hero(spriteTexture) {
     this.setRigidBody(r);
     
     //this.toggleDrawRenderable();
-    this.toggleDrawRigidShape();
+    //this.toggleDrawRigidShape();
     
     this.mRigidBody.mInvMass=0;
     this.firing=false;
@@ -98,5 +98,14 @@ Hero.prototype.checkCollision = function (obj){
     }
     else{
         return false;
+    }
+} ;
+
+
+Hero.prototype.changeDir = function (left){
+    if(left){
+        this.mDye.setElementPixelPositions(0, 413, 512 - 326, 512);
+    } else {
+        this.mDye.setElementPixelPositions(413, 0, 512 - 326, 512);
     }
 } ;

@@ -37,6 +37,7 @@ function BasketScene() {
     this.ocean = "assets/BasketGame/ocean.png";
     this.oceanBG = "assets/BasketGame/oceanbackground.png";
     this.seagull = "assets/BasketGame/seagull.png";
+    this.boatcharacter = "assets/BasketGame/boatcharacter.png";
     
     
     // The camera to view the scene
@@ -172,6 +173,8 @@ BasketScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.ocean);
     gEngine.Textures.loadTexture(this.oceanBG);
     gEngine.Textures.loadTexture(this.seagull);
+    
+    gEngine.Textures.loadTexture(this.boatcharacter);
 };
 
 BasketScene.prototype.unloadScene = function () {
@@ -193,6 +196,7 @@ BasketScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.ocean);
     gEngine.Textures.unloadTexture(this.oceanBG);
     gEngine.Textures.unloadTexture(this.seagull);
+    gEngine.Textures.unloadTexture(this.boatcharacter);
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -250,8 +254,11 @@ BasketScene.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.ground);
     
     //create hero and add to set
-    this.mHero = new Hero(this.kMinionSprite);
+    this.mHero = new Hero(this.boatcharacter);
     this.mHero.mDye.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
+    this.mHero.mDye.setElementPixelPositions(0, 413, 512 - 326, 512);
+    this.mHero.mDye.getXform().setSize(32, 36);
+    //this.mHero.
     this.mAllObjs.addToSet(this.mHero);
     
     
@@ -385,7 +392,7 @@ BasketScene.prototype.update = function () {
         }
     }
     
-   this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos());
+   this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos() + 9);
    
    if(this.helpTimer <= 120){
        this.helpTimer++;
@@ -428,7 +435,7 @@ BasketScene.prototype.updateObjects = function(){
         var obj = this.mAllObjs.getObjectAt(i);
         if(obj instanceof Fruit){
             obj.update();
-            this.fruitGravity(obj);
+            //this.fruitGravity(obj);
             if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
@@ -533,12 +540,14 @@ BasketScene.prototype.processInput = function(){
                 if(heroXF.getXPos()>this.WCCenterX-this.WCWidth/2){
                     heroXF.incXPosBy(-1*deltax);    
                 }
+                this.mHero.changeDir(true);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)){
                if(heroXF.getXPos()<this.WCCenterX+this.WCWidth/2){
                     heroXF.incXPosBy(deltax);    
                 }
+                this.mHero.changeDir(false);
         }    
         
                 
@@ -632,7 +641,9 @@ BasketScene.prototype.generateBat = function () {
                 ans = false;
             }
         }
-        var Bat1 = new Bat(this.kMinionSprite, this.fish, xl, yl, false, type, ans);
+        //console.log(ans);
+        
+        var Bat1 = new Bat(this.seagull, this.fish, xl, yl, false, type, ans);
 
         //drop speed
         //Bat1.yv=-14;
@@ -651,7 +662,8 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
       //  fruit.mRigidBody.setVelocity(0,50);
       if(!fruit.attached && !fruit.onPlatform){
        // fruit.mRigidBody.mInvMass=1;
-       fruit.mRigidBody.setMass(1);
+       //console.log(fruit.mRigidBody);
+       //fruit.mRigidBody.setMass(0.01);
       }
     }
     else{
@@ -661,6 +673,9 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
 };
 
 BasketScene.prototype.checkAnswer = function( ) {
+    console.log(this.mBat);
+    console.log(this.mBat.answer);
+    console.log(this.mBat.correctAnswer);
     console.log("mAsnwer " + this.mAnswer + ".  mBatAnswer " + this.mBat.correctAnswer)
     if (this.mAnswer == this.mBat.correctAnswer){
         this.incrementScore(true);

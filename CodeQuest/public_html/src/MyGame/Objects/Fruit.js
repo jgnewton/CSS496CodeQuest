@@ -8,7 +8,7 @@
 function Fruit(spriteTexture, atX, atY, answer) {
     
     this.w=20;
-    this.h=20;
+    this.h=13;
     
     this.answer = answer;
     
@@ -23,7 +23,10 @@ function Fruit(spriteTexture, atX, atY, answer) {
     }
     */
    
-    this.fruit = new TextureRenderable(spriteTexture);
+    this.fruit = new SpriteRenderable(spriteTexture);
+    //Fish - (0,0),(350,0),(0,199),(350,199)
+    this.fruit.setElementPixelPositions(0, 350, 512, 512 - 199);
+    
     
     var xf = this.fruit.getXform();
     
@@ -58,11 +61,15 @@ function Fruit(spriteTexture, atX, atY, answer) {
      * 7 ||
      * 
      */
-    this.setText();
+    //this.setText();
     
     var r = new RigidRectangle(this.fruit.getXform(), this.w, this.h);
+    r.setAngularVelocity(Math.random()*2 - 1);
+    r.setMass(0.1);
+    //r.setInertia(0.01);
+    //r.setInertia(.01);
     this.setRigidBody(r);
-    this.mRigidBody.mInvMass=0;
+    //this.mRigidBody.mInvMass=0;
     this.attached = false;
     this.onPlatform = false;
 }
@@ -70,9 +77,9 @@ gEngine.Core.inheritPrototype(Fruit, GameObject);
 
 Fruit.prototype.update = function (objset) {
     GameObject.prototype.update.call(this);
-    this.text.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
-    this.fruit.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
-    this.fruit.getXform().incYPosBy(.6);
+    //this.text.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
+    //this.fruit.getXform().setPosition(this.fruit.getXform().getXPos(),this.fruit.getXform().getYPos() );
+    this.fruit.getXform().incYPosBy(.4);
 };
 
 
@@ -92,6 +99,8 @@ Fruit.prototype.checkCollision = function (obj){
     
 } ;
 */
+
+
 Fruit.prototype.Transition = function (){
 }
 
@@ -140,3 +149,4 @@ Fruit.prototype.setText = function (){
     this.text.getXform().setPosition(this.getXform().getXPos(),this.getXform().getYPos() );
     this.text.setTextHeight(7.5);
 };
+
