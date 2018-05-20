@@ -195,7 +195,7 @@ Asteroid.prototype.update = function () {
 Asteroid.prototype.draw = function (aCamera) {
     //GameObject.prototype.draw.call(this);
     this.mMinion.draw(aCamera);
-    
+    //this.mRigidBody.draw(aCamera);
     if (this.isVisible()) {
         if (this.mDrawRenderable)
            // this.mRenderComponent.draw(aCamera);
