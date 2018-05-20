@@ -331,7 +331,7 @@ BubbleScene.prototype.initialize = function () {
         this.refreshText.getXform().setPosition(-135, -100);
         this.refreshText.setTextHeight(6.5);
     
-    this.changeText=new FontRenderable("Num color-changes left: "+ this.numRefresh);
+    this.changeText=new FontRenderable("Num color-changes left: "+ this.numChanges);
         this.changeText.setColor([0, 0, 0, 1]);
         this.changeText.getXform().setPosition(-135, -70);
         this.changeText.setTextHeight(6.5);
