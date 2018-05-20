@@ -352,8 +352,34 @@ BasketScene.prototype.update = function () {
    
    if(this.helpTimer <= 120){
        this.helpTimer++;
-       this.friendObject.getXform().setPosition(this.mHero.getXform().getXPos()-30,  this.WCCenterY-60);
-        this.showAnswer.getXform().setPosition(this.mHero.getXform().getXPos()-20, this.WCCenterY-40);
+       
+       var x =this.mHero.getXform().getXPos();
+       
+       var textx=x-20;
+       var friendx= x-30;
+       
+       if(textx<this.WCCenterX-this.WCWidth/2 +10){
+        var textx=x+20;    
+       }
+       
+       if(friendx<this.WCCenterX-this.WCWidth/2 +10){
+        var friendx=x+30;    
+       }
+       
+       if(textx>this.WCCenterX+this.WCWidth/2 -60){
+            var textx=x-120;    
+       }
+       
+       if(friendx>this.WCCenterX+this.WCWidth/2 -60){
+            var friendx=x-75;    
+       }
+       
+       
+       
+       
+       
+       this.friendObject.getXform().setPosition(friendx,  this.WCCenterY-60);
+        this.showAnswer.getXform().setPosition(textx, this.WCCenterY-40);
    }
     
  };

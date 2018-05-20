@@ -27,7 +27,7 @@ BubbleScene.prototype.initBubbles = function () {
             //color
             var color = Math.round(Math.random()*5);
             
-            var b = new Bubble(this.mMeteorSprite, j*(this.bubbleW) -this.WCWidth/2 +40+offset, this.WCHeight/2-this.bubbleW/2- i*(this.bubbleW), false, color);
+            var b = new Bubble(this.mCloudSprite, j*(this.bubbleW) -this.WCWidth/2 +40+offset, this.WCHeight/2-this.bubbleW/2- i*(this.bubbleW), false, color);
  
             this.myBubbles.addToSet(b);
         }
