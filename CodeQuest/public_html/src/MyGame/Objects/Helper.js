@@ -17,7 +17,7 @@ function Helper(spriteTexture, sprite2) {
     this.mDye = new SpriteRenderable(spriteTexture);
     this.mDye.setColor([1, 1, 1, 0]);
     this.mDye.getXform().setPosition(50, 40);
-    this.mDye.getXform().setSize(6, 10);
+    this.mDye.getXform().setSize(8, 10);
     //this.mDye.setElementPixelPositions(0, 0, 512, 512);
     
     GameObject.call(this, this.mDye);

@@ -86,7 +86,7 @@ MyGame.prototype.unloadScene = function () {
     
     
     // start the next scene
-    var SceneObject = new AsteroidScene();
+    //var SceneObject = new AsteroidScene();
     
     
     if(this.nextScene==0){
@@ -117,7 +117,15 @@ MyGame.prototype.unloadScene = function () {
     else if(this.nextScene == 5){
         gEngine.Core.startScene(new MainMenuScene());
     }
-    
+    else if(this.nextScene == 6){
+        gEngine.Core.startScene(new LessonScene("Meteors"));
+    }
+    else if(this.nextScene == 7){
+        gEngine.Core.startScene(new LessonScene("Baskets"));
+    }
+    else if(this.nextScene == 8){
+        gEngine.Core.startScene(new LessonScene("Bubbles"));
+    }
     
     //gEngine.Core.startScene(SceneObject);  
         
@@ -144,15 +152,28 @@ MyGame.prototype.initialize = function () {
     
     
     this.sz1 = new SceneZone(this.kMinionSprite,0,0, this.meteorWin);
-    this.sz1.scene = 2;
+    if(this.meteorWin){
+       this.sz1.scene = 2; 
+    } else {
+        this.sz1.scene = 6;
+    }
+    
     this.mAllObjs.addToSet(this.sz1);
     
     this.sz2 = new SceneZone(this.kMinionSprite,50,0, this.basketWin);
-    this.sz2.scene = 3;
+    if(this.basketWin){
+       this.sz2.scene = 3; 
+    } else {
+        this.sz2.scene = 7;
+    }
     this.mAllObjs.addToSet(this.sz2);
     
     this.sz3 = new SceneZone(this.kMinionSprite,0,50, this.bubbleWin);
-    this.sz3.scene = 4;
+    if(this.bubbleWin){
+       this.sz3.scene = 4; 
+    } else {
+        this.sz3.scene = 8;
+    }
     this.mAllObjs.addToSet(this.sz3);
     
     
