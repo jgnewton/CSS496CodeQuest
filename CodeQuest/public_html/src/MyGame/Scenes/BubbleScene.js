@@ -147,6 +147,13 @@ function BubbleScene() {
     this.blackHoleText=null;
     this.refreshText=null;
     this.bounceTimer=0;
+    
+    this.progressBar = new Renderable();
+    this.progressBar.setColor([0, .5, .2, 1]);
+    var pxf = this.progressBar.getXform();
+    
+    pxf.setPosition(-145, -63);
+    pxf.setSize(8, 250);
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -343,7 +350,6 @@ BubbleScene.prototype.draw = function () {
         this.gameOverText3.draw(this.mCamera);
         //this.gameOverText4.draw(this.mCamera);
     } else {
-        
         this.mAllObjs.draw(this.mCamera);
         
          this.rendy.draw(this.mCamera);
@@ -373,6 +379,8 @@ BubbleScene.prototype.draw = function () {
         this.mCannon.draw(this.mCamera);
         this.blackHoleText.draw(this.mCamera);
         this.refreshText.draw(this.mCamera);
+        
+        this.progressBar.draw(this.mCamera);
         
     }
     
