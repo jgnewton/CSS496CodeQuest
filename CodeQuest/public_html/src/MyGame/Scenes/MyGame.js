@@ -20,6 +20,11 @@ function MyGame() {
     this.kEarth = "assets/Earth.png";
     this.friendr = "assets/squirralR.png";
     this.friendl = "assets/squirralL.png";
+    
+    this.mc = "assets/maincharacter.png"
+    
+    this.chipmunk = "assets/squirrel.png";
+    this.chipmunkhelmet = "assets/squirrelhelmet.png"
     // The camera to view the scene
     this.mCamera = null;
 
@@ -58,6 +63,10 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kEarth);
     gEngine.Textures.loadTexture(this.friendr); 
     gEngine.Textures.loadTexture(this.friendl); 
+    
+    gEngine.Textures.loadTexture(this.mc);
+    gEngine.Textures.loadTexture(this.chipmunk);
+    gEngine.Textures.loadTexture(this.chipmunkhelmet);
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -70,6 +79,10 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kEarth);
     gEngine.Textures.unloadTexture(this.friendr); 
     gEngine.Textures.unloadTexture(this.friendl); 
+    
+    gEngine.Textures.unloadTexture(this.mc);
+    gEngine.Textures.unloadTexture(this.chipmunk);
+    gEngine.Textures.unloadTexture(this.chipmunkhelmet);
     
     
     // start the next scene
@@ -122,7 +135,8 @@ MyGame.prototype.initialize = function () {
             // sets the background to gray
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
       
-    this.mHero = new Hero(this.kMinionSprite);
+    this.mHero = new Hero(this.mc);
+    this.mHero.mDye.setElementPixelPositions(0, 372, 512 - 452, 512);
     this.mAllObjs = new GameObjectSet();   
     this.mAllObjs.addToSet(this.mHero);
     
@@ -143,7 +157,12 @@ MyGame.prototype.initialize = function () {
     
     
     
-    this.mHelper = new Helper(this.friendr, this.friendl);
+    this.mHelper = new Helper(this.chipmunk, this.friendl);
+    this.mHelper.mDye.setElementPixelPositions(0, 421, 1024 - 523, 1024);
+    //friendObjectr
+    
+    //this.mHelper = new SpriteRenderable(this.chipmunkhelmet);
+    //this.mHelper.setElementPixelPositions(0, 421, 512 - 523, 512);
     this.mAllObjs.addToSet(this.mHelper);
     
     /*
