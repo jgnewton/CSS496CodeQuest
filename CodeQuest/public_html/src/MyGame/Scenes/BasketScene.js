@@ -37,6 +37,7 @@ function BasketScene() {
     this.ocean = "assets/BasketGame/ocean.png";
     this.oceanBG = "assets/BasketGame/oceanbackground.png";
     this.seagull = "assets/BasketGame/seagull.png";
+    this.boatcharacter = "assets/BasketGame/boatcharacter.png";
     
     
     // The camera to view the scene
@@ -172,6 +173,8 @@ BasketScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.ocean);
     gEngine.Textures.loadTexture(this.oceanBG);
     gEngine.Textures.loadTexture(this.seagull);
+    
+    gEngine.Textures.loadTexture(this.boatcharacter);
 };
 
 BasketScene.prototype.unloadScene = function () {
@@ -193,6 +196,7 @@ BasketScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.ocean);
     gEngine.Textures.unloadTexture(this.oceanBG);
     gEngine.Textures.unloadTexture(this.seagull);
+    gEngine.Textures.unloadTexture(this.boatcharacter);
     
     var MG = new MyGame();
     gEngine.Core.startScene(MG); 
@@ -250,8 +254,11 @@ BasketScene.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.ground);
     
     //create hero and add to set
-    this.mHero = new Hero(this.kMinionSprite);
+    this.mHero = new Hero(this.boatcharacter);
     this.mHero.mDye.getXform().setPosition(this.WCCenterX, this.WCCenterY-60);
+    this.mHero.mDye.setElementPixelPositions(0, 413, 512 - 326, 512);
+    this.mHero.mDye.getXform().setSize(32, 36);
+    //this.mHero.
     this.mAllObjs.addToSet(this.mHero);
     
     
@@ -385,7 +392,7 @@ BasketScene.prototype.update = function () {
         }
     }
     
-   this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos());
+   this.basketText.getXform().setPosition(this.mHero.getXform().getXPos(),this.mHero.getXform().getYPos() + 9);
    
    if(this.helpTimer <= 120){
        this.helpTimer++;
@@ -533,12 +540,14 @@ BasketScene.prototype.processInput = function(){
                 if(heroXF.getXPos()>this.WCCenterX-this.WCWidth/2){
                     heroXF.incXPosBy(-1*deltax);    
                 }
+                this.mHero.changeDir(true);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)){
                if(heroXF.getXPos()<this.WCCenterX+this.WCWidth/2){
                     heroXF.incXPosBy(deltax);    
                 }
+                this.mHero.changeDir(false);
         }    
         
                 
