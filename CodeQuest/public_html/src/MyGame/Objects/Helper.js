@@ -17,8 +17,8 @@ function Helper(spriteTexture, sprite2) {
     this.mDye = new SpriteRenderable(spriteTexture);
     this.mDye.setColor([1, 1, 1, 0]);
     this.mDye.getXform().setPosition(50, 40);
-    this.mDye.getXform().setSize(16, 18);
-    this.mDye.setElementPixelPositions(0, 0, 512, 512);
+    this.mDye.getXform().setSize(6, 10);
+    //this.mDye.setElementPixelPositions(0, 0, 512, 512);
     
     GameObject.call(this, this.mDye);
     
@@ -33,7 +33,7 @@ function Helper(spriteTexture, sprite2) {
     this.setRigidBody(r);
     
     //this.toggleDrawRenderable();
-    this.toggleDrawRigidShape();
+    //this.toggleDrawRigidShape();
     
     this.mRigidBody.mInvMass=0;
     this.firing=false;
@@ -61,12 +61,14 @@ Helper.prototype.update = function () {
 }
 
 Helper.prototype.draw = function (camera) {
-    
+    GameObject.prototype.draw.call(this, camera);
+    /*
     if(this.right){
         this.friendObjectr.draw(camera);
     }else{
         this.friendObjectl.draw(camera);
     }
+    */
 }
 
 
