@@ -189,6 +189,9 @@ BubbleScene.prototype.setElements = function () {
     var textXPos = 70;
     var textOffset = 15;
     
+    this.textYpos= textYpos;
+    this.textOffset=textOffset;
+    this.textSize = textSize;
     
     var qs ="";
     var qStrings=[];

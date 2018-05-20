@@ -148,6 +148,8 @@ function BubbleScene() {
     this.blackHoleText=null;
     this.refreshText=null;
     this.bounceTimer=0;
+    
+    this.lines=[];
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -330,6 +332,20 @@ BubbleScene.prototype.initialize = function () {
     this.rendy.getXform().setSize(100, 150);
     this.rendy.setColor([.8, .8, .8, 1]);
     this.rendy.getXform().setPosition(110, -80);
+    
+    
+    //this.textOffset-=.5;
+    
+    var cal = .5
+    
+    this.Underline(78,this.textYpos-this.textSize/2 -cal);
+    this.Underline(112,this.textYpos+this.textOffset-this.textSize/2-cal);
+     this.Underline(135,this.textYpos+this.textOffset*2-this.textSize/2-cal);
+      this.Underline(112,this.textYpos+this.textOffset*3-this.textSize/2-cal);
+       this.Underline(90,this.textYpos+this.textOffset*4-this.textSize/2-cal);
+        this.Underline(70,this.textYpos+this.textOffset*5-this.textSize/2-cal);
+
+
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -381,6 +397,9 @@ BubbleScene.prototype.draw = function () {
         this.changeText.draw(this.mCamera);
         this.refreshText.draw(this.mCamera);
         
+        for(var i =0; i< this.lines.length; i++){
+            this.lines[i].draw(this.mCamera);
+        }
     }
     
     //this.accuracyText.draw(this.mCamera);
@@ -824,9 +843,18 @@ BubbleScene.prototype.checkIfWin = function() {
 BubbleScene.prototype.changeColor = function(c) {
     if(this.numChanges>0){
         this.numChanges--;
-        this.changeText.setText("Num Black Holes left: "+ this.numChanges);
+        this.changeText.setText("Num color-changes left: "+ this.numChanges);
     this.nextColor=c-1;
     this.mNextBubble.color = this.nextColor;
     this.mNextBubble.setColor();
     }    
 };
+
+BubbleScene.prototype.Underline = function(x,y) {
+    
+    var u = new Renderable(0,0);
+    u.getXform().setSize(7, .5);
+    u.setColor([0,0,0,1]);
+    u.getXform().setPosition(x,y);
+    this.lines.push(u);
+}
