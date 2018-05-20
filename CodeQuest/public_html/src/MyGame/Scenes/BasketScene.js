@@ -632,7 +632,7 @@ BasketScene.prototype.generateBat = function () {
                 ans = false;
             }
         }
-        var Bat1 = new Bat(this.kMinionSprite, this.fish, xl, yl, false, type, ans);
+        var Bat1 = new Bat(this.seagull, this.fish, xl, yl, false, type, ans);
 
         //drop speed
         //Bat1.yv=-14;
