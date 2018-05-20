@@ -280,10 +280,12 @@ BubbleScene.prototype.initialize = function () {
     this.helpTableObject = new TextureRenderable(this.helpTable);
     this.helpTableObject.getXform().setSize(180, 80);
     
-    this.gameOverText = new MenuElement("Game Over", -15, 30, 10);
-    this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -25, 0, 10);
+    this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
+    this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
     this.gameOverText3 = new MenuElement("Press X to return to overworld", -70, -30, 10);
     //this.gameOverText4 = new MenuElement("Press Space to play again", -45, -60, 10);
+    this.win = false;
+  
     
     this.Accuracy=0;
     this.Hits=0;
@@ -369,6 +371,8 @@ BubbleScene.prototype.draw = function () {
         }
 
         this.mCannon.draw(this.mCamera);
+        this.blackHoleText.draw(this.mCamera);
+        this.refreshText.draw(this.mCamera);
         
     }
     
@@ -380,8 +384,6 @@ BubbleScene.prototype.draw = function () {
         }
     }
     
-    this.blackHoleText.draw(this.mCamera);
-    this.refreshText.draw(this.mCamera);
     
 };
 
@@ -501,6 +503,8 @@ BubbleScene.prototype.processInput = function(){
     }
     
     if(!this.gameOver){
+        
+        //Show Help Table
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.H)) {
             this.helpTableVisible = true;
         }
@@ -509,6 +513,10 @@ BubbleScene.prototype.processInput = function(){
             this.helpTableVisible = false;
         }
 
+        //check winning
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.I)) {
+            this.gameOver = true;
+        }
 
         //selecting Projectile type:
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
@@ -711,12 +719,12 @@ BubbleScene.prototype.updateQuestions = function(b) {
     console.log(this.questions[this.selectIndex]);
         
     var string ="";
-    
+
     var num = parseInt(this.questions[this.selectIndex][0]);
     var space = parseInt(this.questions[this.selectIndex][1]);
     this.questions[this.selectIndex][space+1]=b.msg;
-    
     this.proposed[this.selectIndex]= b.answerKey;
+
     
     console.log(this.proposed[this.selectIndex]);
     console.log(this.correctAnswers[this.selectIndex]);
@@ -734,7 +742,8 @@ BubbleScene.prototype.updateElementStatus = function() {
         if(this.proposed[i]!= 0){
             
             if(this.proposed[i]==this.correctAnswers[i]){
-            elem.setColor([0,1,.2,1]); //green
+                elem.setColor([0,1,.2,1]); //green
+                this.checkIfWin();
             }else{ 
                 elem.setColor([1,.2,0,1]); //red
             }
@@ -761,8 +770,23 @@ BubbleScene.prototype.useBlackHole = function() {
     this.mNextBubble.setColor();
     }
     
-}
+};
 
 BubbleScene.prototype.progress = function() {
     
+};
+
+BubbleScene.prototype.checkIfWin = function() {
+    for(var i=1; i<7; i++){
+        if(this.proposed[i] == this.correctAnswers[i]) {
+            this.win = true;
+        }else{
+            this.win = false;
+            i = 7;
+        }
+    }
+    if(this.win){
+        this.gameOver = true; 
+       // localStorage.setItem("Meteors", true);
+    }
 };

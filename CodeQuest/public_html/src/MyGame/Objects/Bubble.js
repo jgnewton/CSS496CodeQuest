@@ -118,7 +118,7 @@ Bubble.prototype.draw = function (aCamera) {
     if (this.isVisible()) {
         if (this.mDrawRenderable)
             this.mRenderComponent.draw(aCamera);
-         //htis.mRigidBody.draw(aCamera);
+        // this.mRigidBody.draw(aCamera);
     }
     
     if(this.drawText){
