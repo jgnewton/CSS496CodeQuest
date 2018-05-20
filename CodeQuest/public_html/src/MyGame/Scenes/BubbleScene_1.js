@@ -7,7 +7,7 @@ BubbleScene.prototype.initBubbles = function () {
   
   this.perRow = Math.floor((this.WCWidth-10)/this.bubbleW*.75);
   
-  this.numRows =5;
+  this.numRows =4;
   
   this.myBubbles= new GameObjectSet();
   

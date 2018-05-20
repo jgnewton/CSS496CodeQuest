@@ -25,13 +25,29 @@
             <file>file:/C:/Users/jgn2/Documents/GitHub/CSS496CodeQuest22222/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
         </group>
         <group>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Asteroid.js</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bat.js</file>
+<<<<<<< HEAD
+            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Platform.js</file>
+            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bubble.js</file>
+            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/AsteroidScene.js</file>
+            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bat_Bar.js</file>
+            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Hero.js</file>
+            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BubbleScene.js</file>
+            <file>file:/C:/Users/sura_/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bat.js</file>
+=======
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Projectile.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bat.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BubbleScene_1.js</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BubbleScene.js</file>
-            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bubble.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BasketScene.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/assets/BasketHelp.png</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BubbleScene.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Asteroid.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/assets/LessonOne/LessonOne1.png</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BasketScene_1.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/assets/LessonOne/LessonOne9.png</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
+            <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/assets/AsteroidHelp.PNG</file>
+>>>>>>> e3eda9dcdcca155d3c2b31812d0590ec2a566fa7
         </group>
     </open-files>
 </project-private>

@@ -472,7 +472,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
         this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
         this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
         this.gameOver = true;
-        
+        this.accuracyText.setColor([0,0,0,1]);
         localStorage.setItem("Meteors", true);
         //this.win = true;
     }
@@ -486,7 +486,8 @@ AsteroidScene.prototype.incrementScore = function(hit){
         this.Accuracy= this.Hits/ this.Shots * 100;
     }
     
-    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);    
+    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
+    this.accuracyText.setColor([0,1,1,1]);
 };
 
 AsteroidScene.prototype.processInput = function(){
@@ -738,7 +739,6 @@ AsteroidScene.prototype.rayCast = function (p) {
             var astx = axf.getXPos();
             var asty = axf.getYPos();
                               
-
             //ray to far bottom corner
             var thetaMax=0;
 
@@ -794,8 +794,7 @@ AsteroidScene.prototype.rayCast = function (p) {
                     thetaMin = theta3;
                 }else{
                     thetaMin=theta4;
-                }
-            
+                }           
             }
 
             //asteroid on right
@@ -824,7 +823,7 @@ AsteroidScene.prototype.rayCast = function (p) {
                     rend.getXform().setSize(1,2000);
                     rend.getXform().setRotationInRad(thetaMin);
                     
-                    this.mAllObjs.addToSet(rend);
+                    //this.mAllObjs.addToSet(rend);
                     
                 var rend2 = new Renderable();
                     rend2.setColor([1,0,1,1]);  
@@ -834,7 +833,7 @@ AsteroidScene.prototype.rayCast = function (p) {
                     rend2.getXform().setSize(1,2000);
                     rend2.getXform().setRotationInRad(thetaMax);
                     
-                    this.mAllObjs.addToSet(rend2);
+                    //this.mAllObjs.addToSet(rend2);
                 }
                 else{
                     var rend = new Renderable();
@@ -847,7 +846,7 @@ AsteroidScene.prototype.rayCast = function (p) {
                     rend.getXform().setSize(1,Math.sqrt(tlx*tlx+(tly+60)*(tly+60)));
                     rend.getXform().setRotationInRad(thetaMin);
                     
-                    this.mAllObjs.addToSet(rend);
+                    //this.mAllObjs.addToSet(rend);
                     
                     var rend2 = new Renderable();
                     rend2.setColor([1,0,0,1]);
@@ -859,7 +858,7 @@ AsteroidScene.prototype.rayCast = function (p) {
                     rend2.getXform().setSize(1,Math.sqrt(brx*brx+(bry+60)*(bry+60)));
                     rend2.getXform().setRotationInRad(thetaMax);
                     
-                    this.mAllObjs.addToSet(rend2);  
+                    //this.mAllObjs.addToSet(rend2);  
                 }
             
             
