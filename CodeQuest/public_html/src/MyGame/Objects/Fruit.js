@@ -8,7 +8,7 @@
 function Fruit(spriteTexture, atX, atY, answer) {
     
     this.w=20;
-    this.h=20;
+    this.h=13;
     
     this.answer = answer;
     
@@ -23,7 +23,10 @@ function Fruit(spriteTexture, atX, atY, answer) {
     }
     */
    
-    this.fruit = new TextureRenderable(spriteTexture);
+    this.fruit = new SpriteRenderable(spriteTexture);
+    //Fish - (0,0),(350,0),(0,199),(350,199)
+    this.fruit.setElementPixelPositions(0, 350, 512, 512 - 199);
+    
     
     var xf = this.fruit.getXform();
     
@@ -61,8 +64,11 @@ function Fruit(spriteTexture, atX, atY, answer) {
     this.setText();
     
     var r = new RigidRectangle(this.fruit.getXform(), this.w, this.h);
+    r.setAngularVelocity(Math.random()*2 - 1);
+    //r.setMass(40);
+    //r.setInertia(.01);
     this.setRigidBody(r);
-    this.mRigidBody.mInvMass=0;
+    //this.mRigidBody.mInvMass=0;
     this.attached = false;
     this.onPlatform = false;
 }
