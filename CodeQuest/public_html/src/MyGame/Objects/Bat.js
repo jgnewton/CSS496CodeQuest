@@ -35,17 +35,17 @@ function Bat(spriteTexture, fruitTexture, atX, atY, createCircle, type, ans) {
     var h = 25;
     
     this.mMinion = new SpriteAnimateRenderable(spriteTexture);
-    this.mMinion.setColor([1, 1, 1, 0]);
+    //this.mMinion.setColor([1, 1, 1, 0]);
     this.mMinion.getXform().setPosition(atX, atY);
     this.mMinion.getXform().setSize(w, h);
     this.mMinion.setSpriteSequence(512, 0,      // first element pixel position: top-left 512 is top of image, 0 is left of image
-                                    204, 164,   // widthxheight in pixels
-                                    5,          // number of elements in this sequence
+                                    128, 94,   // widthxheight in pixels
+                                    2,          // number of elements in this sequence
                                     0);         // horizontal padding in between
     this.mMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateSwing);
-    this.mMinion.setAnimationSpeed(30);
+    this.mMinion.setAnimationSpeed(45);
                                 // show each element for mAnimSpeed updates
-
+    //this.mMinion.updateAnimation();
     GameObject.call(this, this.mMinion);
     
     var r;
@@ -59,7 +59,7 @@ function Bat(spriteTexture, fruitTexture, atX, atY, createCircle, type, ans) {
     r.setVelocity(vx * speed, vy * speed);
     this.setRigidBody(r);
     //this.toggleDrawRenderable();
-    this.toggleDrawRigidShape();
+    //this.toggleDrawRigidShape();
     
     //not using physics
     // do not set mass to 0.
@@ -78,7 +78,9 @@ function Bat(spriteTexture, fruitTexture, atX, atY, createCircle, type, ans) {
     
     this.displayCoord=false;
     
+    
     this.answer=ans;
+    console.log(this.answer);
     
     this.correctOType=0;
     this.correctAnswer=0;
@@ -140,7 +142,7 @@ Bat.prototype.draw = function (aCamera) {
         //if (this.mDrawRenderable)
             this.mRenderComponent.draw(aCamera);
         //if ((this.mRigidBody !== null) && (this.mDrawRigidShape))
-            this.mRigidBody.draw(aCamera);
+            //this.mRigidBody.draw(aCamera);
     }
     this.text.draw(aCamera);
 };
@@ -441,5 +443,5 @@ Bat.prototype.dropFruit =function (){
 
 
 Bat.prototype.flyAway =function (){
-    this.yv = 4;
+    this.yv = 3;
 };

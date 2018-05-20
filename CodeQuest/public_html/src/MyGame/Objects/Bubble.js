@@ -222,7 +222,7 @@ Bubble.prototype.pop = function () {
 Bubble.prototype.setColor = function () {
    switch (this.color) {
     case 0:
-        this.mMinion.setColor([1,.2,.1,.5]);//red
+        this.mMinion.setColor([1,.2,0,.7]);//red
         break;
     case 1:
         this.mMinion.setColor([.2,.2,1,.5]);//blue
