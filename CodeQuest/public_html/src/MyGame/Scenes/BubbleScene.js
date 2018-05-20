@@ -141,6 +141,7 @@ function BubbleScene() {
     
     this.numRefresh=3;
     this.numBlackHole=3;
+    this.numChanges=6;
     
     //this.mBar = new Renderable();
     
@@ -319,6 +320,11 @@ BubbleScene.prototype.initialize = function () {
         this.refreshText.setColor([0, 0, 0, 1]);
         this.refreshText.getXform().setPosition(-135, -100);
         this.refreshText.setTextHeight(6.5);
+    
+    this.changeText=new FontRenderable("Num color-changes left: "+ this.numRefresh);
+        this.changeText.setColor([0, 0, 0, 1]);
+        this.changeText.getXform().setPosition(-135, -70);
+        this.changeText.setTextHeight(6.5);
         
     this.rendy = new Renderable();
     this.rendy.getXform().setSize(100, 150);
@@ -372,6 +378,7 @@ BubbleScene.prototype.draw = function () {
 
         this.mCannon.draw(this.mCamera);
         this.blackHoleText.draw(this.mCamera);
+        this.changeText.draw(this.mCamera);
         this.refreshText.draw(this.mCamera);
         
     }
@@ -567,9 +574,32 @@ BubbleScene.prototype.processInput = function(){
             this.refresh();
         }
         
-        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
+                if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
             this.useBlackHole();
         }
+        
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.One)) {
+            this.changeColor(1);
+        }
+        
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Two)) {
+            this.changeColor(2);
+        }
+         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Three)) {
+            this.changeColor(3);
+        }
+                if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Four)) {
+            this.changeColor(4);
+        }
+                if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Five)) {
+            this.changeColor(5);
+        }
+                if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Six)) {
+            this.changeColor(6);
+        }
+        
+        
+        
         
         //console.log(this.bounceTimer);
         //fire
@@ -789,4 +819,14 @@ BubbleScene.prototype.checkIfWin = function() {
         this.gameOver = true; 
        // localStorage.setItem("Meteors", true);
     }
+};
+
+BubbleScene.prototype.changeColor = function(c) {
+    if(this.numChanges>0){
+        this.numChanges--;
+        this.changeText.setText("Num Black Holes left: "+ this.numChanges);
+    this.nextColor=c-1;
+    this.mNextBubble.color = this.nextColor;
+    this.mNextBubble.setColor();
+    }    
 };
