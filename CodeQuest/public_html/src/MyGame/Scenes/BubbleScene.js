@@ -716,6 +716,7 @@ BubbleScene.prototype.checkCollisions = function() {
             
             if(this.mFlyBubble.color == 99){
                 b.poped=true;
+                b.blackHoled=true;
                 this.mFlyBubble.poped=true;
            }
             
@@ -763,7 +764,7 @@ BubbleScene.prototype.removeBubbles = function() {
         if(b.poped){
             this.myBubbles.removeFromSet(b);
             i--;
-            if(b.drawText){
+            if(b.drawText && !b.blackHoled){
                //console.log("Answer popped");
                if(this.selectIndex!=0){
                    this.updateQuestions(b);
