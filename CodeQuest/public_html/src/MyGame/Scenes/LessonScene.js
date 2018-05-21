@@ -226,8 +226,22 @@ LessonScene.prototype.initialize = function () {
     //this.setCameraFollowTarget(this.mHero);
     
    //this.initLessonOne();
-   
+   this.initLessonText();
 };
+
+LessonScene.prototype.initLessonText = function () {
+    this.lessonOne = [];
+    if(this.lesson == "Meteors"){
+        //this.sceneZone1Text = new MenuElement("Meteors", 0, 0, 4);
+        //this.lessonOne.push(new MenuElement());
+    }
+    else if(this.lesson == "Baskets"){
+        
+    }
+    else if(this.lesson == "Bubbles"){
+        
+    }
+}
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
