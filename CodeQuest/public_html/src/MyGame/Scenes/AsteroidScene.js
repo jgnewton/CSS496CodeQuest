@@ -258,10 +258,10 @@ AsteroidScene.prototype.initialize = function () {
     var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
     var textXPos = 110;
     var textOffset = 10;
-    this.intText = new MenuElement("Int", textXPos, textYpos + textOffset * 4, textSize);
-    this.doubleText = new MenuElement("Double", textXPos, textYpos + textOffset * 3, textSize);
-    this.boolText = new MenuElement("Boolean", textXPos, textYpos + textOffset * 2, textSize);
-    this.charText = new MenuElement("Char", textXPos, textYpos + textOffset, textSize);
+    this.intText = new MenuElement("int", textXPos, textYpos + textOffset * 4, textSize);
+    this.doubleText = new MenuElement("double", textXPos, textYpos + textOffset * 3, textSize);
+    this.boolText = new MenuElement("boolean", textXPos, textYpos + textOffset * 2, textSize);
+    this.charText = new MenuElement("char", textXPos, textYpos + textOffset, textSize);
     this.stringText = new MenuElement("String", textXPos, textYpos, textSize);
     //this.stage3Pegs = new MenuElement("Stage 3 Cat-chinko", 30, 35, 3)
     
@@ -294,7 +294,7 @@ AsteroidScene.prototype.initialize = function () {
     this.Hits=0;
     this.Shots=0;
     
-    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
+    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 10,-100,5);
     this.accuracyText.setColor([0,1,1,1]);
     
     this.revealTime=0;
@@ -491,7 +491,7 @@ AsteroidScene.prototype.incrementScore = function(hit){
         this.Accuracy= this.Hits/ this.Shots * 100;
     }
     
-    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 0,-70,5);
+    this.accuracyText = new MenuElement("Success Rate: "+ this.Accuracy.toPrecision(3) + "%", 10,-100,5);
     this.accuracyText.setColor([0,1,1,1]);
 };
 
