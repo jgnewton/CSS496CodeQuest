@@ -20,9 +20,11 @@ function ScoreMark(spriteTexture, atX, atY, correct) {
     
     if(correct){
         //left, right, top, bottom
-        this.mMinion.setElementPixelPositions(0, 64, 64, 128);//check marke
+        //this.mMinion.setElementPixelPositions(0, 64, 64, 128);//check marke
+        this.mMinion.setElementPixelPositions(0, 273, 1024 - 202, 1024);
     } else {
-        this.mMinion.setElementPixelPositions(0, 64, 0, 64);//X marke
+        //this.mMinion.setElementPixelPositions(0, 64, 0, 64);//X marke
+        this.mMinion.setElementPixelPositions(548, 756, 1024 - 202, 1024);
     }
     
     GameObject.call(this, this.mMinion);

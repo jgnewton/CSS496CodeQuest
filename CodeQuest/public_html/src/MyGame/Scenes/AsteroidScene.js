@@ -21,7 +21,7 @@ function AsteroidScene() {
     this.kEarth = "assets/Earth.png";
     this.kMW = "assets/MW2.jpg";
     
-    this.scoreMarks = "assets/scoreMarks.png"
+    this.scoreMarks = "assets/checksandx.png"
     this.kArrow = "assets/MenuSelectArrow.png";
     this.helpTable = "assets/AsteroidHelp.PNG";
     
@@ -473,12 +473,23 @@ AsteroidScene.prototype.incrementScore = function(hit){
         this.gameOver = true;
         //this.win = false;
     }
-    if(this.numCorrect >= this.succeedNumber){
+    if(this.numCorrect >= this.succeedNumber && this.Accuracy != 100){
         this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
         this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
         this.gameOver = true;
         this.accuracyText.setColor([0,0,0,1]);
-        localStorage.setItem("Meteors", true);
+        if(localStorage.getItem("Meteors") != "2"){
+            localStorage.setItem("Meteors", "1");
+        }
+        
+        //this.win = true;
+    }
+    if(this.numCorrect >= this.succeedNumber && this.Accuracy == 100){
+        this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
+        this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
+        this.gameOver = true;
+        this.accuracyText.setColor([0,0,0,1]);
+        localStorage.setItem("Meteors", "2");
         //this.win = true;
     }
     // check if y needs to be incremented and x reset
