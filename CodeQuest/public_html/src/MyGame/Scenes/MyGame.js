@@ -25,6 +25,12 @@ function MyGame() {
     
     this.chipmunk = "assets/squirrel.png";
     this.chipmunkhelmet = "assets/squirrelhelmet.png"
+    
+    this.map = "assets/map/map.png";
+    this.meteorIcon = "assets/map/mapmeteor.png";
+    this.bubbleIcon = "assets/map/mapcannon.png";
+    this.basketIcon = "assets/map/mapseagull.png";
+    
     // The camera to view the scene
     this.mCamera = null;
 
@@ -67,6 +73,11 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.mc);
     gEngine.Textures.loadTexture(this.chipmunk);
     gEngine.Textures.loadTexture(this.chipmunkhelmet);
+    
+    gEngine.Textures.loadTexture(this.map);
+    gEngine.Textures.loadTexture(this.meteorIcon);
+    gEngine.Textures.loadTexture(this.bubbleIcon);
+    gEngine.Textures.loadTexture(this.basketIcon);
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -83,6 +94,11 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.mc);
     gEngine.Textures.unloadTexture(this.chipmunk);
     gEngine.Textures.unloadTexture(this.chipmunkhelmet);
+    
+    gEngine.Textures.unloadTexture(this.map);
+    gEngine.Textures.unloadTexture(this.meteorIcon);
+    gEngine.Textures.unloadTexture(this.bubbleIcon);
+    gEngine.Textures.unloadTexture(this.basketIcon);
     
     
     // start the next scene
@@ -142,6 +158,15 @@ MyGame.prototype.initialize = function () {
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
+    
+    this.mBackground = new TextureRenderable(this.map);
+    this.mBackground.setColor.call(this, [1, 0, 0, 1]);
+    
+    var bxf=this.mBackground.getXform();
+    
+    bxf.setPosition(50,40);
+    bxf.setWidth(150);
+    bxf.setHeight(150);
       
     this.mHero = new Hero(this.mc);
     this.mHero.mDye.setElementPixelPositions(0, 372, 512 - 452, 512);
@@ -151,30 +176,30 @@ MyGame.prototype.initialize = function () {
     this.initLocalStorage();
     
     
-    this.sz1 = new SceneZone(this.kMinionSprite,0,0, this.meteorWin);
+    this.sceneZoneMeteor = new SceneZone(this.meteorIcon,40,-10, this.meteorWin);
     if(this.meteorWin){
-       this.sz1.scene = 2; 
+       this.sceneZoneMeteor.scene = 2; 
     } else {
-        this.sz1.scene = 6;
+        this.sceneZoneMeteor.scene = 6;
     }
     
-    this.mAllObjs.addToSet(this.sz1);
+    this.mAllObjs.addToSet(this.sceneZoneMeteor);
     
-    this.sz2 = new SceneZone(this.kMinionSprite,50,0, this.basketWin);
+    this.sceneZoneBasket = new SceneZone(this.basketIcon,100,80, this.basketWin);
     if(this.basketWin){
-       this.sz2.scene = 3; 
+       this.sceneZoneBasket.scene = 3; 
     } else {
-        this.sz2.scene = 7;
+        this.sceneZoneBasket.scene = 7;
     }
-    this.mAllObjs.addToSet(this.sz2);
+    this.mAllObjs.addToSet(this.sceneZoneBasket);
     
-    this.sz3 = new SceneZone(this.kMinionSprite,0,50, this.bubbleWin);
+    this.sceneZoneBubble = new SceneZone(this.bubbleIcon,0,80, this.bubbleWin);
     if(this.bubbleWin){
-       this.sz3.scene = 4; 
+       this.sceneZoneBubble.scene = 4; 
     } else {
-        this.sz3.scene = 8;
+        this.sceneZoneBubble.scene = 8;
     }
-    this.mAllObjs.addToSet(this.sz3);
+    this.mAllObjs.addToSet(this.sceneZoneBubble);
     
     
     
@@ -199,24 +224,17 @@ MyGame.prototype.initialize = function () {
     */
    
     // intext, x pos, y pos, size
-    this.sceneZone1Text = new MenuElement("Meteors", 0, 0, 4);
-    this.sceneZone2Text = new MenuElement("Basket", 50, 0, 4);
+    //this.sceneZone1Text = new MenuElement("Meteors", 0, 0, 4);
+    //this.sceneZone2Text = new MenuElement("Basket", 50, 0, 4);
    
-    this.mBackground = new TextureRenderable(this.kEarth);
-    this.mBackground.setColor.call(this, [1, 0, 0, 1]);
-    
-    var bxf=this.mBackground.getXform();
-    
-    bxf.setPosition(50,40);
-    bxf.setWidth(500);
-    bxf.setHeight(500);
+   
     
     this.setCameraFollowTarget(this.mHero);
     
     this.zones=[];
-    this.zones.push(this.sz1);
-    this.zones.push(this.sz2);
-    this.zones.push(this.sz3);
+    this.zones.push(this.sceneZoneMeteor);
+    this.zones.push(this.sceneZoneBasket);
+    this.zones.push(this.sceneZoneBubble);
 };
 
 
@@ -263,8 +281,8 @@ MyGame.prototype.draw = function () {
     //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     //this.mShapeMsg.draw(this.mCamera);
     
-    this.sceneZone1Text.draw(this.mCamera);
-    this.sceneZone2Text.draw(this.mCamera);
+    //this.sceneZone1Text.draw(this.mCamera);
+    //this.sceneZone2Text.draw(this.mCamera);
 };
 
 MyGame.prototype.update = function () {

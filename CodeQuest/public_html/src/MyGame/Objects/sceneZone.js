@@ -7,10 +7,10 @@
 
 function SceneZone(spriteTexture, atX, atY, win) {
     
-    this.w=10;
-    this.h=10;
+    this.w=34;
+    this.h=20;
     
-    
+    /*
     this.placeHolder = new Renderable();
     if(!win){
         this.placeHolder.setColor([1, 0, 0, 1]);
@@ -21,13 +21,14 @@ function SceneZone(spriteTexture, atX, atY, win) {
     
     xf.setPosition(atX, atY);
     xf.setSize(this.w, this.h);
+    */
     
     
     this.mDye = new SpriteRenderable(spriteTexture);
     this.mDye.setColor([1, 1, 1, 0]);
     this.mDye.getXform().setPosition(atX, atY);
     this.mDye.getXform().setSize(this.w, this.h);
-    this.mDye.setElementPixelPositions(0, 120, 0, 180);
+    this.mDye.setElementPixelPositions(0, 240, 512 - 138, 512);
     
     
     GameObject.call(this, this.mDye);
@@ -43,7 +44,8 @@ SceneZone.prototype.update = function (aCamera) {
 
 
 SceneZone.prototype.draw = function (aCamera) {
-    this.placeHolder.draw(aCamera);
+    GameObject.prototype.draw.call(this, aCamera);
+    //this.placeHolder.draw(aCamera);
     
 };
 

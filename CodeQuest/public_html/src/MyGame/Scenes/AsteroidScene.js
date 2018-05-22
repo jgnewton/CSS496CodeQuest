@@ -913,8 +913,11 @@ AsteroidScene.prototype.procHit = function(obj, proj) {
         this.mAllObjs.removeFromSet(obj);
         this.mAllObjs.removeFromSet(proj);
 
-    }
-    else{
+    } else if (obj.dataType == 0 && proj.dataType == 1){
+        this.incrementScore(true);
+        this.mAllObjs.removeFromSet(obj);
+        this.mAllObjs.removeFromSet(proj);
+    } else{
         this.incrementScore(false);
         this.mAllObjs.removeFromSet(obj);
         this.mAllObjs.removeFromSet(proj);
@@ -938,7 +941,7 @@ AsteroidScene.prototype.procHit = function(obj, proj) {
         }
 
         this.revealMsg = new FontRenderable(text);
-        this.revealMsg.setColor([1, 0, 0, 1]);
+        this.revealMsg.setColor([1, 0, .5, 1]);
         this.revealMsg.getXform().setPosition(x, y);
         this.revealMsg.setTextHeight(5);
         this.revealTime=120;

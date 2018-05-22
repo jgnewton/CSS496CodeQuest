@@ -7,20 +7,6 @@
         </group>
         <group name="452-MPSolutions"/>
         <group name="BookChapters"/>
-        <group name="build-your-own-2d-game-engine">
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Asteroid.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/Engine/Renderables/TextureRenderable.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/Engine/Renderables/Renderable.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/AsteroidScene.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/Engine/Utils/Transform.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/ScoreMark.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Hero.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/MyGame.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/Engine/Utils/BoundingBox.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Projectile.js</file>
-            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/Engine/GameObjects/GameObject.js</file>
-        </group>
         <group name="GameTopics">
             <file>file:/C:/Users/jgn2/Documents/GitHub/CSS496CodeQuest22222/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
         </group>
@@ -39,6 +25,17 @@
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/assets/LessonOne/LessonOne9.png</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
             <file>file:/C:/Users/build%2050th/CSS496CodeQuest/CodeQuest/public_html/assets/AsteroidHelp.PNG</file>
+        </group>
+        <group name="build-your-own-2d-game-engine">
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Asteroid.js</file>
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Bubble.js</file>
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/BasketScene.js</file>
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/AsteroidScene.js</file>
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/LessonScene.js</file>
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Hero.js</file>
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Scenes/MyGame.js</file>
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/index.html</file>
+            <file>file:/C:/Users/d3win/Documents/GitHub/CSS496CodeQuest/CodeQuest/public_html/src/MyGame/Objects/Projectile.js</file>
         </group>
     </open-files>
 </project-private>
