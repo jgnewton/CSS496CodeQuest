@@ -89,6 +89,9 @@ function Bat(spriteTexture, fruitTexture, atX, atY, createCircle, type, ans) {
     
     this.text.getXform().setPosition(atX-15, atY-25);
     
+    if(this.text.getXform().getWidth()/2+atX-15> 150){
+        this.text.getXform().setXPos(135-this.text.getXform().getWidth()/2);
+    }
     
     this.fruitSprite = fruitTexture;
     
@@ -410,11 +413,13 @@ Bat.prototype.boolBank =function (){
     var bank = [
     
     //    ||    
-    "True || False",
-    "False || True", 
+    "true || false == __",
+    "false || true == __",
+    "(1 > 2) || (4 > 3) == __", 
     
-    "True && False",
-    "False && True",  
+    "true && false == __",
+    "false && true == __",
+    "(1 > 2) && (4 > 3) ==__", 
         
     ];
     
@@ -422,7 +427,7 @@ Bat.prototype.boolBank =function (){
     
 
     
-    var cutoff = 2;
+    var cutoff = 3;
     if(idx<cutoff){
         this.correctAnswer=TRUE;
     }

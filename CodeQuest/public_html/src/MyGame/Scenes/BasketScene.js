@@ -551,14 +551,14 @@ BasketScene.prototype.processInput = function(){
         var deltax = 3.0;
                 
         //moving basket
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)){ 
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left)){ 
                 if(heroXF.getXPos()>this.WCCenterX-this.WCWidth/2){
                     heroXF.incXPosBy(-1*deltax);    
                 }
                 this.mHero.changeDir(true);
         }
 
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)){
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right)){
                if(heroXF.getXPos()<this.WCCenterX+this.WCWidth/2){
                     heroXF.incXPosBy(deltax);    
                 }
@@ -639,7 +639,7 @@ BasketScene.prototype.processInput = function(){
 BasketScene.prototype.generateBat = function () {
         
         // -20 to keep bat text on the screen.
-        var xl = this.WCCenterX-this.WCWidth/2 +20+ Math.random()*(this.WCWidth-90);
+        var xl = this.WCCenterX-this.WCWidth/2 +20+ Math.random()*(this.WCWidth-120);
         
         var yl = this.WCCenterY+ this.WCHeight/2 -20;
 
