@@ -118,8 +118,8 @@ BubbleScene.prototype.getRandAnswer = function () {
 BubbleScene.prototype.initAnswerStrings = function () {
    this.deletes= ["1","1","delete"];
    this.q1s= ["2","1","__", " C = 3;"];
-   this.q2s= ["3","2","Int ", "__", " = 3;"];
-   this.q3s= ["3","2","Int B = A", "__", "2;"];
+   this.q2s= ["3","2","int ", "__", " = 3;"];
+   this.q3s= ["3","2","int B = A", "__", "2;"];
    this.q4s= ["2","2","System.print(A", "__;"];
    this.q5s= ["2","2", "A = A / 5", "__"];
    this.q6s= ["3","2", "B ", "__",  " A;"];
@@ -154,7 +154,7 @@ BubbleScene.prototype.assignAnswers = function () {
     //used = this.shuffle(used);
     var counter = 0;
      
-    this.answers = ["int","for","A","C","+","&&",")","(",";",".","=","=="];
+    this.answers = ["int","for","A","if","+","&&",")","(",";",".","=","=="];
     var answerKey = [1,-1,2,-1,3,-1,4,-1,5,-1,6,-1];
     
     var twoArrays = this.biShuffle(this.answers, answerKey);

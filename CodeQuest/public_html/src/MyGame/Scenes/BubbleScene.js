@@ -804,7 +804,7 @@ BubbleScene.prototype.updateElementStatus = function() {
         if(this.proposed[i]!= 0){
             
             if(this.proposed[i]==this.correctAnswers[i]){
-                elem.setColor([0,1,.2,1]); //green
+                elem.setColor([0,.5,.2,1]); //green
                 this.checkIfWin();
             }else{ 
                 elem.setColor([1,.2,0,1]); //red

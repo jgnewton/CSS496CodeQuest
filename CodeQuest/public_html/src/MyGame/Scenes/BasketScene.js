@@ -415,7 +415,7 @@ BasketScene.prototype.update = function () {
        }
        
        if(textx>this.WCCenterX+this.WCWidth/2 -60){
-            var textx=x-120;    
+            var textx=x-140;    
        }
        
        if(friendx>this.WCCenterX+this.WCWidth/2 -60){
@@ -628,7 +628,7 @@ BasketScene.prototype.processInput = function(){
 BasketScene.prototype.generateBat = function () {
         
         // -20 to keep bat text on the screen.
-        var xl = this.WCCenterX-this.WCWidth/2 +20+ Math.random()*(this.WCWidth-70);
+        var xl = this.WCCenterX-this.WCWidth/2 +20+ Math.random()*(this.WCWidth-90);
         
         var yl = this.WCCenterY+ this.WCHeight/2 -20;
 
