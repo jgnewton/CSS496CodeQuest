@@ -50,19 +50,30 @@ Hero.prototype.update = function () {
        
 }
 
-Hero.prototype.heroControls = function () {
+Hero.prototype.heroControls = function (map) {
     var kWASDDelta = .5;
     var xform = this.getXform();
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.W)) {
+    
+    var mpos = map.getXform().getPosition();
+    var msize = map.getXform().getSize();
+    
+    /*
+    console.log("map values: " + mpos + "    " + msize);
+    console.log("player values: " + xform.getPosition());
+    console.log(xform.getYPos() > mpos[1] - msize[1] / 2);
+    */
+    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.W) && xform.getYPos() < mpos[1] + msize[1] / 2) {
         xform.incYPosBy(kWASDDelta);
     }
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.S)) {
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.S) && xform.getYPos() > mpos[1] - msize[1] / 2) {
+        console.log("I tried");
         xform.incYPosBy(-kWASDDelta);
     }
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A) && xform.getXPos() > mpos[0] - msize[0] / 2) {
         xform.incXPosBy(-kWASDDelta);
     }
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) {
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D) && xform.getXPos() < mpos[0] + msize[0] / 2) {
         xform.incXPosBy(kWASDDelta);
     }    
 }

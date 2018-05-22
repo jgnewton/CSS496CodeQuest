@@ -178,6 +178,8 @@ MyGame.prototype.initialize = function () {
     
     
     this.sceneZoneMeteor = new SceneZone(this.meteorIcon,40,-10, this.meteorWin);
+    this.sceneZoneMeteor.mDye.setElementPixelPositions(0, 240, 512 - 138, 512);
+    
     if(this.meteorWin){
        this.sceneZoneMeteor.scene = 2; 
     } else {
@@ -187,6 +189,8 @@ MyGame.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.sceneZoneMeteor);
     
     this.sceneZoneBasket = new SceneZone(this.basketIcon,100,80, this.basketWin);
+    this.sceneZoneBasket.mDye.setElementPixelPositions(0, 140, 512 - 138, 512);
+    this.sceneZoneBasket.mDye.getXform().setSize(25, 20);
     if(this.basketWin){
        this.sceneZoneBasket.scene = 3; 
     } else {
@@ -195,6 +199,8 @@ MyGame.prototype.initialize = function () {
     this.mAllObjs.addToSet(this.sceneZoneBasket);
     
     this.sceneZoneBubble = new SceneZone(this.bubbleIcon,0,80, this.bubbleWin);
+    this.sceneZoneBubble.mDye.setElementPixelPositions(0, 180, 512 - 138, 512);
+    this.sceneZoneBubble.mDye.getXform().setSize(27, 20);
     if(this.bubbleWin){
        this.sceneZoneBubble.scene = 4; 
     } else {
@@ -290,7 +296,7 @@ MyGame.prototype.draw = function () {
 MyGame.prototype.update = function () {
     //var msg = "";   
     this.mHero.update();
-    this.mHero.heroControls();
+    this.mHero.heroControls(this.mBackground);
     
     this.mHelper.follow(this.mHero);
     
@@ -307,11 +313,12 @@ MyGame.prototype.update = function () {
          gEngine.GameLoop.stop();  
     }
     
-    
+    /*
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.B)) {
         this.nextScene = 3;
          gEngine.GameLoop.stop();  
     }
+    */
     
     
     this.checkZones();

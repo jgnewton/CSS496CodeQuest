@@ -28,7 +28,7 @@ function SceneZone(spriteTexture, atX, atY, win) {
     this.mDye.setColor([1, 1, 1, 0]);
     this.mDye.getXform().setPosition(atX, atY);
     this.mDye.getXform().setSize(this.w, this.h);
-    this.mDye.setElementPixelPositions(0, 240, 512 - 138, 512);
+    //this.mDye.setElementPixelPositions(0, 240, 512 - 138, 512);
     
     
     GameObject.call(this, this.mDye);
