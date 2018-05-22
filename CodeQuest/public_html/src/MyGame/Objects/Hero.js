@@ -67,7 +67,7 @@ Hero.prototype.heroControls = function (map) {
         xform.incYPosBy(kWASDDelta);
     }
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.S) && xform.getYPos() > mpos[1] - msize[1] / 2) {
-        console.log("I tried");
+        //console.log("I tried");
         xform.incYPosBy(-kWASDDelta);
     }
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A) && xform.getXPos() > mpos[0] - msize[0] / 2) {

@@ -5,7 +5,7 @@
  */
 
 
-function SceneZone(spriteTexture, atX, atY, win) {
+function SceneZone(spriteTexture, scoreMarks, atX, atY, win) {
     
     this.w=34;
     this.h=20;
@@ -33,6 +33,19 @@ function SceneZone(spriteTexture, atX, atY, win) {
     
     GameObject.call(this, this.mDye);
     
+    
+    this.check = new SpriteRenderable(scoreMarks);
+    this.check.getXform().setPosition(atX + 8, atY + 10);
+    this.check.getXform().setSize(12, 10);
+    
+    if(win == "0"){ //red x
+        this.check.setElementPixelPositions(548, 756, 1024 - 202, 1024);
+    } else if(win == "1"){ //green check
+        this.check.setElementPixelPositions(0, 273, 1024 - 202, 1024);
+    } else if(win == "2"){ //gold check
+        this.check.setElementPixelPositions(274, 544, 1024 - 202, 1024);
+    }
+    
     this.scene=0; //which scene to go to
     
 }
@@ -46,6 +59,7 @@ SceneZone.prototype.update = function (aCamera) {
 SceneZone.prototype.draw = function (aCamera) {
     GameObject.prototype.draw.call(this, aCamera);
     //this.placeHolder.draw(aCamera);
+    this.check.draw(aCamera);
     
 };
 

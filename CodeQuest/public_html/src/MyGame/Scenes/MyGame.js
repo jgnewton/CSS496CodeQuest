@@ -31,6 +31,8 @@ function MyGame() {
     this.bubbleIcon = "assets/map/mapcannon.png";
     this.basketIcon = "assets/map/mapseagull.png";
     
+    this.scoreMark = "assets/checksandx.png";
+    
     // The camera to view the scene
     this.mCamera = null;
 
@@ -78,6 +80,8 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.meteorIcon);
     gEngine.Textures.loadTexture(this.bubbleIcon);
     gEngine.Textures.loadTexture(this.basketIcon);
+    
+    gEngine.Textures.loadTexture(this.scoreMark);
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -99,6 +103,8 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.meteorIcon);
     gEngine.Textures.unloadTexture(this.bubbleIcon);
     gEngine.Textures.unloadTexture(this.basketIcon);
+    
+    gEngine.Textures.unloadTexture(this.scoreMark);
     
     
     // start the next scene
@@ -177,10 +183,10 @@ MyGame.prototype.initialize = function () {
     this.initLocalStorage();
     
     
-    this.sceneZoneMeteor = new SceneZone(this.meteorIcon,40,-10, this.meteorWin);
+    this.sceneZoneMeteor = new SceneZone(this.meteorIcon, this.scoreMark, 40,-10, this.meteorWin);
     this.sceneZoneMeteor.mDye.setElementPixelPositions(0, 240, 512 - 138, 512);
     
-    if(this.meteorWin){
+    if(this.meteorWin != "0"){
        this.sceneZoneMeteor.scene = 2; 
     } else {
         this.sceneZoneMeteor.scene = 6;
@@ -188,20 +194,20 @@ MyGame.prototype.initialize = function () {
     
     this.mAllObjs.addToSet(this.sceneZoneMeteor);
     
-    this.sceneZoneBasket = new SceneZone(this.basketIcon,100,80, this.basketWin);
-    this.sceneZoneBasket.mDye.setElementPixelPositions(0, 140, 512 - 138, 512);
-    this.sceneZoneBasket.mDye.getXform().setSize(25, 20);
-    if(this.basketWin){
+    this.sceneZoneBasket = new SceneZone(this.basketIcon, this.scoreMark, 100,80, this.basketWin);
+    this.sceneZoneBasket.mDye.setElementPixelPositions(0, 130, 512 - 138, 512);
+    this.sceneZoneBasket.mDye.getXform().setSize(20, 20);
+    if(this.basketWin != "0"){
        this.sceneZoneBasket.scene = 3; 
     } else {
         this.sceneZoneBasket.scene = 7;
     }
     this.mAllObjs.addToSet(this.sceneZoneBasket);
     
-    this.sceneZoneBubble = new SceneZone(this.bubbleIcon,0,80, this.bubbleWin);
+    this.sceneZoneBubble = new SceneZone(this.bubbleIcon,this.scoreMark, 0,80, this.bubbleWin);
     this.sceneZoneBubble.mDye.setElementPixelPositions(0, 180, 512 - 138, 512);
     this.sceneZoneBubble.mDye.getXform().setSize(27, 20);
-    if(this.bubbleWin){
+    if(this.bubbleWin != "0"){
        this.sceneZoneBubble.scene = 4; 
     } else {
         this.sceneZoneBubble.scene = 8;
@@ -255,15 +261,22 @@ MyGame.prototype.initLocalStorage = function(){
     if(localStorage.getItem("Meteors") != null){
         this.meteorWin = JSON.parse(localStorage.getItem("Meteors"));
     } else {
-        this.meteorWin = false;
-        localStorage.setItem("Meteors", false);
+        this.meteorWin = 0;
+        localStorage.setItem("Meteors", 0);
     }
     
     if(localStorage.getItem("Baskets") != null){
         this.basketWin = JSON.parse(localStorage.getItem("Baskets"));
     } else {
-        this.basketWin = false;
-        localStorage.setItem("Baskets", false);
+        this.basketWin = 0;
+        localStorage.setItem("Baskets", 0);
+    }
+    
+    if(localStorage.getItem("Bubbles") != null){
+        this.bubbleWin = JSON.parse(localStorage.getItem("Bubbles"));
+    } else {
+        this.bubbleWin = 0;
+        localStorage.setItem("Bubbles", 0);
     }
 }
 
