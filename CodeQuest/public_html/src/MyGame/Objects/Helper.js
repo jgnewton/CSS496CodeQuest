@@ -98,7 +98,7 @@ Helper.prototype.follow = function (obj) {
     var nx = this.mInterpolate.getValue();
     var ny = this.mInterpolatey.getValue();
     
-    this.getXform().setXPos(nx-20);
+    this.getXform().setXPos(nx-10);
     this.getXform().setYPos(ny);
             
 };

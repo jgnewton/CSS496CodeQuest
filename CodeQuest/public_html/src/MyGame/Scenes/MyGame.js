@@ -170,6 +170,7 @@ MyGame.prototype.initialize = function () {
       
     this.mHero = new Hero(this.mc);
     this.mHero.mDye.setElementPixelPositions(0, 372, 512 - 452, 512);
+    this.mHero.mDye.getXform().setSize(8, 9);
     this.mAllObjs = new GameObjectSet();   
     this.mAllObjs.addToSet(this.mHero);
     
@@ -204,6 +205,7 @@ MyGame.prototype.initialize = function () {
     
     
     this.mHelper = new Helper(this.chipmunk, this.friendl);
+    this.mHelper.mDye.getXform().setSize(4, 5);
     this.mHelper.mDye.setElementPixelPositions(0, 421, 1024 - 523, 1024);
     //friendObjectr
     
