@@ -26,7 +26,7 @@ function BasketScene() {
     this.kForest = "assets/Forest2.png";
     this.kEarth = "assets/Earth.png";
     this.kMW = "assets/MW2.jpg";
-    this.scoreMarks = "assets/scoreMarks.png"
+    this.scoreMarks = "assets/checksandx.png"
     this.kArrow = "assets/MenuSelectArrow.png";
     this.helpTable = "assets/BasketHelp.png";
     this.kbats ="assets/bats.png";
@@ -501,12 +501,23 @@ BasketScene.prototype.incrementScore = function(hit){
         this.gameOver = true;
     }
     
-    if(this.numCorrect >= this.succeedNumber || this.gameOver){
+    if(this.numCorrect >= this.succeedNumber || this.gameOver && this.Accuracy >= 70){
         this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
         this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
         this.gameOver = true;
         
-        localStorage.setItem("Meteors", true);
+        if(localStorage.getItem("Baskets") != "2"){
+            localStorage.setItem("Baskets", "1");
+        }
+        
+        //this.win = true;
+    }
+    if(this.numCorrect >= this.succeedNumber || this.gameOver && this.Accuracy == 100){
+        this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
+        this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
+        this.gameOver = true;
+        localStorage.setItem("Baskets", "2");
+        
         //this.win = true;
     }
     // check if y needs to be incremented and x reset
@@ -677,10 +688,12 @@ BasketScene.prototype.fruitGravity = function( fruit ) {
 };
 
 BasketScene.prototype.checkAnswer = function( ) {
+    /*
     console.log(this.mBat);
     console.log(this.mBat.answer);
     console.log(this.mBat.correctAnswer);
     console.log("mAsnwer " + this.mAnswer + ".  mBatAnswer " + this.mBat.correctAnswer)
+    */
     if (this.mAnswer == this.mBat.correctAnswer){
         this.incrementScore(true);
     }
