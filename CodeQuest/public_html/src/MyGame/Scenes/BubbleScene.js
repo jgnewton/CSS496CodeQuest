@@ -343,12 +343,12 @@ BubbleScene.prototype.initialize = function () {
     
     
     //this.textOffset-=.5;
-    
-    var cal = .5
+    // setting the underline renderables
+    var cal = .5;
     
     this.Underline(78,this.textYpos-this.textSize/2 -cal);
     this.Underline(112,this.textYpos+this.textOffset-this.textSize/2-cal);
-     this.Underline(135,this.textYpos+this.textOffset*2-this.textSize/2-cal);
+     this.Underline(125,this.textYpos+this.textOffset*2-this.textSize/2-cal);
       this.Underline(112,this.textYpos+this.textOffset*3-this.textSize/2-cal);
        this.Underline(90,this.textYpos+this.textOffset*4-this.textSize/2-cal);
         this.Underline(70,this.textYpos+this.textOffset*5-this.textSize/2-cal);

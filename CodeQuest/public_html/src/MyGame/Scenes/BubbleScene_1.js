@@ -120,7 +120,7 @@ BubbleScene.prototype.initAnswerStrings = function () {
    this.q1s= ["2","1","__", " C = 3;"];
    this.q2s= ["3","2","int ", "__", " = 3;"];
    this.q3s= ["3","2","int B = A", "__", "2;"];
-   this.q4s= ["2","2","System.print(A", "__;"];
+   this.q4s= ["2","2","Robot.walk(A", "__;"];
    this.q5s= ["2","2", "A = A / 5", "__"];
    this.q6s= ["3","2", "B ", "__",  " A;"];
    
