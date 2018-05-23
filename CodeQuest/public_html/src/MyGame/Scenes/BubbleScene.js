@@ -809,13 +809,7 @@ BubbleScene.prototype.checkIfWin = function() {
         if(this.proposed[i] == this.correctAnswers[i]) {
             this.win = true;
             
-            if(this.perfect){
-               localStorage.setItem("Bubbles", "2"); 
-            } else {
-                if(localStorage.getItem("Bubbles") != "2"){
-                    localStorage.setItem("Bubbles", "1");
-                }
-            }
+            
         }else{
             this.win = false;
             i = 7;    //to exit loop
@@ -824,6 +818,13 @@ BubbleScene.prototype.checkIfWin = function() {
     if(this.win){
         this.gameOver = true; 
        // localStorage.setItem("Meteors", true);
+        if(this.perfect){
+            localStorage.setItem("Bubbles", "2"); 
+        } else {
+            if(localStorage.getItem("Bubbles") != "2"){
+                localStorage.setItem("Bubbles", "1");
+            }
+        }
     }
 };
 
