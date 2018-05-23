@@ -633,6 +633,12 @@ BubbleScene.prototype.processInput = function(){
             this.changeColor(6);
         }
         
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Seven) && gEngine.Input.isKeyPressed(gEngine.Input.keys.W)){
+            console.log("Cheat Code Acitvated");
+            this.proposed = this.correctAnswers;
+            this.checkIfWin();
+        }
+        
         
         
         
