@@ -415,7 +415,7 @@ BubbleScene.prototype.draw = function () {
             this.lines[i].draw(this.mCamera);
         }
 
-        this.progressBar.draw(this.mCamera);
+        //this.progressBar.draw(this.mCamera);
         
 
     }
