@@ -144,15 +144,18 @@
                 
                 if(mode == "MainMenu"){
                     elm.innerHTML =
+                        "<b>Controls</b></br><hr>" +
                         "Welcome to a Code Called Quest! <br>" +
                         "Press <b> P </b> to Play <br>" +
                         "Press <b> C </b> to view Credits<br>" +
                         "Press <b> Q </b> to delete saved data";
                 } else if (mode == "Credits"){
                     elm.innerHTML =
+                            "<b>Controls</b></br><hr>" +
                         "Press <b> X </b> to exit to the main menu <br>";
                 } else if(mode == "Meteors"){
                     elm.innerHTML =
+                            "<b>Controls</b></br><hr>" +
                         "Select the correct data type and shoot down the meteor! <br>" +
                         "Use <b> Left </b> and <b> Right </b> Arrow keys to aim <br>" +
                         "Use <b> Up </b> and <b> Down </b> Arrow keys to select your data type <br>" +
@@ -161,13 +164,15 @@
                         "Stuck? Press <b> H </b> to get a <b> HINT! </b>";
                 } else if(mode == "Baskets"){
                     elm.innerHTML =
+                            "<b>Controls</b></br><hr>" +
                         "Select the correct relational operator to make the expression true, and then catch it! <br>" +
                         "Use <b> Left </b> and <b> Right </b> Arrow keys to move your character <br>" +
                         "Use <b> Up </b> and <b> Down </b> Arrow keys to select your relational operator <br>" +
-                        "Press <b> X </b> to exit to the map<br>";
+                        "Press <b> X </b> to exit to the map<br>" +
+                        "Stuck? Press <b> H </b> to get a <b> HINT! </b>";
                 } else if(mode == "Bubbles"){
                     elm.innerHTML =
-                        
+                        "<b>Controls</b></br><hr>" +
                         "Use <b> Left </b> and <b> Right </b> Arrow keys to aim or use <b> Z </b> and <b> C </b> to aim faster <br>" +
                         "Use <b> Up </b> and <b> Down </b> Arrow keys to select the line of code to edit <br>" +
                         "Press <b> Spacebar </b> to fire!<br>" +
@@ -183,10 +188,16 @@
                         
                 } else if(mode == "MyGame"){
                     elm.innerHTML =
+                            "<b>Controls</b></br><hr>" +
                         "Welcome to the map! Navigate using <b> W A S D </b> <br>" +
                         "Move to a level square to start a lesson! <br>" +
                         "Beat the minigame to turn the square green. Turn all 3 green and you win! <br>" +
                         "Press <b> X </b> to return to Main Menu <br>";
+                } else if(mode == "Lesson"){
+                    elm.innerHTML =
+                            "<b>Controls</b></br><hr>" +
+                        "Use <b> Left </b> and <b> Right </b> Arrow Keys to change slides <br>" +
+                        "Press <b> X </b> to skip the lesson and start playing! <br>";
                 }
             };
 

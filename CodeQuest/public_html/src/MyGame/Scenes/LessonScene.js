@@ -167,6 +167,7 @@ LessonScene.prototype.unloadScene = function () {
 };
 
 LessonScene.prototype.initialize = function () {
+    setControlText("Lesson");
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(this.WCCenterX, this.WCCenterY), // position of the camera
