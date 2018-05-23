@@ -232,9 +232,52 @@ LessonScene.prototype.initialize = function () {
 
 LessonScene.prototype.initLessonText = function () {
     this.lessonOne = [];
+    //this.currentSlide = 0;
+    
     if(this.lesson == "Meteors"){
         //this.sceneZone1Text = new MenuElement("Meteors", 0, 0, 4);
         //this.lessonOne.push(new MenuElement());
+        
+        /*
+        var slide = [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("You will need to understand how to differentiate", -110, 80, 8),
+                     new MenuElement("the meteors in order to destroy them", -90, 65, 8)
+                    ];
+        */
+        
+        this.lessonOne = [ 
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("You will need to understand how to differentiate", -110, 80, 8),
+                     new MenuElement("the meteors in order to destroy them", -90, 65, 8)
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("There are 5 data types of meteors, although", -100, 80, 8),
+                     new MenuElement("in a real programming environment here are often more.", -130, 65, 8),
+                     new MenuElement("Depending on the programming language,", -100, 40, 8),
+                     new MenuElement("sometimes there are no data types at all!", -110, 25, 8)
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("int", -30, 100, 10),
+                     new MenuElement("int stands for integer", -100, 80, 8),
+                     new MenuElement("an int is a whole number with no special characters", -130, 65, 8),
+                     new MenuElement("integers can be positive or negative", -100, 40, 8),
+                     new MenuElement("EX: 1, -12, 150, -967", -110, 25, 8)
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("double", -30, 100, 10),
+                     //new MenuElement("int stands for integer", -100, 80, 8),
+                     new MenuElement("a double is a number with no special characters", -130, 65, 8),
+                     new MenuElement("a double may or may not be a whole number", -100, 40, 8),
+                     new MenuElement("EX: 1, 1.0, -3.1, -43.75", -110, 25, 8)
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("boolean", -30, 100, 10),
+                     //new MenuElement("int stands for integer", -100, 80, 8),
+                     new MenuElement("a boolean can either be true or false", -130, 65, 8),
+                     new MenuElement("a boolean cannot hold any other data", -100, 40, 8),
+                     new MenuElement("EX: true, false", -110, 25, 8)
+                    ]
+        ]
     }
     else if(this.lesson == "Baskets"){
         
@@ -257,12 +300,18 @@ LessonScene.prototype.draw = function () {
     
     this.mAllObjs.draw(this.mCamera);
     
+    //for(var i = 0; i < this.lessonOne.length; i++){
+        for(var j = 0; j < this.lessonOne[this.current].length; j++){
+            this.lessonOne[this.current][j].draw(this.mCamera);
+        }
+    //}
+    
     // for now draw these ...
     /*for (var i = 0; i<this.mCollisionInfos.length; i++) 
         this.mCollisionInfos[i].draw(this.mCamera); */
     this.mCollisionInfos = []; 
     
-    this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+    //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     //this.mShapeMsg.draw(this.mCamera);
     
 //    this.speechBoubleObject.draw(this.mCamera);
@@ -284,13 +333,13 @@ LessonScene.prototype.update = function () {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) {
             
             this.current--;
-            this.current = clamp(this.current, 0, this.LessonOne.length - 1);
+            this.current = clamp(this.current, 0, this.lessonOne.length - 1);
             //this.selectedElement = this.elements[this.selectIndex];
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right)) {
             this.current++;
-            this.current = clamp(this.current, 0, this.LessonOne.length - 1);
+            this.current = clamp(this.current, 0, this.lessonOne.length - 1);
     }    
     
     
