@@ -162,6 +162,8 @@ function BubbleScene() {
     this.displayTime=0;
     
     this.perfect=true;
+    
+    this.oldState = localStorage.getItem("Bubbles") ;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -496,7 +498,10 @@ BubbleScene.prototype.updateObjects = function(){
 BubbleScene.prototype.processInput = function(){
         //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
-         gEngine.GameLoop.stop();  
+        if(!this.win){
+           localStorage.setItem("Bubbles", this.oldState);
+        }
+        gEngine.GameLoop.stop();  
     }
     
     if(!this.gameOver){
@@ -591,6 +596,7 @@ BubbleScene.prototype.processInput = function(){
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Seven) && gEngine.Input.isKeyPressed(gEngine.Input.keys.W)){
             console.log("Cheat Code Acitvated");
             this.proposed = this.correctAnswers;
+            this.win=true;
             this.checkIfWin();
         }
         
@@ -818,8 +824,7 @@ BubbleScene.prototype.progress = function() {
 BubbleScene.prototype.checkIfWin = function() {
     for(var i=1; i<7; i++){
         if(this.proposed[i] == this.correctAnswers[i]) {
-            this.win = true;
-            
+            this.win = true;       
             
         }else{
             this.win = false;

@@ -169,7 +169,6 @@ Bubble.prototype.checkNeighbor = function (bubbleSet) {
 }
 
 
-
 Bubble.prototype.checkCollision = function (bubble, shrink) {
     if(bubble != null){
         var BBox = this.getBBox();
