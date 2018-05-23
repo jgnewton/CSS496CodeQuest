@@ -639,8 +639,7 @@ BubbleScene.prototype.processInput = function(){
             this.checkIfWin();
         }
         
-        
-        
+              
         
         //console.log(this.bounceTimer);
         //fire
@@ -782,6 +781,7 @@ BubbleScene.prototype.removeBubbles = function() {
             }
         }
     }
+    this.checkPerfect();
     
 }
 
@@ -815,10 +815,10 @@ BubbleScene.prototype.updateElementStatus = function() {
             
             if(this.proposed[i]==this.correctAnswers[i]){
                 elem.setColor([0,.5,.2,1]); //green
-                this.checkIfWin();
+               // this.checkIfWin();
             }else{ 
                 elem.setColor([1,.2,0,1]); //red
-                this.perfect=false;
+                //this.perfect=false;
             }
         }
     }
@@ -887,4 +887,21 @@ BubbleScene.prototype.Underline = function(x,y) {
     u.setColor([0,0,0,1]);
     u.getXform().setPosition(x,y);
     this.lines.push(u);
+}
+
+BubbleScene.prototype.checkPerfect = function() {
+    for(var i =0; i< this.elements.length;i++){
+        var elem = this.elements[i];
+        
+        if(this.proposed[i]!= 0){
+            
+            if(this.proposed[i]==this.correctAnswers[i]){
+                elem.setColor([0,.5,.2,1]); //green
+                this.checkIfWin();
+            }else{ 
+                elem.setColor([1,.2,0,1]); //red
+                this.perfect=false;
+            }
+        }
+    }    
 }
