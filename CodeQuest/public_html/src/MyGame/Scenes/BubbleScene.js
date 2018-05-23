@@ -160,6 +160,8 @@ function BubbleScene() {
     pxf.setSize(8, 250);
     
     this.displayTime=0;
+    
+    this.perfect=true;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -810,6 +812,7 @@ BubbleScene.prototype.updateElementStatus = function() {
                 this.checkIfWin();
             }else{ 
                 elem.setColor([1,.2,0,1]); //red
+                this.perfect=false;
             }
         }
     }
@@ -844,6 +847,12 @@ BubbleScene.prototype.checkIfWin = function() {
     for(var i=1; i<7; i++){
         if(this.proposed[i] == this.correctAnswers[i]) {
             this.win = true;
+       if(localStorage.getItem("Bubbles") != "2"){
+            localStorage.setItem("Bubbles", "1");
+        }
+        if(this.perfect){
+           localStorage.setItem("Bubbles", "2"); 
+        }
         }else{
             this.win = false;
             i = 7;
