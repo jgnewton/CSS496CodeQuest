@@ -158,6 +158,8 @@ function BubbleScene() {
     
     pxf.setPosition(-145, -63);
     pxf.setSize(8, 250);
+    
+    this.displayTime=0;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -470,7 +472,7 @@ BubbleScene.prototype.update = function () {
         }
     }
 
-        
+    this.displayTime--;    
 };
 
 BubbleScene.prototype.updateObjects = function(){

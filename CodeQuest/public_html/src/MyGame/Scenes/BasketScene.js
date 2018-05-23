@@ -150,6 +150,9 @@ function BasketScene() {
     this.friendObject = null;
     this.friendVisible = false;
     this.helpTimer = 0;
+    
+    
+    
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
 
@@ -311,6 +314,19 @@ BasketScene.prototype.initialize = function () {
     //this.friendObject.getXform().setPosition(-100,  this.WCCenterY-60);
     
      this.showAnswer = new FontRenderable("");
+     
+        this.displayText=new FontRenderable("New problem set!");
+        this.displayText.setColor([1, 0, 0, 1]);
+        this.displayText.getXform().setPosition(70, -50);
+        this.displayText.setTextHeight(8.5);
+        
+        this.rendy = new Renderable();
+        this.rendy.getXform().setSize(80, 80);
+        this.rendy.setColor([.8, .8, .1, .6]);
+        this.rendy.getXform().setPosition(90, -80);
+        
+        this.displayTime =0;
+     
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -330,13 +346,21 @@ BasketScene.prototype.draw = function () {
         this.gameOverText3.draw(this.mCamera);
         //this.gameOverText4.draw(this.mCamera);
     } else {
+        
+        
         this.mAllObjs.draw(this.mCamera);
                 this.basketText.draw(this.mCamera);
-
+                
+       if(this.displayTime>0){
+            this.rendy.draw(this.mCamera);
+            this.displayText.draw(this.mCamera);      
+        }
+                
         for(var i = 0; i < this.Operators.length; i++){
             this.Operators[i].draw(this.mCamera);
         }
-
+        
+        
         this.selectionArrow.draw(this.mCamera);
 
         if (this.helpTableVisible)
@@ -364,6 +388,7 @@ BasketScene.prototype.draw = function () {
            this.revealMsg.draw(this.mCamera);
         }
     }
+    
 
 };
 
@@ -430,6 +455,7 @@ BasketScene.prototype.update = function () {
         this.showAnswer.getXform().setPosition(textx, this.WCCenterY-40);
    }
     
+    this.displayTime--;
  };
 
 BasketScene.prototype.updateObjects = function(){
@@ -788,6 +814,7 @@ BasketScene.prototype.setOperators = function() {
     this.position=0;
     
     this.setAnswer();
+    this.displayChange();
    
  }
 
@@ -865,7 +892,7 @@ BasketScene.prototype.checkNext = function() {
             this.problemType++;
             
             this.setOperators();
-            this.timer= 2*this.SPAWN_INTERVAL;
+            this.timer= 2.5*this.SPAWN_INTERVAL;
         }   
     }
 

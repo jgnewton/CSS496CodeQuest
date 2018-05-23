@@ -930,11 +930,12 @@ AsteroidScene.prototype.procHit = function(obj, proj) {
         this.mAllObjs.removeFromSet(proj);
     } else{
         this.incrementScore(false);
+        var ans = obj.text.getText();
         this.mAllObjs.removeFromSet(obj);
         this.mAllObjs.removeFromSet(proj);
 
         // display a reveal message
-        var text="X ";
+        var text="Oops! " + ans + " was a ";
         if(type==0){
             text += "int";
         }
@@ -952,10 +953,10 @@ AsteroidScene.prototype.procHit = function(obj, proj) {
         }
 
         this.revealMsg = new FontRenderable(text);
-        this.revealMsg.setColor([1, 0, .5, 1]);
+        this.revealMsg.setColor([0, 1, 1, 1]);
         this.revealMsg.getXform().setPosition(x, y);
         this.revealMsg.setTextHeight(5);
-        this.revealTime=120;
+        this.revealTime=150;
     }
     
 };

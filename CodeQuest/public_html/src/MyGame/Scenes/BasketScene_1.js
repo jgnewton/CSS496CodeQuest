@@ -72,3 +72,7 @@ BasketScene.prototype.limitSelection = function () {
     }
 
 };
+
+BasketScene.prototype.displayChange = function () {
+    this.displayTime=100;
+}
