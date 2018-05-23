@@ -808,12 +808,14 @@ BubbleScene.prototype.checkIfWin = function() {
     for(var i=1; i<7; i++){
         if(this.proposed[i] == this.correctAnswers[i]) {
             this.win = true;
-       if(localStorage.getItem("Bubbles") != "2"){
-            localStorage.setItem("Bubbles", "1");
-        }
-        if(this.perfect){
-           localStorage.setItem("Bubbles", "2"); 
-        }
+            
+            if(this.perfect){
+               localStorage.setItem("Bubbles", "2"); 
+            } else {
+                if(localStorage.getItem("Bubbles") != "2"){
+                    localStorage.setItem("Bubbles", "1");
+                }
+            }
         }else{
             this.win = false;
             i = 7;    //to exit loop
