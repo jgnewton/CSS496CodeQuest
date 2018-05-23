@@ -171,7 +171,7 @@ MyGame.prototype.initialize = function () {
     var bxf=this.mBackground.getXform();
     
     bxf.setPosition(50,40);
-    bxf.setWidth(150);
+    bxf.setWidth(187.5);
     bxf.setHeight(150);
       
     this.mHero = new Hero(this.mc);
