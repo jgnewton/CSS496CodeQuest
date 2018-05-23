@@ -213,7 +213,7 @@ Bubble.prototype.checkToPop = function () {
 Bubble.prototype.pop = function () {
     this.poped = true;
     for(var i=0; i < this.simNeighbors.length; i++){
-      console.log("Pop neighbors!! :D");
+      //console.log("Pop neighbors!! :D");
       if(!this.simNeighbors[i].poped)
         this.simNeighbors[i].pop();
     }
@@ -253,7 +253,7 @@ Bubble.prototype.velocity = function (x, y) {
 }
 
 Bubble.prototype.assignValue = function (string, answer) {
-    console.log("assigned" +string);
+    //console.log("assigned" +string);
     this.drawText= true;
     this.msg= string;
     this.text.setText(string);

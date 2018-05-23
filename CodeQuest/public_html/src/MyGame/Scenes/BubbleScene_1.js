@@ -1,7 +1,7 @@
 
 
 BubbleScene.prototype.initBubbles = function () {
-  console.log("test");  
+  //console.log("test");  
   
   this.bubbleW = 16;
   
@@ -39,7 +39,7 @@ BubbleScene.prototype.initBubbles = function () {
 };
 
 BubbleScene.prototype.setBubblePosition = function (b, currx, curry) {
-    console.log(b);
+    //console.log(b);
     var x = b.mMinion.getXform().getXPos();
     var y = b.mMinion.getXform().getYPos();
     
@@ -149,7 +149,7 @@ BubbleScene.prototype.assignAnswers = function () {
            idx+=1;
        } 
        used.push(idx);
-       console.log(idx);
+       //console.log(idx);
     }
     //used = this.shuffle(used);
     var counter = 0;
@@ -229,7 +229,7 @@ BubbleScene.prototype.setElements = function () {
 };
 
 BubbleScene.prototype.biShuffle = function (array1, array2) {
-    console.log(array1);
+    //console.log(array1);
     var ret=[];
     
     var na1 = [];
@@ -247,7 +247,7 @@ BubbleScene.prototype.biShuffle = function (array1, array2) {
         na1.push(i1);    
         na2.push(i2);
     }
-    console.log("output:"+na1);
+    //console.log("output:"+na1);
     ret = [na1, na2];
     return ret;
  

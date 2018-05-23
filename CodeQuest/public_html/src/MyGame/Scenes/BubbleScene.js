@@ -357,7 +357,7 @@ BubbleScene.prototype.initialize = function () {
        this.Underline(90,this.textYpos+this.textOffset*4-this.textSize/2-cal);
         this.Underline(70,this.textYpos+this.textOffset*5-this.textSize/2-cal);
 
-
+        this.recentlyTrue=[false, false, false, false, false, false, false];
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -676,7 +676,7 @@ BubbleScene.prototype.checkCollisions = function() {
         }
         
         if(result){
-            console.log("collision");
+            //console.log("collision");
             
             if(this.mFlyBubble.color == 99){
                 b.poped=true;
@@ -731,30 +731,41 @@ BubbleScene.prototype.removeBubbles = function() {
             if(b.drawText && !b.blackHoled){
                //console.log("Answer popped");
                if(this.selectIndex!=0){
-                   this.updateQuestions(b);
+                   if(!this.recentlyTrue[this.selectIndex]){
+                        this.updateQuestions(b);
+                    }else{
+                        console.log("skipped update because recently true " + this.selectIndex);
+                    }
                 }
             }
         }
     }
     this.checkPerfect();
+    this.recentlyTrue=[false, false, false, false, false, false, false];
     
 }
 
 BubbleScene.prototype.updateQuestions = function(b) {
-    console.log(this.questions);
-    console.log(this.selectIndex);
-    console.log(this.questions[this.selectIndex]);
+    //console.log(this.questions);
+    //console.log(this.selectIndex);
+    //console.log(this.questions[this.selectIndex]);
         
     var string ="";
 
     var num = parseInt(this.questions[this.selectIndex][0]);
     var space = parseInt(this.questions[this.selectIndex][1]);
-    this.questions[this.selectIndex][space+1]=b.msg;
-    this.proposed[this.selectIndex]= b.answerKey;
-
     
-    console.log(this.proposed[this.selectIndex]);
-    console.log(this.correctAnswers[this.selectIndex]);
+    this.questions[this.selectIndex][space+1]=b.msg;
+    
+    this.proposed[this.selectIndex]= b.answerKey;
+    
+    if(this.proposed[this.selectIndex]==this.correctAnswers[this.selectIndex]){
+        console.log("recently true " + this.selectIndex);
+        this.recentlyTrue[this.selectIndex]=true;
+    }
+     
+    ////console.log(this.proposed[this.selectIndex]);
+    //console.log(this.correctAnswers[this.selectIndex]);
      
     this.setElements();
     
