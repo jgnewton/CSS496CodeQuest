@@ -311,8 +311,8 @@ LessonScene.prototype.initLessonText = function () {
                     ],
                     [//new MenuElement("Meteor Lesson", -10, 20, 15),
                      new MenuElement("You will need to select the correct relational operator ", -130, 80, 8),
-                     new MenuElement("to make the corresponding statement evaluate to true", -110, 65, 8),
-                     new MenuElement("In order to catch the fish.", -70, 50, 8)
+                     new MenuElement("to make boolean expressions evaluate to true", -110, 65, 8),
+                     new MenuElement("in order to catch the fish.", -70, 50, 8)
                     ],
                     [//new MenuElement("Meteor Lesson", -10, 20, 15),
                      new MenuElement("Relational Operators: ", -60, 90, 8),
@@ -390,7 +390,7 @@ LessonScene.prototype.initLessonText = function () {
                      new MenuElement("EX:", -60, 40, 8),
                      new MenuElement(" true || true        evaluates to true", -70, 30, 8),
                      new MenuElement(" true || false        evaluates to true", -70, 20, 8),
-                     new MenuElement(" 4 < 3 && 2 < 3        evaluates to true", -70, 10, 8),
+                     new MenuElement(" 4 < 3 || 2 < 3        evaluates to true", -70, 10, 8),
                     ],
         ]
         
