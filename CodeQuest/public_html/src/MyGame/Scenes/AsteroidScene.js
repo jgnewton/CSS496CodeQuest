@@ -254,7 +254,7 @@ AsteroidScene.prototype.initialize = function () {
 
     // initialize the text that represents data types
     
-    var textSize = 5;
+    var textSize = 7.5;
     var textYpos = -this.WCHeight / 2 + this.groundHeight / 8;
     var textXPos = 110;
     var textOffset = 10;

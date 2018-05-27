@@ -63,17 +63,17 @@ Hero.prototype.heroControls = function (map) {
     console.log(xform.getYPos() > mpos[1] - msize[1] / 2);
     */
     
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.W) && xform.getYPos() < mpos[1] + msize[1] / 2) {
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up) && xform.getYPos() < mpos[1] + msize[1] / 2) {
         xform.incYPosBy(kWASDDelta);
     }
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.S) && xform.getYPos() > mpos[1] - msize[1] / 2) {
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down) && xform.getYPos() > mpos[1] - msize[1] / 2) {
         //console.log("I tried");
         xform.incYPosBy(-kWASDDelta);
     }
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A) && xform.getXPos() > mpos[0] - msize[0] / 2) {
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left) && xform.getXPos() > mpos[0] - msize[0] / 2) {
         xform.incXPosBy(-kWASDDelta);
     }
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D) && xform.getXPos() < mpos[0] + msize[0] / 2) {
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right) && xform.getXPos() < mpos[0] + msize[0] / 2) {
         xform.incXPosBy(kWASDDelta);
     }    
 }

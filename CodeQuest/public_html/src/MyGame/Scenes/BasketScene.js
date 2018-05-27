@@ -734,7 +734,7 @@ BasketScene.prototype.setOperators = function() {
    // console.log("Operators");
     
     var posY1 = -75;
-    var offSet = 10;
+    var offSet = 12;
     
     this.offSet = offSet;
     this.posY1 = posY1;
@@ -743,7 +743,7 @@ BasketScene.prototype.setOperators = function() {
     var posY3 = posY1 - 2* offSet;
     var posX = 100;
     this.posX = posX -10;
-    var textSize = 7.5;
+    var textSize = 12;
     
     this.selectionArrow.getXform().setPosition(this.posX, this.posY1);
     
