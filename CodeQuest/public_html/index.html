@@ -136,7 +136,7 @@
         </canvas>
 
         <div id='ControlText' style="margin-left: 10px;float:left;"></div>
-        <div id='SurveryLink' style="margin-left: 10px;float:left;display:block;width:100vw">Done Playing? Please <a href = "https://goo.gl/forms/ChQXtGb8r4aUg6il2">fill out this survey!</a></div>
+        <div id='SurveryLink' style="margin-left: 10px;float:left;display:block;width:90vw">Done Playing? Please <a href = "https://goo.gl/forms/ChQXtGb8r4aUg6il2">fill out this survey!</a></div>
 
         <script>
            
@@ -190,9 +190,10 @@
                 } else if(mode == "MyGame"){
                     elm.innerHTML =
                             "<b>Controls</b></br><hr>" +
-                        "Welcome to the map! Navigate using the arrow keys <br>" +
-                        "Move to a level square to start a lesson! <br>" +
-                        "Beat the minigame to turn the square green. Turn all 3 green and you win! <br>" +
+                        "Welcome to the map! Navigate by holding down the <b>arrow keys</b> <br>" +
+                        "Move to a level icon to start a lesson. <br>" +
+                        "Beat the minigame to earn a green checkmark.<br> " +
+                        "Beat the level with no mistakes to earn a gold checkmark! <br>" +
                         "Press <b> X </b> to return to Main Menu <br>";
                 } else if(mode == "Lesson"){
                     elm.innerHTML =
