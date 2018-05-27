@@ -151,6 +151,7 @@ function BasketScene() {
     this.friendVisible = false;
     this.helpTimer = 0;
     
+    this.numMistakes=0;
     
     
 }
@@ -468,6 +469,7 @@ BasketScene.prototype.updateObjects = function(){
             //this.fruitGravity(obj);
             if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
                 this.incrementScore(false);
+               
                 this.mAllObjs.removeFromSet(obj);
                 this.mFruit = null;
             }
@@ -523,7 +525,7 @@ BasketScene.prototype.incrementScore = function(hit){
     // toggle gameover state if exceeded gameeover number
     if(this.numIncorrect >= this.gameOverNumber){
         // set this text element to correctly display numCorrect
-        this.gameOverText2 = new MenuElement("Final Score: " + this.numCorrect, -20, 0, 10);
+        this.gameOverText2 = new MenuElement(("Final Score: " + (100-10*this.numIncorrect+10*this.numCorrect)), -20, 0, 10);
         this.gameOver = true;
     }
     
@@ -539,7 +541,7 @@ BasketScene.prototype.incrementScore = function(hit){
         //this.win = true;
     }
     if(this.numCorrect >= this.succeedNumber || this.gameOver && this.Accuracy == 100){
-        this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
+        this.gameOverText = new MenuElement(("You Win! Score: "+(200-this.numIncorrect+10*this.numCorrect)), -15, 30, 10);
         this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
         this.gameOver = true;
         localStorage.setItem("Baskets", "2");
@@ -724,6 +726,7 @@ BasketScene.prototype.checkAnswer = function( ) {
         this.incrementScore(true);
     }
     else{
+
         this.incrementScore(false);
         //helper speaks
         this.callHelper();
