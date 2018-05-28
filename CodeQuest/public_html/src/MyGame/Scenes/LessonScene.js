@@ -90,6 +90,7 @@ function LessonScene(lesson) {
     //this.raycast = false;
     this.lessonOne = null;
     this.current = 0;
+    this.pageInfo = null;
 }
 gEngine.Core.inheritPrototype(LessonScene, Scene);
 
@@ -398,6 +399,8 @@ LessonScene.prototype.initLessonText = function () {
     else if(this.lesson == "Bubbles"){
         
     }
+    
+    this.pageInfo = new MenuElement("<--     Page: "+(this.current+1)+" of " + this.lessonOne.length+"     --> ", -100,-10,7.5);
 }
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -424,6 +427,8 @@ LessonScene.prototype.draw = function () {
         this.mCollisionInfos[i].draw(this.mCamera); */
     this.mCollisionInfos = []; 
     
+    this.pageInfo.draw(this.mCamera);
+    
     //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     //this.mShapeMsg.draw(this.mCamera);
     
@@ -448,11 +453,13 @@ LessonScene.prototype.update = function () {
             this.current--;
             this.current = clamp(this.current, 0, this.lessonOne.length - 1);
             //this.selectedElement = this.elements[this.selectIndex];
+            this.updatePage();
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right)) {
             this.current++;
             this.current = clamp(this.current, 0, this.lessonOne.length - 1);
+            this.updatePage();
     }    
     
     
@@ -505,4 +512,11 @@ LessonScene.prototype.initLessonOne = function() {
     }
      
      
+}
+
+LessonScene.prototype.updatePage = function() {
+    this.pageInfo.setText("<--     Page: "+(this.current+1)+" of " + this.lessonOne.length+"     --> ");    
+    if(this.current+1==this.lessonOne.length){
+        this.pageInfo.setText(this.pageInfo.getText().slice(0,21)+" press X to begin game")
+    }
 }

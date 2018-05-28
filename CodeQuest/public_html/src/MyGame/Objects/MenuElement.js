@@ -32,6 +32,10 @@ MenuElement.prototype.setText = function(string){
     this.mFontRenderable.setText(string);
 };
 
+MenuElement.prototype.getText = function(string){
+    return this.mFontRenderable.getText(string);
+};
+
 MenuElement.prototype.setColor = function(color){
    this.mFontRenderable.setColor(color); 
 }
