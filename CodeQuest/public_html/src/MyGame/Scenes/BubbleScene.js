@@ -21,7 +21,7 @@ function BubbleScene() {
     this.kMW = "assets/MW2.jpg";
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
-    this.helpTable = "assets/AsteroidHelp.PNG";
+    this.helpTable = "assets/BubbleHelp3.PNG";
     
     // new assets
     this.mGrass = "assets/MeteorGame/grass.png";
@@ -295,7 +295,8 @@ BubbleScene.prototype.initialize = function () {
     this.selectionArrow = new TextureRenderable(this.kArrow);
     this.selectionArrow.getXform().setSize(3, 3);
     this.helpTableObject = new TextureRenderable(this.helpTable);
-    this.helpTableObject.getXform().setSize(180, 80);
+    this.helpTableObject.getXform().setSize(220, 220);
+    this.helpTableObject.getXform().setPosition(-35, 0);
     
     this.gameOverText = new MenuElement("You Win!", -15, 30, 10);
     this.gameOverText2 = new MenuElement(" ", -20, 0, 10);
@@ -381,20 +382,8 @@ BubbleScene.prototype.draw = function () {
     } else {
         this.mAllObjs.draw(this.mCamera);
         
-         this.rendy.draw(this.mCamera);
         this.myBubbles.draw(this.mCamera);
     
-        for(var i = 0; i < this.elements.length; i++){
-            //console.log(this.elements[i]);
-            this.elements[i].draw(this.mCamera);
-        }
-
-        this.selectionArrow.draw(this.mCamera);
-
-        if (this.helpTableVisible)
-        {
-           this.helpTableObject.draw(this.mCamera);
-        }
         
         for(var i = 0; i < this.scoreMarksArray.length; i++){
             //console.log(this.elements[i]);
@@ -428,6 +417,17 @@ BubbleScene.prototype.draw = function () {
         }
     }
     
+            if (this.helpTableVisible)
+        {
+           this.helpTableObject.draw(this.mCamera);
+        }
+        
+        this.rendy.draw(this.mCamera);
+        for(var i = 0; i < this.elements.length; i++){
+            //console.log(this.elements[i]);
+            this.elements[i].draw(this.mCamera);
+        }
+       this.selectionArrow.draw(this.mCamera);
     
 };
 
