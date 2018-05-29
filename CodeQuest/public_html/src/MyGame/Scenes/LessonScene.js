@@ -397,7 +397,84 @@ LessonScene.prototype.initLessonText = function () {
         
     }
     else if(this.lesson == "Bubbles"){
-        
+    this.lessonOne = [ 
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("In this game you will be popping electric storm clouds ", -120, 80, 8),
+                     new MenuElement("which have fried our robot's code", -90, 65, 8)
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("You will need to fill in the missing blanks ", -130, 80, 8),
+                     new MenuElement("of a series of lines of code", -110, 65, 8),
+                     new MenuElement("in order to make them correct.", -70, 50, 8)
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("Match 3 clouds of the same color to pop them ", -80, 90, 8),
+                     new MenuElement("the piece of code in a popped cloud fills in the blank", -135, 70, 8),
+                     //new MenuElement("\"is equal to\"", -70, 55, 8),
+                     new MenuElement("EX:", -60, 40, 8),
+                     new MenuElement(" a cloud contains +", -70, 30, 8),
+                     new MenuElement(" A = 1__2; will become A = 1 + 2;", -70, 20, 8),
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("Make all lines of code syntactically correct", -95, 90, 8),
+                     new MenuElement(" A = 1 int 2; ", -100, 70, 10),
+                     new MenuElement("or A = 1 && 2; are not proper syntax", -100, 50, 10),    
+                //new MenuElement("\"is equal to\"", -70, 55, 8),
+                    ],
+                     [
+                         new MenuElement("proper syntax for variable declaration:", -60, 90, 8),
+                     new MenuElement(" data type variable name = value;", -70, 80, 8),
+                     
+                    new MenuElement(" Ex: ", -60, 60, 10),
+                    new MenuElement(" double num = 7.2;", -70, 50, 8),
+                     new MenuElement(" int num2 = 1;", -70, 40, 8),
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("proper assignment syntax: ", -90, 90, 8),
+                     new MenuElement(" variable = value; (note only 1 assignment per line!)", -130, 80, 7.5),
+                     new MenuElement(" Ex: ", -90, 70, 10),
+                     new MenuElement(" num = 3.2; ", -90, 55, 10),
+                     new MenuElement(" num2 = num1; ", -90, 40, 10),
+                    ],
+                     [//new MenuElement("\"is equal to\"", -70, 55, 8),
+                     new MenuElement("Function calls:", -60, 90, 8),
+                     new MenuElement(" object.functionName ( params );", -70, 80, 8),
+                     new MenuElement(" Ex: ", -90, 70, 10),
+                     new MenuElement(" System.out.print(\"Hello World \");", -70, 60, 8),
+                     new MenuElement(" this.initialize();", -70, 50, 8),
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("In the language we are using ", -60, 90, 8),
+                     new MenuElement(" lines of code are ended with a semicolon ;", -120, 70, 8),
+                     //new MenuElement("\"is equal to\"", -70, 55, 8),
+                     new MenuElement("EX:", -60, 50, 8),
+                     new MenuElement("A = 2+2;", -70, 40, 8),
+                     new MenuElement(" Also Variable names cannot be keywords", -70, 30, 8),
+                     new MenuElement(" java keywords: int, for, if, double, while, etc.", -130, 10, 8),
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("Variable names must start with an alphanumeric character ", -130, 90, 8),
+                     new MenuElement("they cannot start with a number or symbol", -130, 70, 8),
+                     //new MenuElement("\"is equal to\"", -70, 55, 8),
+                     new MenuElement("EX:", -60, 40, 8),
+                     new MenuElement("int abc = 3;    correct", -70, 30, 8),
+                     new MenuElement(" int 12number = 12;  syntax error", -70, 20, 8),
+                     new MenuElement(" int +hello = 4; syntax error", -70, 10, 8),
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     new MenuElement("Examples:", -60, 80, 8),
+                     new MenuElement(" int for = 3;  invalid variable name", -70, 60, 8),
+                     new MenuElement(" int num = 3 =2; invalid assignment", -70, 50, 8),
+                     new MenuElement(" int num || A;  not an assignment", -70, 40, 8),
+                      new MenuElement(" int num + A;  not an assignment", -70, 30, 8),
+                    ],
+                    [//new MenuElement("Meteor Lesson", -10, 20, 15),
+                     //new MenuElement("Logical Operators: ", -60, 90, 8),
+                     new MenuElement("Dont' forget the ;!", -60, 80, 10),
+                    new MenuElement("See the sidebar for game control information", -120, 60, 8),
+                     //new MenuElement("logical operators!" -80, 35, 8),
+                    ]
+        ]    
     }
     
     this.pageInfo = new MenuElement("<--     Page: "+(this.current+1)+" of " + this.lessonOne.length+"     --> ", -100,-10,7.5);
@@ -517,6 +594,6 @@ LessonScene.prototype.initLessonOne = function() {
 LessonScene.prototype.updatePage = function() {
     this.pageInfo.setText("<--     Page: "+(this.current+1)+" of " + this.lessonOne.length+"     --> ");    
     if(this.current+1==this.lessonOne.length){
-        this.pageInfo.setText(this.pageInfo.getText().slice(0,21)+" press X to begin game")
+        this.pageInfo.setText(this.pageInfo.getText().slice(0,23)+" press X to begin game")
     }
 }
