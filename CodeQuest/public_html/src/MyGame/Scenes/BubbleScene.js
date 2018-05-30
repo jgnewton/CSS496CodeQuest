@@ -21,7 +21,7 @@ function BubbleScene() {
     this.kMW = "assets/MW2.jpg";
     this.scoreMarks = "assets/scoreMarks.png"
     this.kArrow = "assets/MenuSelectArrow.png";
-    this.helpTable = "assets/BubbleHelp3.PNG";
+    this.helpTable = "assets/BubbleHelp3.png";
     
     // new assets
     this.mGrass = "assets/MeteorGame/grass.png";
