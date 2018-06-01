@@ -24,6 +24,9 @@ var gEngine = gEngine || { };
 gEngine.AudioClips = (function () {
     var mAudioContext = null;
     var mBgAudioNode = null;
+    //var gainNode = null;
+    
+    //var lastBuffer = null;
 
     /**
      * Initializes the audio context to play sounds.
@@ -34,7 +37,37 @@ gEngine.AudioClips = (function () {
         try {
             var AudioContext = window.AudioContext || window.webkitAudioContext;
             mAudioContext = new AudioContext();
+            
+            //gainNode = mAudioContext.createGain();
+            //gainNode.connect(mAudioContext.destination);
         } catch (e) {alert("Web Audio Is not supported."); }
+    };
+    
+    var muteMusic = function(){
+        stopBackgroundAudio();
+        /*
+        //gainNode.connect(mBgAudioNode.context.destination);
+        //
+        if(globalMute_music){
+            //gainNode.gain.value = 0;
+            //mBgAudioNode.buffer = null;
+            //stopBackgroundAudio();
+            if (mBgAudioNode !== null) {
+                mBgAudioNode.stop(0);
+                mBgAudioNode = null;
+            }
+        }
+        /*else {
+            //gainNode.gain.value = 1;
+            //mBgAudioNode.buffer = null;
+            //mBgAudioNode.buffer = lastBuffer;
+            if (mBgAudioNode !== null) {
+                mBgAudioNode.start(0);
+                //mBgAudioNode = null;
+            }
+        }*/
+        
+        //console.log(mBgAudioNode);
     };
 
     /**
@@ -113,16 +146,26 @@ gEngine.AudioClips = (function () {
         if (clipInfo !== null) {
             // Stop audio if playing.
             stopBackgroundAudio();
-
+            
             mBgAudioNode = mAudioContext.createBufferSource();
+            //lastBuffer = clipInfo;
             mBgAudioNode.buffer = clipInfo;
             mBgAudioNode.connect(mAudioContext.destination);
             mBgAudioNode.loop = true;
+            //gainNode.connect(mAudioContext.destination);
             mBgAudioNode.start(0);
+            
+            if(globalMute_music){
+                muteMusic();
+            }
+            
         }
+        /*
         if(globalMute_music){
             this.stopBackgroundAudio();
         }
+        */
+        
     };
 
     /**
@@ -150,6 +193,7 @@ gEngine.AudioClips = (function () {
     // Public interface for this object. Anything not in here will
     // not be accessable.
     var mPublic = {
+        muteMusic: muteMusic,
         initAudioContext: initAudioContext,
         loadAudio: loadAudio,
         unloadAudio: unloadAudio,

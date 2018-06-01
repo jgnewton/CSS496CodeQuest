@@ -158,11 +158,13 @@
                 if(!globalMute_music){
                     mutebtn_music.innerHTML = "Unmute Music";
                     globalMute_music = true;
-                    gEngine.AudioClips.stopBackgroundAudio();
+                    //gEngine.AudioClips.stopBackgroundAudio();
                 } else {
                     mutebtn_music.innerHTML = "Mute Music";
                     globalMute_music = false;
                 }
+                
+                gEngine.AudioClips.muteMusic();
                 
             } 
             
