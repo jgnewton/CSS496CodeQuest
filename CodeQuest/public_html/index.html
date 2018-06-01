@@ -136,9 +136,9 @@
         </canvas>
            
         
-        <div id="leftPanel" style="margin-left: 10px;float:left;">
-            <button id='mutebtn'>Mute</button>
-
+        <div id="rightPanel" style="margin-left: 10px;float:left;">
+            <button id='mutebtn_music'>Mute Music</button>
+            <button id='mutebtn_sounds'>Mute Sound Effects</button>
 
 
             <div id='ControlText' style="margin-top:20px; "></div>
@@ -147,14 +147,41 @@
         
         <div id='SurveryLink' style="margin-left: 10px;float:left;display:block;width:90vw">Done Playing? Please <a href = "https://goo.gl/forms/ChQXtGb8r4aUg6il2">fill out this survey!</a></div>
         <script>
-            
+            var globalMute_music = false;
+            var globalMute_sounds = false;
             //audio = 
-            var mutebtn = document.getElementById("mutebtn");
-            mutebtn.onclick = mute;
-            function mute(){
-                gEngine.AudioClips.stopBackgroundAudio();
+            var mutebtn_music = document.getElementById("mutebtn_music");
+            var mutebtn_sounds = document.getElementById("mutebtn_sounds");
+            
+            mutebtn_music.onclick = muteMusic;
+            function muteMusic(){
+                if(!globalMute_music){
+                    mutebtn_music.innerHTML = "Unmute Music";
+                    globalMute_music = true;
+                    gEngine.AudioClips.stopBackgroundAudio();
+                } else {
+                    mutebtn_music.innerHTML = "Mute Music";
+                    globalMute_music = false;
+                }
+                
             } 
+            
+            mutebtn_sounds.onclick = muteSounds;
+            function muteSounds(){
+                if(!globalMute_sounds){
+                    mutebtn_sounds.innerHTML = "Unmute Sound Effects";
+                    globalMute_sounds = true;
+                } else{
+                    mutebtn_sounds.innerHTML = "Mute Sound Effects";
+                    globalMute_sounds = false;
+                }
+                
+                //gEngine.AudioClips.stopBackgroundAudio();
+            } 
+            
             //mute.onclick = voiceMute;
+            
+            
 
             //function voiceMute() {
         </script>

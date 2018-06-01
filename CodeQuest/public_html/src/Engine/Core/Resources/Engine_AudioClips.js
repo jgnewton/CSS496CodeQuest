@@ -93,7 +93,7 @@ gEngine.AudioClips = (function () {
      */
     var playACue = function (clipName) {
         var clipInfo = gEngine.ResourceMap.retrieveAsset(clipName);
-        if (clipInfo !== null) {
+        if (clipInfo !== null && !globalMute_sounds) {
             // SourceNodes are one use only.
             var sourceNode = mAudioContext.createBufferSource();
             sourceNode.buffer = clipInfo;
@@ -119,6 +119,9 @@ gEngine.AudioClips = (function () {
             mBgAudioNode.connect(mAudioContext.destination);
             mBgAudioNode.loop = true;
             mBgAudioNode.start(0);
+        }
+        if(globalMute_music){
+            this.stopBackgroundAudio();
         }
     };
 
