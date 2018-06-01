@@ -33,6 +33,17 @@ function MyGame() {
     
     this.scoreMark = "assets/checksandx.png";
     
+    //sounds
+    this.bar12 = "assets/Sounds/12bar_mainmenu.mp3";
+    this.bubbsong = "assets/Sounds/BubbleMadness.mp3";
+    this.explosion = "assets/Sounds/Explosion.mp3";
+    this.fishsong = "assets/Sounds/FishThemeSong.mp3";
+    this.laser = "assets/Sounds/Laser.mp3";
+    this.asteroidsong = "assets/Sounds/asteroidScene.mp3";
+    this.catchbad = "assets/Sounds/catchbad.mp3";
+    this.fishfall = "assets/Sounds/fishfall.mp3";
+    this.pops = "assets/Sounds/pops.mp3";
+    
     // The camera to view the scene
     this.mCamera = null;
 
@@ -58,6 +69,8 @@ function MyGame() {
     this.meteorWin = false;
     this.basketWin = false;
     this.bubbleWin = false;
+    
+    this.musicOn=true;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -82,6 +95,18 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.basketIcon);
     
     gEngine.Textures.loadTexture(this.scoreMark);
+
+    //sounds
+    gEngine.AudioClips.loadAudio(this.bar12);
+    gEngine.AudioClips.loadAudio(this.bubbsong);
+    gEngine.AudioClips.loadAudio(this.explosion);
+    gEngine.AudioClips.loadAudio(this.fishsong);
+    gEngine.AudioClips.loadAudio(this.laser);
+    gEngine.AudioClips.loadAudio(this.asteroidsong);
+    gEngine.AudioClips.loadAudio(this.catchbad);
+    gEngine.AudioClips.loadAudio(this.fishfall);
+    gEngine.AudioClips.loadAudio(this.pops);
+    
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -106,7 +131,7 @@ MyGame.prototype.unloadScene = function () {
     
     gEngine.Textures.unloadTexture(this.scoreMark);
     
-    
+    //gEngine.AudioClips.stopBackgroundAudio();
     // start the next scene
     //var SceneObject = new AsteroidScene();
     
@@ -249,6 +274,9 @@ MyGame.prototype.initialize = function () {
     this.zones.push(this.sceneZoneMeteor);
     this.zones.push(this.sceneZoneBasket);
     this.zones.push(this.sceneZoneBubble);
+
+
+
 };
 
 

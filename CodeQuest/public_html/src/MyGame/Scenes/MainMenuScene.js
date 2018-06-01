@@ -30,6 +30,23 @@ function MainMenuScene() {
     this.WCCenterX=0;
     //y coord
     this.WCCenterY=0;
+    
+        //sounds
+    this.bar12 = "assets/Sounds/12bar_mainmenu.mp3";
+    this.bubbsong = "assets/Sounds/BubbleMadness.mp3";
+    this.explosion = "assets/Sounds/Explosion.mp3";
+    this.fishsong = "assets/Sounds/FishThemeSong.mp3";
+    this.laser = "assets/Sounds/Laser.mp3";
+    this.asteroidsong = "assets/Sounds/asteroidScene.mp3";
+    this.catchbad = "assets/Sounds/catchbad.mp3";
+    this.fishfall = "assets/Sounds/fishfall.mp3";
+    this.pops = "assets/Sounds/pops.mp3";
+    this.firing = "assets/Sounds/firing.mp3";
+    this.firing = "assets/Sounds/firing.mp3";
+    this.maingame = "assets/Sounds/maingame.mp3";
+    
+    
+    this.musicOn=true;
 }
 gEngine.Core.inheritPrototype(MainMenuScene, Scene);
 
@@ -38,6 +55,19 @@ MainMenuScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.bg);
     gEngine.Textures.loadTexture(this.playButton);
     gEngine.Textures.loadTexture(this.creditsButton);
+    
+        //sounds
+    gEngine.AudioClips.loadAudio(this.bar12);
+    gEngine.AudioClips.loadAudio(this.bubbsong);
+    gEngine.AudioClips.loadAudio(this.explosion);
+    gEngine.AudioClips.loadAudio(this.fishsong);
+    gEngine.AudioClips.loadAudio(this.laser);
+    gEngine.AudioClips.loadAudio(this.asteroidsong);
+    gEngine.AudioClips.loadAudio(this.catchbad);
+    gEngine.AudioClips.loadAudio(this.fishfall);
+    gEngine.AudioClips.loadAudio(this.pops);
+    gEngine.AudioClips.loadAudio(this.firing);
+    gEngine.AudioClips.loadAudio(this.maingame);
 };
 
 MainMenuScene.prototype.unloadScene = function () {
@@ -45,7 +75,10 @@ MainMenuScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.bg);
     gEngine.Textures.unloadTexture(this.playButton);
     gEngine.Textures.unloadTexture(this.creditsButton);
-
+    
+    //gEngine.AudioClips.stopBackgroundAudio();
+    
+    
     if(this.nextScene==0){
         gEngine.Core.startScene(new MyGame());
         
@@ -88,7 +121,11 @@ MainMenuScene.prototype.initialize = function () {
     this.credits.getXform().setRotationInDegree(0); // In Degree
     this.credits.getXform().setSize(this.WCWidth / 4, this.WCHeight / 4);
     this.mAllObjs.addToSet(this.credits);
-
+    
+        if(this.musicOn){
+         gEngine.AudioClips.playBackgroundAudio(this.maingame);
+        }
+    
 };
 
 

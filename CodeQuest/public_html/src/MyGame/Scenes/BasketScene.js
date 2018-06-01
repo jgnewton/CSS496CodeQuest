@@ -153,6 +153,8 @@ function BasketScene() {
     
     this.numMistakes=0;
     
+    this.musicOn=true;
+    
     
 }
 gEngine.Core.inheritPrototype(BasketScene, Scene);
@@ -180,6 +182,16 @@ BasketScene.prototype.loadScene = function () {
     
     gEngine.Textures.loadTexture(this.boatcharacter);
     gEngine.Textures.loadTexture(this.chipmunk);
+    
+    //sounds
+    this.fishsong = "assets/Sounds/FishThemeSong.mp3";
+    this.goodcatch = "assets/Sounds/catchgood.mp3";
+    this.badcatch = "assets/Sounds/catchbad.mp3";
+    this.falling = "assets/Sounds/fishfall.mp3";
+    gEngine.AudioClips.loadAudio(this.fishsong);
+    gEngine.AudioClips.loadAudio(this.goodcatch);
+    gEngine.AudioClips.loadAudio(this.badcatch);
+    gEngine.AudioClips.loadAudio(this.falling);
 };
 
 BasketScene.prototype.unloadScene = function () {
@@ -327,6 +339,11 @@ BasketScene.prototype.initialize = function () {
         this.rendy.getXform().setPosition(90, -80);
         
         this.displayTime =0;
+        
+        if(this.musicOn){
+         gEngine.AudioClips.stopBackgroundAudio();
+         gEngine.AudioClips.playBackgroundAudio(this.fishsong);
+        }
      
 };
 
@@ -416,6 +433,7 @@ BasketScene.prototype.update = function () {
     if(this.mBat != null && this.gameOver == false){
         if (this.mBat.timer >= this.mBat.DROP_DELAY){
             this.mFruit = this.mBat.dropFruit();
+            gEngine.AudioClips.playACue(this.falling);
             this.mAllObjs.addToSet(this.mFruit);
             this.mBat.DROP_DELAY=99999;
             this.mBat.flyAway(); 
@@ -469,6 +487,7 @@ BasketScene.prototype.updateObjects = function(){
             //this.fruitGravity(obj);
             if(obj.getXform().getYPos() <= -this.WCHeight / 2 + this.groundHeight){
                 this.incrementScore(false);
+                gEngine.AudioClips.playACue(this.badcatch);
                
                 this.mAllObjs.removeFromSet(obj);
                 this.mFruit = null;
@@ -724,10 +743,12 @@ BasketScene.prototype.checkAnswer = function( ) {
     */
     if (this.mAnswer == this.mBat.correctAnswer){
         this.incrementScore(true);
+        gEngine.AudioClips.playACue(this.goodcatch);
     }
     else{
 
         this.incrementScore(false);
+        //gEngine.AudioClips.playACue(this.badcatch);
         //helper speaks
         this.callHelper();
     }

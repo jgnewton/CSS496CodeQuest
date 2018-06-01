@@ -164,6 +164,8 @@ function BubbleScene() {
     this.perfect=true;
     
     this.oldState = localStorage.getItem("Bubbles") ;
+    
+    this.musicOn=true;
 }
 gEngine.Core.inheritPrototype(BubbleScene, Scene);
 
@@ -192,6 +194,11 @@ BubbleScene.prototype.loadScene = function () {
     
     gEngine.Textures.loadTexture(this.mMeteorSprite);
     gEngine.Textures.loadTexture(this.mCloudSprite);
+        
+        this.bubbsong = "assets/Sounds/BubbleMadness.mp3";
+        this.pops = "assets/Sounds/pops.mp3";
+        gEngine.AudioClips.loadAudio(this.bubbsong);
+        gEngine.AudioClips.loadAudio(this.pops);
 };
 
 BubbleScene.prototype.unloadScene = function () {
@@ -361,6 +368,13 @@ BubbleScene.prototype.initialize = function () {
         this.Underline(70,this.textYpos+this.textOffset*5-this.textSize/2-cal);
 
         this.recentlyTrue=[false, false, false, false, false, false, false];
+
+        
+         if(this.musicOn){
+         gEngine.AudioClips.stopBackgroundAudio();    
+         gEngine.AudioClips.playBackgroundAudio(this.bubbsong);
+        }
+
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -400,9 +414,6 @@ BubbleScene.prototype.draw = function () {
         this.refreshText.draw(this.mCamera);
         
 
-        for(var i =0; i< this.lines.length; i++){
-            this.lines[i].draw(this.mCamera);
-        }
 
         //this.progressBar.draw(this.mCamera);
         
@@ -426,6 +437,9 @@ BubbleScene.prototype.draw = function () {
         for(var i = 0; i < this.elements.length; i++){
             //console.log(this.elements[i]);
             this.elements[i].draw(this.mCamera);
+        }
+        for(var i =0; i< this.lines.length; i++){
+            this.lines[i].draw(this.mCamera);
         }
        this.selectionArrow.draw(this.mCamera);
     
@@ -733,6 +747,7 @@ BubbleScene.prototype.removeBubbles = function() {
         
         if(b.poped){
             this.myBubbles.removeFromSet(b);
+            gEngine.AudioClips.playACue(this.pops);
             i--;
             if(b.drawText && !b.blackHoled){
                //console.log("Answer popped");

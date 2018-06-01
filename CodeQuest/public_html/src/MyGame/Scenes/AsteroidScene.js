@@ -130,6 +130,8 @@ function AsteroidScene() {
     this.burstCount = 0;
     
     this.Ray=null;
+    
+    this.musicOn=true;
 }
 gEngine.Core.inheritPrototype(AsteroidScene, Scene);
 
@@ -159,6 +161,16 @@ AsteroidScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.mCannonMuzzle);
     
     gEngine.Textures.loadTexture(this.mMeteorSprite);
+    
+        //sounds
+    this.asteroidsong = "assets/Sounds/asteroidScene.mp3";
+    this.firing = "assets/Sounds/firing.mp3";
+    this.explosion = "assets/Sounds/Explosion.mp3";
+    this.laser = "assets/Sounds/laser.mp3";
+    gEngine.AudioClips.loadAudio(this.asteroidsong);
+    gEngine.AudioClips.loadAudio(this.firing);
+    gEngine.AudioClips.loadAudio(this.explosion);
+    gEngine.AudioClips.loadAudio(this.laser);
 };
 
 AsteroidScene.prototype.unloadScene = function () {
@@ -302,6 +314,12 @@ AsteroidScene.prototype.initialize = function () {
     
     this.mCannon.intRotByDeg(0.01);
     
+            
+         if(this.musicOn){
+         gEngine.AudioClips.stopBackgroundAudio();    
+         gEngine.AudioClips.playBackgroundAudio(this.asteroidsong);
+        }
+    
     //debugging
     //this.generateAsteroid(true, 10,100);
     //this.generateAsteroid(true, 100,-60);
@@ -419,6 +437,8 @@ AsteroidScene.prototype.updateObjects = function(){
                 //console.log("asteroid collision with ground");
                 this.incrementScore(false);
                 this.mAllObjs.removeFromSet(obj);
+                this.mCamera.shake(-10, -10, 40, 60);
+                gEngine.AudioClips.playACue(this.explosion);
             }
             
             // check collision of this asteroid with all projectiles
@@ -446,6 +466,7 @@ AsteroidScene.prototype.updateObjects = function(){
             }
         }
     }
+    this.mCamera.update();
 };
 
 AsteroidScene.prototype.incrementScore = function(hit){
@@ -687,7 +708,7 @@ AsteroidScene.prototype.generateProjectile = function () {
     this.maxV=100;
     
     var v = 1;
-    
+    gEngine.AudioClips.playACue(this.firing);
     if(this.selectIndex == 0){
         // int
         v = 3;
@@ -698,6 +719,8 @@ AsteroidScene.prototype.generateProjectile = function () {
         this.fireRate = 30;
     } else if(this.selectIndex==2){
         //bool
+        gEngine.AudioClips.playACue(this.laser);
+        
         this.fireRate = 60;
         
         this.maxV=0;
@@ -915,6 +938,9 @@ AsteroidScene.prototype.rayCast = function (p) {
 
 AsteroidScene.prototype.procHit = function(obj, proj) {   
     //for making reveal message
+    
+    gEngine.AudioClips.playACue(this.explosion);
+    
     var x = obj.getXform().getXPos();
     var y = obj.getXform().getYPos();
     var type = obj.dataType;

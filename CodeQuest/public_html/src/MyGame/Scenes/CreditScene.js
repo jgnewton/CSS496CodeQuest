@@ -24,12 +24,16 @@ function CreditScene() {
     this.WCCenterX=0;
     //y coord
     this.WCCenterY=0;
+    this.musicOn=true;
 }
 gEngine.Core.inheritPrototype(CreditScene, Scene);
 
 
 CreditScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.credits);
+    
+     this.credsong = "assets/Sounds/12bar_mainmenu.mp3";
+      gEngine.AudioClips.loadAudio(this.credsong);
  
 };
 
@@ -62,6 +66,10 @@ CreditScene.prototype.initialize = function () {
     this.creditObj.getXform().setRotationInDegree(0); // In Degree
     this.creditObj.getXform().setSize(this.WCWidth, this.WCHeight);
     this.mAllObjs.addToSet(this.creditObj);
+    
+            if(this.musicOn){
+         gEngine.AudioClips.playBackgroundAudio(this.credsong);
+        }
 
 };
 
