@@ -211,7 +211,7 @@ MyGame.prototype.initialize = function () {
     this.initLocalStorage();
     
     
-    this.sceneZoneMeteor = new SceneZone(this.meteorIcon, this.scoreMark, 40,-10, this.meteorWin);
+    this.sceneZoneMeteor = new SceneZone(this.meteorIcon, this.scoreMark, 40,10, this.meteorWin);
     this.sceneZoneMeteor.mDye.setElementPixelPositions(0, 240, 512 - 138, 512);
     
     if(this.meteorWin != "0"){
@@ -222,7 +222,7 @@ MyGame.prototype.initialize = function () {
     
     this.mAllObjs.addToSet(this.sceneZoneMeteor);
     
-    this.sceneZoneBasket = new SceneZone(this.basketIcon, this.scoreMark, 100,80, this.basketWin);
+    this.sceneZoneBasket = new SceneZone(this.basketIcon, this.scoreMark, 80,60, this.basketWin);
     this.sceneZoneBasket.mDye.setElementPixelPositions(0, 130, 512 - 138, 512);
     this.sceneZoneBasket.mDye.getXform().setSize(20, 20);
     if(this.basketWin != "0"){
@@ -232,7 +232,7 @@ MyGame.prototype.initialize = function () {
     }
     this.mAllObjs.addToSet(this.sceneZoneBasket);
     
-    this.sceneZoneBubble = new SceneZone(this.bubbleIcon,this.scoreMark, 0,80, this.bubbleWin);
+    this.sceneZoneBubble = new SceneZone(this.bubbleIcon,this.scoreMark, 5,75, this.bubbleWin);
     this.sceneZoneBubble.mDye.setElementPixelPositions(0, 180, 512 - 138, 512);
     this.sceneZoneBubble.mDye.getXform().setSize(27, 20);
     if(this.bubbleWin != "0"){
