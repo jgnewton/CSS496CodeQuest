@@ -70,7 +70,11 @@ CreditScene.prototype.initialize = function () {
         if(this.musicOn){
          gEngine.AudioClips.playBackgroundAudio(this.credsong);
         }
+this.acknowledgements = new MenuElement(" Advisors: Dr. Laurie Anderson, Dr. Kelvin Sung", -140, -70, 8);
+this.acknowledgements2 = new MenuElement(" Game Engine: Kelvin Sung, Jebediah Pavleas, Fernando Arnez, Jason Pace  ", -145, -80, 6)
 
+this.acknowledgements.setColor([1,1,1,1]);
+this.acknowledgements2.setColor([1,1,1,1]);
 };
 
 
@@ -86,6 +90,9 @@ CreditScene.prototype.draw = function () {
     this.mAllObjs.draw(this.mCamera);
     this.creditObj.draw(this.mCamera);
     //this.mCollisionInfos = []; 
+    
+    this.acknowledgements.draw(this.mCamera);
+    this.acknowledgements2.draw(this.mCamera);
 
 };
 
