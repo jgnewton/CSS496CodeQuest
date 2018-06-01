@@ -67,7 +67,7 @@ CreditScene.prototype.initialize = function () {
     this.creditObj.getXform().setSize(this.WCWidth, this.WCHeight);
     this.mAllObjs.addToSet(this.creditObj);
     
-            if(this.musicOn){
+        if(this.musicOn){
          gEngine.AudioClips.playBackgroundAudio(this.credsong);
         }
 

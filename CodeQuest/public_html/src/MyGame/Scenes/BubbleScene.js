@@ -416,18 +416,7 @@ BubbleScene.prototype.draw = function () {
 
 
         //this.progressBar.draw(this.mCamera);
-        
-
-    }
-    
-    //this.accuracyText.draw(this.mCamera);
-    
-    if(this.revealMsg!=null){
-        if(this.revealTime>0){
-           this.revealMsg.draw(this.mCamera);
-        }
-    }
-    
+           
             if (this.helpTableVisible)
         {
            this.helpTableObject.draw(this.mCamera);
@@ -441,7 +430,10 @@ BubbleScene.prototype.draw = function () {
         for(var i =0; i< this.lines.length; i++){
             this.lines[i].draw(this.mCamera);
         }
-       this.selectionArrow.draw(this.mCamera);
+       this.selectionArrow.draw(this.mCamera); 
+
+    }
+    
     
 };
 

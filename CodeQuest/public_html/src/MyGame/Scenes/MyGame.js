@@ -107,6 +107,9 @@ MyGame.prototype.loadScene = function () {
     gEngine.AudioClips.loadAudio(this.fishfall);
     gEngine.AudioClips.loadAudio(this.pops);
     
+    this.maingame = "assets/Sounds/maingame.mp3";
+    gEngine.AudioClips.loadAudio(this.maingame);
+    
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -275,7 +278,10 @@ MyGame.prototype.initialize = function () {
     this.zones.push(this.sceneZoneBasket);
     this.zones.push(this.sceneZoneBubble);
 
-
+        if(this.musicOn){
+         gEngine.AudioClips.stopBackgroundAudio();    
+         gEngine.AudioClips.playBackgroundAudio(this.maingame);
+        }
 
 };
 
