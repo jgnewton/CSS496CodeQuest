@@ -136,8 +136,16 @@
         </canvas>
            
         
-        <button id='mutebtn' style="margin-left: 30px;">Mute</button>
+        <div id="leftPanel" style="margin-left: 10px;float:left;">
+            <button id='mutebtn'>Mute</button>
+
+
+
+            <div id='ControlText' style="margin-top:20px; "></div>
+        </div>
         
+        
+        <div id='SurveryLink' style="margin-left: 10px;float:left;display:block;width:90vw">Done Playing? Please <a href = "https://goo.gl/forms/ChQXtGb8r4aUg6il2">fill out this survey!</a></div>
         <script>
             
             //audio = 
@@ -150,64 +158,6 @@
 
             //function voiceMute() {
         </script>
-        <!--
-        <script>
-            var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            var gainNode = audioCtx.createGain();
-            //var mute = document.querySelector('.mute');
-            stream = 
-            var source = audioCtx.createMediaStreamSource(stream);
-            
-            /*
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia (
-                  // constraints - only audio needed for this app
-                  {
-                    audio: true
-                  },
-
-                  // Success callback
-                  function(stream) {
-                    source = audioCtx.createMediaStreamSource(stream);
-                    
-                  },
-
-                  // Error callback
-                  function(err) {
-                    console.log('The following gUM error occured: ' + err);
-                  }
-                 );
-               } else {
-                  console.log('getUserMedia not supported on your browser!');
-               }
-               */
-            console.log(source);
-            console.log(gainNode);
-            source.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            var mute = document.getElementById("mutebtn");
-            mute.onclick = voiceMute;
-
-            function voiceMute() {
-              if(mute.id == "") {
-                gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-                mute.id = "activated";
-                mute.innerHTML = "Unmute";
-              } else {
-                gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
-                mute.id = "";
-                mute.innerHTML = "Mute";
-              }
-            }
-        </script>
-        -->
-        
-        <div id='ControlText' style="margin-left: 10px;float:left;"></div>
-        
-        
-        <div id='SurveryLink' style="margin-left: 10px;float:left;display:block;width:90vw">Done Playing? Please <a href = "https://goo.gl/forms/ChQXtGb8r4aUg6il2">fill out this survey!</a></div>
-
         <script>
            
             var setControlText = function(mode){
