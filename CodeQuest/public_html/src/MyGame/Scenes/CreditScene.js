@@ -33,7 +33,9 @@ CreditScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.credits);
     
      this.credsong = "assets/Sounds/12bar_mainmenu.mp3";
+     this.music=this.credsong;
       gEngine.AudioClips.loadAudio(this.credsong);
+      gEngine.AudioClips.loadAudio(this.music);
  
 };
 
@@ -97,6 +99,7 @@ CreditScene.prototype.draw = function () {
 };
 
 CreditScene.prototype.update = function () {
+    this.checkMusic();
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
         this.nextScene = 0;
         gEngine.GameLoop.stop();  

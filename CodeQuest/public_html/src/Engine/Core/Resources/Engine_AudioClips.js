@@ -24,6 +24,7 @@ var gEngine = gEngine || { };
 gEngine.AudioClips = (function () {
     var mAudioContext = null;
     var mBgAudioNode = null;
+    //this.muted=false;
     //var gainNode = null;
     
     //var lastBuffer = null;
@@ -45,6 +46,7 @@ gEngine.AudioClips = (function () {
     
     var muteMusic = function(){
         stopBackgroundAudio();
+        //this.muted=!this.muted;
         /*
         //gainNode.connect(mBgAudioNode.context.destination);
         //

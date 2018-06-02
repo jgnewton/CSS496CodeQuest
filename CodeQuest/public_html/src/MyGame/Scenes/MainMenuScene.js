@@ -45,6 +45,8 @@ function MainMenuScene() {
     this.firing = "assets/Sounds/firing.mp3";
     this.maingame = "assets/Sounds/maingame.mp3";
     
+    this.music = "assets/Sounds/maingame.mp3";
+    
     
     this.musicOn=true;
 }
@@ -68,6 +70,7 @@ MainMenuScene.prototype.loadScene = function () {
     gEngine.AudioClips.loadAudio(this.pops);
     gEngine.AudioClips.loadAudio(this.firing);
     gEngine.AudioClips.loadAudio(this.maingame);
+    gEngine.AudioClips.loadAudio(this.music);
 };
 
 MainMenuScene.prototype.unloadScene = function () {
@@ -157,4 +160,5 @@ MainMenuScene.prototype.update = function () {
         localStorage.clear();
         document.location.reload();
     }
+     this.checkMusic();
 };

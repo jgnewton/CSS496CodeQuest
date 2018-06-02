@@ -45,6 +45,7 @@ Scene.prototype.initialize = function () {
 Scene.prototype.update = function () {
     // when done with this level should call:
     // GameLoop.stop() ==> which will call this.unloadScene();
+    this.checkMusic();
 };
 
 /**
@@ -63,3 +64,17 @@ Scene.prototype.unloadScene = function () {
     // .. unload all resources
 };
 //</editor-fold>
+
+Scene.prototype.checkMusic = function () {
+    var m = getMuted();
+    if(!m && !gEngine.AudioClips.isBackgroundAudioPlaying()){
+       
+        console.log("mute test");
+       
+        if(this.music!=null){
+            gEngine.AudioClips.playBackgroundAudio(this.music);
+        }
+        
+    }
+
+}

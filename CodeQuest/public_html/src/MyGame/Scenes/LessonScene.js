@@ -517,7 +517,7 @@ LessonScene.prototype.draw = function () {
 };
 
 LessonScene.prototype.update = function () {
-    
+    this.checkMusic();
     
     //debug Scene Change
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {

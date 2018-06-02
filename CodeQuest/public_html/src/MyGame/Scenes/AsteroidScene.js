@@ -164,10 +164,13 @@ AsteroidScene.prototype.loadScene = function () {
     
         //sounds
     this.asteroidsong = "assets/Sounds/asteroidScene.mp3";
+    this.music="assets/Sounds/asteroidScene.mp3";
+    
     this.firing = "assets/Sounds/firing.mp3";
     this.explosion = "assets/Sounds/Explosion.mp3";
     this.laser = "assets/Sounds/laser.mp3";
     gEngine.AudioClips.loadAudio(this.asteroidsong);
+    gEngine.AudioClips.loadAudio(this.music);
     gEngine.AudioClips.loadAudio(this.firing);
     gEngine.AudioClips.loadAudio(this.explosion);
     gEngine.AudioClips.loadAudio(this.laser);
@@ -382,6 +385,7 @@ AsteroidScene.prototype.draw = function () {
 };
 
 AsteroidScene.prototype.update = function () {
+     this.checkMusic();
     this.processInput();
     
     if(!this.gameOver){

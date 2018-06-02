@@ -196,8 +196,10 @@ BubbleScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.mCloudSprite);
         
         this.bubbsong = "assets/Sounds/BubbleMadness.mp3";
+        this.music=this.bubbsong;
         this.pops = "assets/Sounds/pops.mp3";
         gEngine.AudioClips.loadAudio(this.bubbsong);
+        gEngine.AudioClips.loadAudio(this.music);
         gEngine.AudioClips.loadAudio(this.pops);
 };
 
@@ -438,6 +440,7 @@ BubbleScene.prototype.draw = function () {
 };
 
 BubbleScene.prototype.update = function () {
+    this.checkMusic();
     this.processInput();
     
     if(!this.gameOver){

@@ -108,7 +108,9 @@ MyGame.prototype.loadScene = function () {
     gEngine.AudioClips.loadAudio(this.pops);
     
     this.maingame = "assets/Sounds/maingame.mp3";
+    this.music = "assets/Sounds/maingame.mp3";
     gEngine.AudioClips.loadAudio(this.maingame);
+    gEngine.AudioClips.loadAudio(this.music);
     
 };
 
@@ -369,6 +371,7 @@ MyGame.prototype.update = function () {
     
     
     this.checkZones();
+    this.checkMusic();
 };
 
 
@@ -386,3 +389,4 @@ MyGame.prototype.checkZones = function () {
         }
     }
 }
+

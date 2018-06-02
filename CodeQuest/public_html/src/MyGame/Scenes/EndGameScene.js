@@ -82,6 +82,7 @@ EndGameScene.prototype.draw = function () {
 };
 
 EndGameScene.prototype.update = function () {
+    this.checkMusic();
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.X)) {
         this.nextScene = 0;
         gEngine.GameLoop.stop();  

@@ -185,10 +185,12 @@ BasketScene.prototype.loadScene = function () {
     
     //sounds
     this.fishsong = "assets/Sounds/FishThemeSong.mp3";
+    this.music=this.fishsong;
     this.goodcatch = "assets/Sounds/catchgood.mp3";
     this.badcatch = "assets/Sounds/catchbad.mp3";
     this.falling = "assets/Sounds/fishfall.mp3";
     gEngine.AudioClips.loadAudio(this.fishsong);
+    gEngine.AudioClips.loadAudio(this.music);
     gEngine.AudioClips.loadAudio(this.goodcatch);
     gEngine.AudioClips.loadAudio(this.badcatch);
     gEngine.AudioClips.loadAudio(this.falling);
@@ -411,6 +413,7 @@ BasketScene.prototype.draw = function () {
 };
 
 BasketScene.prototype.update = function () {
+    this.checkMusic();
     this.processInput();
     this.updateObjects();
     if(!this.gameOver){
