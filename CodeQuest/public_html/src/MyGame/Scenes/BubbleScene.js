@@ -524,10 +524,10 @@ BubbleScene.prototype.processInput = function(){
             this.helpTableVisible = false;
         }
 
-        //check winning
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.I)) {
-            this.gameOver = true;
-        }
+//        //check winning
+//        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.I)) {
+//            this.gameOver = true;
+//        }
 
         //selecting Projectile type:
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) {
